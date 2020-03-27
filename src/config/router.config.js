@@ -65,6 +65,30 @@ export const asyncRouterMap = [
         ]
       },
 
+      // project
+      {
+        path: '/project',
+        name: 'project',
+        component: RouteView,
+        redirect: '/project/list',
+        hideChildrenInMenu: true,
+        meta: { title: 'menu.project', icon: 'project', permission: [ 'admin', 'user' ] },
+        children: [
+          {
+            path: '/project/list',
+            name: 'projectList',
+            component: () => import('@/views/project/List'),
+            meta: { title: 'menu.project-list', permission: [ 'admin', 'user' ] }
+          },
+          {
+            path: '/project/view',
+            name: 'projectView',
+            component: () => import('@/views/project/View'),
+            meta: { title: 'menu.project-view', permission: [ 'admin', 'user' ] }
+          }
+        ]
+      },
+
       // account
       {
         path: '/account',

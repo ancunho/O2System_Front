@@ -122,6 +122,7 @@ export default {
           title: i18n.t('option.action'),
           dataIndex: 'action',
           width: '150px',
+          align: 'right',
           scopedSlots: { customRender: 'action' }
         }
       ],

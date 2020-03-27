@@ -69,10 +69,14 @@
           <a>{{ $t('option.project') }}</a>
           <a-divider type="vertical" />
           <a @click="$refs.viewModal.view(record)">{{ $t('option.view') }}</a>
-          <a-divider type="vertical" />
-          <a @click="$refs.formModal.edit(record)">{{ $t('option.edit') }}</a>
-          <a-divider type="vertical" />
-          <a @click="handleDelete(record)">{{ $t('option.delete') }}</a>
+          <span v-permission:view="['admin']">
+            <a-divider type="vertical" />
+            <a @click="$refs.formModal.edit(record)">{{ $t('option.edit') }}</a>
+          </span>
+          <span v-permission:view="['admin']">
+            <a-divider type="vertical" />
+            <a @click="handleDelete(record)">{{ $t('option.delete') }}</a>
+          </span>
         </template>
       </span>
     </s-table>
@@ -138,7 +142,8 @@ export default {
         {
           title: i18n.t('option.action'),
           dataIndex: 'action',
-          width: '210px',
+          width: '200px',
+          align: 'right',
           scopedSlots: { customRender: 'action' }
         }
       ],
