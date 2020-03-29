@@ -121,7 +121,7 @@ export default {
         {
           title: i18n.t('option.action'),
           dataIndex: 'action',
-          width: '150px',
+          width: '170px',
           align: 'right',
           scopedSlots: { customRender: 'action' }
         }
@@ -130,7 +130,7 @@ export default {
       loadData: parameter => {
         return getMemberList()
           .then(res => {
-            return res.data
+            return res
           })
       }
     }

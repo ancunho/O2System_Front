@@ -68,7 +68,7 @@
         <span slot="action" slot-scope="text, record" class="table-option">
           <template>
             <a @click="handleView(record)">{{ $t('option.view') }}</a>
-            <span v-permission:view="['admin']">
+            <span v-permission:view="['ROLE_ADMIN']">
               <a-divider type="vertical" />
               <a @click="handleDelete(record)">{{ $t('option.delete') }}</a>
             </span>
@@ -140,7 +140,7 @@ export default {
       loadData: parameter => {
         return getCustomerList()
           .then(res => {
-            return res.data
+            return res
           })
       }
     }

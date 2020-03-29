@@ -27,7 +27,7 @@ const user = {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
           const data = response.data
-          Vue.ls.set(ACCESS_TOKEN, data.token, 7 * 24 * 60 * 60 * 1000)
+          Vue.ls.set(ACCESS_TOKEN, data.token, 2 * 60 * 60 * 1000)
           commit('SET_TOKEN', data.token)
           resolve()
         }).catch(error => {
@@ -41,7 +41,6 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
           const data = response.data
-
           if (data.role) {
             commit('SET_ROLE', data.role)
             commit('SET_INFO', data)

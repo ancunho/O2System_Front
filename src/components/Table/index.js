@@ -52,12 +52,6 @@ export default {
         }
         this.localDataSource = res.data // 返回结果中的数组数据
         this.SearchDataSource = [...res.data] // 返回结果中的数组数据(深拷贝)
-      }).catch(err => {
-        this.$notification['error']({
-          message: 'Error',
-          description: ((err.response || {}).data || {}).msg || 'Request error, please try again later',
-          duration: 4
-        })
       }).finally(_ => {
         this.localLoading = false
       })

@@ -32,6 +32,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import LangSelect from '@/components/tools/LangSelect'
 import HeaderSearch from '@/components/tools/HeaderSearch'
+import i18n from '@/locales'
 
 export default {
   name: 'UserMenu',
@@ -51,7 +52,7 @@ export default {
         }, 16)
       }).catch(err => {
         this.$message.error({
-          title: 'Error',
+          title: i18n.t('message.error'),
           description: err.msg
         })
       })

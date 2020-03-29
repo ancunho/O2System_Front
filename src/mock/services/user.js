@@ -1,5 +1,24 @@
 import Mock from 'mockjs2'
-import { builder } from '../util'
+import { builder, getBodyByQs } from '../util'
+
+const username = ['admin', 'super']
+// 强硬要求相同密码
+const password = ['demo'] // admin, demo
+
+const login = (options) => {
+  const body = getBodyByQs(options)
+  if (!username.includes(body.username) || !password.includes(body.password)) {
+    return builder({}, '账户或密码错误', 1)
+  }
+
+  return builder({
+    'token': '4291d7da9005377ec9aec4a71ea837f'
+  }, '成功', 0)
+}
+
+const logout = () => {
+  return builder({}, '[测试接口] 注销成功')
+}
 
 const info = (options) => {
   const userInfo = {
@@ -12,9 +31,41 @@ const info = (options) => {
     'email': 'admin@admin.com',
     'department': '销售部',
     'wechat': 'wechatId',
-    'role': 'admin'
+    'role': 'ROLE_ADMIN'
   }
   return builder(userInfo)
 }
 
-Mock.mock(/\/api\/user\/info/, 'get', info)
+const create = () => {
+  return builder({}, '注册成功')
+}
+
+const checkUsername = () => {
+  return builder({}, '可以使用')
+}
+
+const checkEmail = () => {
+  return builder({}, '可以使用')
+}
+
+const forgetGetQuestion = () => {
+  return builder('你的偶像是？')
+}
+
+const forgetCheckAnswer = () => {
+  return builder('token-123456')
+}
+
+const forgetResetPassword = () => {
+  return builder({}, '修改成功')
+}
+
+Mock.mock(/\/user\/info/, 'get', info)
+Mock.mock(/\/user\/login/, 'post', login)
+Mock.mock(/\/user\/logout/, 'post', logout)
+Mock.mock(/\/user\/create/, 'post', create)
+Mock.mock(/\/user\/check_username/, 'post', checkUsername)
+Mock.mock(/\/user\/check_email/, 'post', checkEmail)
+Mock.mock(/\/user\/forget_get_question/, 'post', forgetGetQuestion)
+Mock.mock(/\/user\/forgetCheckAnswer/, 'post', forgetCheckAnswer)
+Mock.mock(/\/user\/forget_reset_password/, 'post', forgetResetPassword)

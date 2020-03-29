@@ -26,10 +26,12 @@ export default {
     'username': '账号',
     'username-placeholder': '请输入账号',
     'username-required': '请输入账号！',
+    'username-length': '账号必须为6位或以上',
+    'username-used': '此账号已被使用！',
     'password': '密码',
     'password-placeholder': '请输入密码，至少6位密码，英文数字组合',
     'password-required': '请输入密码！',
-    'password-level': '密码轻度底，至少6位密码，英文数字组合',
+    'password-level': '密码至少6位密码，英文数字组合',
     'passwordConfirm-placeholder': '请再次输入密码',
     'passwordConfirm-required': '请再次输入密码！',
     'password-twice': '两次输入的密码不同!',
@@ -39,6 +41,7 @@ export default {
     'email-placeholder': '请输入邮箱地址',
     'email-required': '请输入邮箱地址！',
     'email-wrong-format': '邮箱地址格式错误！',
+    'email-used': '此邮箱已被使用！',
     'empno-placeholder': '请输入社员工号',
     'empno-required': '请输入社员工号！',
     'department-placeholder': '请选择部门',
@@ -49,7 +52,8 @@ export default {
     'answer-required': '请输入找回密码答案！',
     'recover-step1': '找回密码 - 1',
     'recover-step2': '找回密码 - 2',
-    'recover-step3': '找回密码 - 3'
+    'recover-step3': '找回密码 - 3',
+    'recover-success': '密码修改成功，请重新登录'
   },
   member: {
     'username': '账号',
@@ -100,5 +104,10 @@ export default {
     'has': '有',
     'none': '无',
     'project': '项目'
+  },
+  message: {
+    'success': '成功',
+    'error': '错误',
+    'warning': '警告'
   }
 }

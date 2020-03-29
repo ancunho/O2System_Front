@@ -6,7 +6,7 @@
           size="large"
           type="text"
           :placeholder="$t('user.username-placeholder')"
-          v-decorator="['username', {rules: [{ required: true, message: $t('user.username-required') }], validateTrigger: ['change', 'blur']}]"
+          v-decorator="['username', {rules: [{ validator: this.handleCheckUsername }], validateTrigger: ['blur']}]"
         ></a-input>
       </a-form-item>
 
@@ -42,7 +42,7 @@
         <a-input
           size="large"
           :placeholder="$t('user.email-placeholder')"
-          v-decorator="['email', {rules: [{ required: true, type: 'email', message: $t('user.email-wrong-format'), pattern: /^1[3456789]\d{9}$/ }], validateTrigger: ['change', 'blur'] }]">
+          v-decorator="['email', {rules: [{ type: 'email', validator: this.handleCheckEmail }], validateTrigger: ['blur'] }]">
         </a-input>
       </a-form-item>
 
@@ -59,11 +59,10 @@
         <a-select
           size="large"
           :placeholder="$t('user.department-placeholder')"
+          @focus="getSelectOption('department')"
+          :loading="loading.department"
           v-decorator="['department', {rules: [{ required: true, message: $t('user.department-required') }], validateTrigger: ['change', 'blur']}]">
-          <a-select-option value="1">市场部</a-select-option>
-          <a-select-option value="2">销售部</a-select-option>
-          <a-select-option value="3">IT部</a-select-option>
-          <a-select-option value="4">人事部</a-select-option>
+          <a-select-option v-for="list in select.department" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
         </a-select>
       </a-form-item>
 
@@ -71,11 +70,10 @@
         <a-select
           size="large"
           :placeholder="$t('user.question-placeholder')"
+          @focus="getSelectOption('question')"
+          :loading="loading.question"
           v-decorator="['question', {rules: [{ required: true, message: $t('user.question-required') }], validateTrigger: ['change', 'blur']}]">
-          <a-select-option value="1">你的生日是？</a-select-option>
-          <a-select-option value="2">你的故乡是？</a-select-option>
-          <a-select-option value="3">你的小学名称？</a-select-option>
-          <a-select-option value="4">你的小学班主任名是？</a-select-option>
+          <a-select-option v-for="list in select.question" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
         </a-select>
       </a-form-item>
 
@@ -107,67 +105,120 @@
 
 <script>
 import i18n from '@/locales'
+import { register, checkUsername, checkEmail } from '@/api/user'
+import { getCommonConfig } from '@/api/common'
+import { isPassword, isEmail } from '@/utils/util'
 
 export default {
   name: 'Register',
   data () {
     return {
+      select: {
+        department: [],
+        question: []
+      },
+      loading: {
+        department: false,
+        question: false
+      },
       form: this.$form.createForm(this),
       registerBtn: false
     }
   },
   methods: {
-    handlePasswordLevel (rule, value, callback) {
-      let level = 0
-
-      // 判断这个字符串中有没有数字
-      if (/[0-9]/.test(value)) {
-        level++
-      }
-      // 判断字符串中有没有字母
-      if (/[a-zA-Z]/.test(value)) {
-        level++
-      }
-      if (level >= 2 && value.length >= 6) {
-        callback()
+    // 校验账号唯一性
+    handleCheckUsername (rule, value, callback) {
+      if (value) {
+        if (value.length < 5) {
+          callback(new Error(i18n.t('user.username-length') + ''))
+          return
+        }
+        checkUsername({ 'username': value }).then(() => {
+          callback()
+        }).catch(() => {
+          callback(new Error(i18n.t('user.username-used') + ''))
+        })
       } else {
-        callback(new Error(i18n.t('user.password-level') || 'Password Error'))
+        callback(new Error(i18n.t('user.username-required') + ''))
       }
     },
 
+    // 校验邮箱唯一性
+    handleCheckEmail (rule, value, callback) {
+      if (value) {
+        if (!isEmail(value)) {
+          callback(new Error(i18n.t('user.email-wrong-format') + ''))
+          return
+        }
+
+        checkEmail({ 'email': value }).then(() => {
+          callback()
+        }).catch(() => {
+          callback(new Error(i18n.t('user.email-used') + ''))
+        })
+      } else {
+        callback(new Error(i18n.t('user.email-required') + ''))
+      }
+    },
+
+    // 校验密码强度
+    handlePasswordLevel (rule, value, callback) {
+      if (isPassword(value)) {
+        callback()
+      } else {
+        callback(new Error((value === '' ? i18n.t('user.password-required') : i18n.t('user.password-level')) + ''))
+      }
+    },
+
+    // 校验确认密码
     handlePasswordCheck (rule, value, callback) {
       const password = this.form.getFieldValue('password')
       if (value === undefined) {
-        callback(new Error(i18n.t('user.password-required') || 'Password Confirm Error'))
+        callback(new Error(i18n.t('user.password-required') + ''))
       }
       if (value && password && value.trim() !== password.trim()) {
-        callback(new Error(i18n.t('user.password-twice') || 'Password Confirm Error'))
+        callback(new Error(i18n.t('user.password-twice') + ''))
       }
       callback()
     },
 
-    handleSubmit () {
-      const { form: { validateFields } } = this
-      validateFields({ force: true }, (err, values) => {
-        if (!err) {
-          this.$notification['success']({
-            message: '注册成功',
-            description: '注册成功，请登录',
-            duration: 4
-          })
+    // 获取common config
+    getSelectOption (val) {
+      if (val === '' || this.select[val].length > 0) return
+      this.loading[val] = true
 
-          this.$router.push({ name: 'login' })
-        }
+      getCommonConfig({ CNF_CODE: val }).then((res) => {
+        this.select[val] = res.data
+      }).catch(() => {
+        this.select[val] = []
+      }).finally(() => {
+        this.loading[val] = false
       })
     },
 
-    requestFailed (err) {
-      this.$notification['error']({
-        message: 'Error',
-        description: ((err.response || {}).data || {}).msg || 'Request error, please try again later',
-        duration: 4
+    // 提交
+    handleSubmit () {
+      const { form: { validateFields } } = this
+      this.registerBtn = true
+
+      validateFields({ force: true }, (err, values) => {
+        if (!err) {
+          console.log(values)
+          register(values).then((res) => {
+            this.$notification['success']({
+              message: i18n.t('message.success'),
+              description: res.msg,
+              duration: 4
+            })
+
+            this.$router.push({ name: 'login' })
+          }).catch((e) => {}).finally(() => {
+            this.registerBtn = false
+          })
+        } else {
+          this.registerBtn = false
+        }
       })
-      this.registerBtn = false
     }
   }
 }

@@ -23,7 +23,7 @@
 
       <!-- step2 -->
       <div v-show="currentStep === 1">
-        <div class="ask">问：{{ question }}</div>
+        <div class="ask">问：{{ data.question }}</div>
 
         <a-form-item>
           <a-input
@@ -43,7 +43,7 @@
             type="password"
             autocomplete="false"
             :placeholder="$t('user.password-placeholder')"
-            v-decorator="['password', {rules: [{ validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
+            v-decorator="['passwordNew', {rules: [{ validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
           ></a-input>
         </a-form-item>
 
@@ -72,14 +72,14 @@
 </template>
 
 <script>
-// import i18n from '@/locales'
-
 import i18n from '@/locales'
+import { forgetGetQuestion, forgetCheckAnswer, forgetResetPassword } from '@/api/user'
+import { isPassword } from '@/utils/util'
 
 const stepForms = [
   ['username'],
   ['answer'],
-  ['password', 'passwordConfirm']
+  ['passwordNew', 'passwordConfirm']
 ]
 
 export default {
@@ -88,36 +88,29 @@ export default {
     return {
       confirmLoading: false,
       currentStep: 0,
-      question: '?',
+      data: {
+        question: '?',
+        forgetToken: ''
+      },
       form: this.$form.createForm(this)
     }
   },
   methods: {
     handlePasswordLevel (rule, value, callback) {
-      let level = 0
-
-      // 判断这个字符串中有没有数字
-      if (/[0-9]/.test(value)) {
-        level++
-      }
-      // 判断字符串中有没有字母
-      if (/[a-zA-Z]/.test(value)) {
-        level++
-      }
-      if (level >= 2 && value.length >= 6) {
+      if (isPassword(value)) {
         callback()
       } else {
-        callback(new Error(i18n.t('user.password-level') || 'Password Error'))
+        callback(new Error((value === '' ? i18n.t('user.password-required') : i18n.t('user.password-level')) + ''))
       }
     },
 
     handlePasswordCheck (rule, value, callback) {
-      const password = this.form.getFieldValue('password')
+      const password = this.form.getFieldValue('passwordNew')
       if (value === undefined) {
-        callback(new Error(i18n.t('user.password-required') || 'Password Confirm Error'))
+        callback(new Error(i18n.t('user.password-required') + ''))
       }
       if (value && password && value.trim() !== password.trim()) {
-        callback(new Error(i18n.t('user.password-twice') || 'Password Confirm Error'))
+        callback(new Error(i18n.t('user.password-twice') + ''))
       }
       callback()
     },
@@ -125,28 +118,43 @@ export default {
     handleNext (step) {
       const { form: { validateFields } } = this
       const currentStep = step + 1
-      // this.confirmLoading = true
+      this.confirmLoading = true
 
       validateFields(stepForms[ this.currentStep ], (errors, values) => {
         if (errors) return
 
+        const parameter = Object.assign({}, this.form.getFieldsValue(), this.data)
+
         if (currentStep === 1) {
-          this.question = '你最喜欢的电影是？'
-        } else if (currentStep === 2) {
-
-        } else if (currentStep === 3) {
-          this.$notification['success']({
-            message: '修改成功',
-            description: '密码修改成功，请重新登录',
-            duration: 4
+          // 获取问题
+          forgetGetQuestion(parameter).then((res) => {
+            this.currentStep = currentStep
+            this.data.question = res.data
+          }).catch((e) => {}).finally(() => {
+            this.confirmLoading = false
           })
+        } else if (currentStep === 2) {
+          // 校验问题
+          forgetCheckAnswer(parameter).then((res) => {
+            this.currentStep = currentStep
+            this.data.forgetToken = res.data
+          }).catch((e) => {}).finally(() => {
+            this.confirmLoading = false
+          })
+        } else if (currentStep === 3) {
+          // 修改密码
+          forgetResetPassword(parameter).then((res) => {
+            this.$notification['success']({
+              message: i18n.t('message.success'),
+              description: i18n.t('user.recover-success'),
+              duration: 4
+            })
 
-          this.$router.push({ name: 'login' })
-
-          return
+            this.$router.push({ name: 'login' })
+          }).catch((e) => {}).finally(() => {
+            this.confirmLoading = false
+          })
         }
-
-        this.currentStep = currentStep
       })
     }
   }

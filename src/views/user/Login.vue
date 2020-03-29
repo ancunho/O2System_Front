@@ -88,26 +88,19 @@ export default {
         if (!err) {
           const loginParams = { ...values }
           Login(loginParams)
-            .then((res) => this.loginSuccess(res))
-            .catch(err => this.requestFailed(err))
+            .then(() => {
+              this.$router.push({ path: '/' })
+              this.isLoginError = false
+            })
+            .catch((err) => {
+              if (err.status === 1) this.isLoginError = true
+            })
             .finally(() => {
               state.loginBtn = false
             })
         } else {
           state.loginBtn = false
         }
-      })
-    },
-    loginSuccess (res) {
-      this.$router.push({ path: '/' })
-      this.isLoginError = false
-    },
-    requestFailed (err) {
-      this.isLoginError = true
-      this.$notification['error']({
-        message: 'Error',
-        description: ((err.response || {}).data || {}).msg || 'Request error, please try again later',
-        duration: 4
       })
     }
   }

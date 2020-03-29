@@ -36,13 +36,13 @@ export const asyncRouterMap = [
         component: PageView,
         redirect: '/member/list',
         hideChildrenInMenu: true,
-        meta: { title: 'menu.member', icon: 'user', permission: [ 'admin' ] },
+        meta: { title: 'menu.member', icon: 'user', permission: [ 'ROLE_ADMIN' ] },
         children: [
           {
             path: '/member/list',
             name: 'memberList',
             component: () => import('@/views/member/List'),
-            meta: { title: 'menu.member-list', permission: [ 'admin' ] }
+            meta: { title: 'menu.member-list', permission: [ 'ROLE_ADMIN' ] }
           }
         ]
       },
@@ -54,13 +54,13 @@ export const asyncRouterMap = [
         component: PageView,
         redirect: '/customer/list',
         hideChildrenInMenu: true,
-        meta: { title: 'menu.customer', icon: 'solution', permission: [ 'admin', 'user' ] },
+        meta: { title: 'menu.customer', icon: 'solution', permission: [ 'ROLE_ADMIN', 'ROLE_USER' ] },
         children: [
           {
             path: '/customer/list',
             name: 'customerList',
             component: () => import('@/views/customer/List'),
-            meta: { title: 'menu.customer-list', permission: [ 'admin', 'user' ] }
+            meta: { title: 'menu.customer-list', permission: [ 'ROLE_ADMIN', 'ROLE_USER' ] }
           }
         ]
       },
@@ -72,19 +72,19 @@ export const asyncRouterMap = [
         component: RouteView,
         redirect: '/project/list',
         hideChildrenInMenu: true,
-        meta: { title: 'menu.project', icon: 'project', permission: [ 'admin', 'user' ] },
+        meta: { title: 'menu.project', icon: 'project', permission: [ 'ROLE_ADMIN', 'ROLE_USER' ] },
         children: [
           {
             path: '/project/list',
             name: 'projectList',
             component: () => import('@/views/project/List'),
-            meta: { title: 'menu.project-list', permission: [ 'admin', 'user' ] }
+            meta: { title: 'menu.project-list', permission: [ 'ROLE_ADMIN', 'ROLE_USER' ] }
           },
           {
             path: '/project/view',
             name: 'projectView',
             component: () => import('@/views/project/View'),
-            meta: { title: 'menu.project-view', permission: [ 'admin', 'user' ] }
+            meta: { title: 'menu.project-view', permission: [ 'ROLE_ADMIN', 'ROLE_USER' ] }
           }
         ]
       },
