@@ -41,6 +41,7 @@ const create = () => {
 }
 
 const checkUsername = () => {
+  console.log(111)
   return builder({}, '可以使用')
 }
 
@@ -67,5 +68,5 @@ Mock.mock(/\/user\/create/, 'post', create)
 Mock.mock(/\/user\/check_username/, 'post', checkUsername)
 Mock.mock(/\/user\/check_email/, 'post', checkEmail)
 Mock.mock(/\/user\/forget_get_question/, 'post', forgetGetQuestion)
-Mock.mock(/\/user\/forgetCheckAnswer/, 'post', forgetCheckAnswer)
+Mock.mock(/\/user\/forget_check_answer/, 'post', forgetCheckAnswer)
 Mock.mock(/\/user\/forget_reset_password/, 'post', forgetResetPassword)

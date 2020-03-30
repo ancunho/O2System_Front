@@ -59,11 +59,19 @@
       </div>
     </a-form>
 
-    <div class="button-box">
+    <div class="button-box" :class="{ 'hide-prev-button': currentStep === 0 }">
       <a-button
         size="large"
+        class="prev-button"
+        @click="handlePrev(currentStep)">
+        上一步
+      </a-button>
+      <a-button
+        size="large"
+        class="next-button"
         type="primary"
         :loading="confirmLoading"
+        :disabled="confirmLoading"
         @click="handleNext(currentStep)">
         {{ currentStep === 2 && '完成' || '下一步' }}
       </a-button>
@@ -115,15 +123,18 @@ export default {
       callback()
     },
 
+    handlePrev (step) {
+      if (this.currentStep > 0) this.currentStep -= 1
+    },
+
     handleNext (step) {
-      const { form: { validateFields } } = this
+      const { form: { validateFields, getFieldsValue } } = this
       const currentStep = step + 1
-      this.confirmLoading = true
 
-      validateFields(stepForms[ this.currentStep ], (errors, values) => {
-        if (errors) return
-
-        const parameter = Object.assign({}, this.form.getFieldsValue(), this.data)
+      validateFields(stepForms[ this.currentStep ], (err, values) => {
+        if (err) return
+        this.confirmLoading = true
+        const parameter = Object.assign({}, getFieldsValue(), this.data)
 
         if (currentStep === 1) {
           // 获取问题
@@ -173,7 +184,24 @@ export default {
 
     .button-box {
       button {
-        width: 100%;
+        width: 49%;
+
+        &.next-button {
+          float: right;
+        }
+      }
+
+      &.hide-prev-button {
+        button {
+          width: 100%;
+        }
+
+        .prev-button {
+          width: 0;
+          padding: 0;
+          border: 0;
+          overflow: hidden;
+        }
       }
     }
   }

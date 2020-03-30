@@ -21,11 +21,6 @@ yarn run build
 * 线上地址
 > http://114.55.169.130:3000/
 
-* easy mock
-> http://111.229.5.125:12306/  
-> ID: admin  
-> PW: 123456
-
 * UI(ant-design-vue)
 > https://www.antdv.com/docs/vue/introduce-cn/
 

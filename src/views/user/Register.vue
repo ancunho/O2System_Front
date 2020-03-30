@@ -1,6 +1,6 @@
 <template>
   <div class="main user-layout-register">
-    <a-form ref="formRegister" :form="form" id="formRegister">
+    <a-form :form="form">
       <a-form-item>
         <a-input
           size="large"
@@ -93,8 +93,8 @@
           htmlType="submit"
           class="register-button"
           :loading="registerBtn"
-          @click.stop.prevent="handleSubmit"
-          :disabled="registerBtn">
+          :disabled="registerBtn"
+          @click="handleSubmit">
           {{ $t('user.register') }}
         </a-button>
       </a-form-item>
@@ -197,27 +197,25 @@ export default {
     },
 
     // 提交
-    handleSubmit () {
+    handleSubmit (e) {
+      e.preventDefault()
       const { form: { validateFields } } = this
-      this.registerBtn = true
 
-      validateFields({ force: true }, (err, values) => {
-        if (!err) {
-          console.log(values)
-          register(values).then((res) => {
-            this.$notification['success']({
-              message: i18n.t('message.success'),
-              description: res.msg,
-              duration: 4
-            })
+      validateFields((err, values) => {
+        if (err) return
+        this.registerBtn = true
 
-            this.$router.push({ name: 'login' })
-          }).catch((e) => {}).finally(() => {
-            this.registerBtn = false
+        register(values).then((res) => {
+          this.$notification['success']({
+            message: i18n.t('message.success'),
+            description: res.msg,
+            duration: 4
           })
-        } else {
+
+          this.$router.push({ name: 'login' })
+        }).catch((e) => {}).finally(() => {
           this.registerBtn = false
-        }
+        })
       })
     }
   }

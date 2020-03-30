@@ -67,7 +67,8 @@ export function removeLoadingAnimate (id = '', timeout = 1500) {
  * 判断有没有数字,有没有字母,长度5以上
  */
 export function isPassword (password) {
-  return !(password === '' ||
+  return !(password === undefined ||
+    password === '' ||
     password.length < 6 ||
     !(/[0-9]/.test(password) && /[a-zA-Z]/.test(password)))
 }

@@ -23,7 +23,7 @@
           </a-menu-item>
         </a-menu>
       </a-dropdown>
-      <lang-select />
+      <!--<lang-select />-->
     </div>
   </div>
 </template>
