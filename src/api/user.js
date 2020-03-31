@@ -70,3 +70,19 @@ export function forgetResetPassword (parameter) {
     data: QS.stringify(parameter)
   })
 }
+
+export function userInfoUpdate (parameter) {
+  return axios({
+    url: '/api/user/info/update',
+    method: 'post',
+    data: parameter
+  })
+}
+
+export function updatePassword (parameter) {
+  return axios({
+    url: '/user/update/password',
+    method: 'post',
+    data: QS.stringify(parameter)
+  })
+}

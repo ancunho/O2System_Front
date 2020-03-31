@@ -49,27 +49,7 @@ export default {
       mode: 'inline',
 
       openKeys: [],
-      selectedKeys: [],
-
-      // cropper
-      preview: {},
-      option: {
-        img: '/avatar.jpg',
-        info: true,
-        size: 1,
-        outputType: 'jpeg',
-        canScale: false,
-        autoCrop: true,
-        // 只有自动截图开启 宽度高度才生效
-        autoCropWidth: 180,
-        autoCropHeight: 180,
-        fixedBox: true,
-        // 开启宽度和高度比例
-        fixed: true,
-        fixedNumber: [1, 1]
-      },
-
-      pageTitle: ''
+      selectedKeys: []
     }
   },
   created () {

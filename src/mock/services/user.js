@@ -41,7 +41,6 @@ const create = () => {
 }
 
 const checkUsername = () => {
-  console.log(111)
   return builder({}, '可以使用')
 }
 
@@ -61,6 +60,14 @@ const forgetResetPassword = () => {
   return builder({}, '修改成功')
 }
 
+const userInfoUpdate = () => {
+  return builder({}, '修改成功')
+}
+
+const updatePassword = () => {
+  return builder({}, '修改成功')
+}
+
 Mock.mock(/\/user\/info/, 'get', info)
 Mock.mock(/\/user\/login/, 'post', login)
 Mock.mock(/\/user\/logout/, 'post', logout)
@@ -70,3 +77,5 @@ Mock.mock(/\/user\/check_email/, 'post', checkEmail)
 Mock.mock(/\/user\/forget_get_question/, 'post', forgetGetQuestion)
 Mock.mock(/\/user\/forget_check_answer/, 'post', forgetCheckAnswer)
 Mock.mock(/\/user\/forget_reset_password/, 'post', forgetResetPassword)
+Mock.mock(/\/api\/user\/info\/update/, 'post', userInfoUpdate)
+Mock.mock(/\/user\/update\/password/, 'post', updatePassword)

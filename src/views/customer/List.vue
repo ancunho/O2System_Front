@@ -151,7 +151,7 @@ export default {
       loadData: parameter => {
         return getCustomerList()
           .then(res => {
-            return res
+            return res.data
           })
       }
     }

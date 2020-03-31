@@ -130,7 +130,7 @@ export default {
       loadData: parameter => {
         return getMemberList()
           .then(res => {
-            return res
+            return res.data
           })
       }
     }

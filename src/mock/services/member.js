@@ -20,9 +20,7 @@ const memberList = (options) => {
     })
   }
 
-  return builder({
-    data: data
-  })
+  return builder(data)
 }
 
 Mock.mock(/\/member\/list/, 'get', memberList)

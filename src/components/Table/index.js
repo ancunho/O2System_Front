@@ -37,21 +37,21 @@ export default {
         // 初始化分页
         this.localPagination = {
           current: 1,
-          total: res.data.length,
+          total: res.length,
           showSizeChanger: true,
           pageSize: 10
         }
 
         // 数据不满足分页大小，关闭 table 分页功能
         try {
-          if ((['auto', true].includes(this.showPagination) && res.data.length <= this.localPagination.pageSize)) {
+          if ((['auto', true].includes(this.showPagination) && res.length <= this.localPagination.pageSize)) {
             this.localPagination.hideOnSinglePage = true
           }
         } catch (e) {
           this.localPagination = false
         }
-        this.localDataSource = res.data // 返回结果中的数组数据
-        this.SearchDataSource = [...res.data] // 返回结果中的数组数据(深拷贝)
+        this.localDataSource = res // 返回结果中的数组数据
+        this.SearchDataSource = [...res] // 返回结果中的数组数据(深拷贝)
       }).finally(_ => {
         this.localLoading = false
       })

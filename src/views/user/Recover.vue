@@ -42,7 +42,7 @@
             size="large"
             type="password"
             autocomplete="false"
-            :placeholder="$t('user.password-placeholder')"
+            :placeholder="$t('user.passwordNew-placeholder')"
             v-decorator="['passwordNew', {rules: [{ validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
           ></a-input>
         </a-form-item>
@@ -64,7 +64,7 @@
         size="large"
         class="prev-button"
         @click="handlePrev(currentStep)">
-        上一步
+        {{ $t('option.prev') }}
       </a-button>
       <a-button
         size="large"
@@ -73,7 +73,7 @@
         :loading="confirmLoading"
         :disabled="confirmLoading"
         @click="handleNext(currentStep)">
-        {{ currentStep === 2 && '完成' || '下一步' }}
+        {{ currentStep === 2 && $t('option.done') || $t('option.next') }}
       </a-button>
     </div>
   </div>

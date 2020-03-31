@@ -31,6 +31,10 @@ export default {
     'password': '密码',
     'password-placeholder': '请输入密码，至少6位密码，英文数字组合',
     'password-required': '请输入密码！',
+    'passwordNew-placeholder': '请输入新密码，至少6位密码，英文数字组合',
+    'passwordNew-required': '请输入新密码！',
+    'passwordOld-placeholder': '请输入旧密码',
+    'passwordOld-required': '请输入旧密码！',
     'password-level': '密码至少6位密码，英文数字组合',
     'passwordConfirm-placeholder': '请再次输入密码',
     'passwordConfirm-required': '请再次输入密码！',
@@ -53,7 +57,9 @@ export default {
     'recover-step1': '找回密码 - 1',
     'recover-step2': '找回密码 - 2',
     'recover-step3': '找回密码 - 3',
-    'recover-success': '密码修改成功，请重新登录'
+    'recover-success': '密码修改成功，请重新登录',
+    'changePw-success': '密码修改成功',
+    'save-success': '保存成功'
   },
   member: {
     'username': '账号',
@@ -94,16 +100,22 @@ export default {
     'action': '操作',
     'search': '查询',
     'reset': '重置',
+    'ok': '确认',
     'cancel': '取消',
     'add': '新建',
     'edit': '编辑',
     'view': '查看',
+    'save': '保存',
+    'modify': '修改',
     'delete': '删除',
     'open': '展开',
     'close': '收起',
     'has': '有',
     'none': '无',
-    'project': '项目'
+    'project': '项目',
+    'prev': '上一步',
+    'next': '下一步',
+    'done': '完成'
   },
   message: {
     'success': '成功',
