@@ -12,10 +12,10 @@
         <a-input
           size="large"
           type="text"
-          :placeholder="`${$t('user.username')}: admin`"
+          :placeholder="$t('user.username')"
           v-decorator="[
             'username',
-            {rules: [{ required: true, message: $t('user.username-required') }], validateTrigger: 'change'}
+            {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}
           ]"
         >
           <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
@@ -27,10 +27,10 @@
           size="large"
           type="password"
           autocomplete="false"
-          :placeholder="`${$t('user.password')}: demo`"
+          :placeholder="$t('user.password')"
           v-decorator="[
             'password',
-            {rules: [{ required: true, message: $t('user.password-required') }], validateTrigger: 'blur'}
+            {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}
           ]"
         >
           <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>

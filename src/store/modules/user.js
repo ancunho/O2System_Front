@@ -56,17 +56,21 @@ const user = {
     },
 
     // 登出
-    Logout ({ commit, state }) {
+    Logout ({ commit, state }, type) {
       return new Promise((resolve) => {
-        logout().then(() => {
-          resolve()
-        }).catch(() => {
-          resolve()
-        }).finally(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLE', '')
+        if (type === 'local') {
           Vue.ls.remove(ACCESS_TOKEN)
-        })
+        } else {
+          logout().then(() => {
+            resolve()
+          }).catch(() => {
+            resolve()
+          }).finally(() => {
+            commit('SET_TOKEN', '')
+            commit('SET_ROLE', '')
+            Vue.ls.remove(ACCESS_TOKEN)
+          })
+        }
       })
     }
 

@@ -14,37 +14,37 @@
           <a-row :gutter="24">
             <a-col :md="15" :sm="24">
               <a-form-item :label="$t('customer.customerName')">
-                <a-input v-decorator="['customerName', {rules: [{required: true}]}]" />
+                <a-input v-decorator="['customerName', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
               <a-form-item :label="$t('customer.city')">
-                <a-input v-decorator="['city', {rules: [{required: true}]}]" />
+                <a-input v-decorator="['city', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
               <a-form-item :label="$t('customer.address')">
-                <a-input v-decorator="['address', {rules: [{required: true}]}]" />
+                <a-input v-decorator="['address', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
               <a-form-item :label="$t('customer.director')">
-                <a-input v-decorator="['director', {rules: [{required: true}]}]" />
+                <a-input v-decorator="['director', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
               <a-form-item :label="$t('customer.wechat')">
-                <a-input v-decorator="['wechat', {rules: [{required: true}]}]" />
+                <a-input v-decorator="['wechat', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
               <a-form-item :label="$t('customer.phone')">
-                <a-input v-decorator="['phone', {rules: [{required: true}]}]" />
+                <a-input v-decorator="['phone', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
               <a-form-item :label="$t('customer.description')">
-                <a-input v-decorator="['description', {rules: [{required: true}]}]" />
+                <a-input v-decorator="['description', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
               <a-form-item :label="$t('customer.salesVolumn')">
-                <a-input v-decorator="['salesVolumn', {rules: [{required: true}]}]" />
+                <a-input v-decorator="['salesVolumn', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
               <a-form-item :label="$t('customer.developmentSkill')">
-                <a-input v-decorator="['developmentSkill', {rules: [{required: true}]}]" />
+                <a-input v-decorator="['developmentSkill', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
               <a-form-item :label="$t('customer.target')">
-                <a-input v-decorator="['target', {rules: [{required: true}]}]" />
+                <a-input v-decorator="['target', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
               <a-form-item :label="$t('customer.productList')">
-                <a-input v-decorator="['productList', {rules: [{required: true}]}]" />
+                <a-input v-decorator="['productList', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
               <a-form-item :label="$t('customer.other')">
                 <a-select mode="multiple">

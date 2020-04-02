@@ -12,10 +12,11 @@
         <a-form-item>
           <a-input
             size="large"
-            :placeholder="$t('user.username-placeholder')"
+            type="text"
+            :placeholder="$t('user.username')"
             v-decorator="[
               'username',
-              {rules: [{ required: true, message: $t('user.username-required') }], validateTrigger: 'change'}
+              {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}
             ]"
           />
         </a-form-item>
@@ -29,8 +30,8 @@
           <a-input
             size="large"
             type="text"
-            :placeholder="$t('user.answer-placeholder')"
-            v-decorator="['answer', {rules: [{ required: true, message: $t('user.answer-required') }], validateTrigger: ['change', 'blur']}]"
+            :placeholder="$t('user.answer')"
+            v-decorator="['answer', {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}]"
           ></a-input>
         </a-form-item>
       </div>
@@ -42,8 +43,8 @@
             size="large"
             type="password"
             autocomplete="false"
-            :placeholder="$t('user.passwordNew-placeholder')"
-            v-decorator="['passwordNew', {rules: [{ validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
+            :placeholder="$t('user.passwordNew')"
+            v-decorator="['passwordNew', {rules: [{ validator: this.handlePasswordLevel }], validateTrigger: 'change'}]"
           ></a-input>
         </a-form-item>
 
@@ -52,8 +53,8 @@
             size="large"
             type="password"
             autocomplete="false"
-            :placeholder="$t('user.passwordConfirm-placeholder')"
-            v-decorator="['passwordConfirm', {rules: [{ required: true, message: $t('user.passwordConfirm-required') }, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
+            :placeholder="$t('user.passwordConfirm')"
+            v-decorator="['passwordConfirm', {rules: [{ validator: this.handlePasswordCheck }], validateTrigger: 'change'}]"
           ></a-input>
         </a-form-item>
       </div>
@@ -104,18 +105,20 @@ export default {
     }
   },
   methods: {
+    // 校验密码强度
     handlePasswordLevel (rule, value, callback) {
       if (isPassword(value)) {
         callback()
       } else {
-        callback(new Error((value === '' ? i18n.t('user.password-required') : i18n.t('user.password-level')) + ''))
+        callback(new Error((!value ? i18n.t('message.required') : i18n.t('user.password-level')) + ''))
       }
     },
 
+    // 校验确认密码
     handlePasswordCheck (rule, value, callback) {
       const password = this.form.getFieldValue('passwordNew')
-      if (value === undefined) {
-        callback(new Error(i18n.t('user.password-required') + ''))
+      if (!value) {
+        callback(new Error(i18n.t('message.required') + ''))
       }
       if (value && password && value.trim() !== password.trim()) {
         callback(new Error(i18n.t('user.password-twice') + ''))

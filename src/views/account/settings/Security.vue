@@ -16,7 +16,7 @@
     </a-list>
 
     <a-modal
-      title="修改密码"
+      :title="$t('user.change-password')"
       :width="350"
       :visible="popupVisible"
       @cancel="handleCancel"
@@ -26,8 +26,8 @@
           <a-input
             type="password"
             autocomplete="false"
-            :placeholder="$t('user.passwordOld-placeholder')"
-            v-decorator="['passwordOld', {rules: [{ required: true, message: $t('user.passwordOld-required') }], validateTrigger: ['change', 'blur']}]"
+            :placeholder="$t('user.passwordOld')"
+            v-decorator="['passwordOld', {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}]"
           ></a-input>
         </a-form-item>
 
@@ -35,8 +35,8 @@
           <a-input
             type="password"
             autocomplete="false"
-            :placeholder="$t('user.passwordNew-placeholder')"
-            v-decorator="['passwordNew', {rules: [{ validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
+            :placeholder="$t('user.passwordNew')"
+            v-decorator="['passwordNew', {rules: [{ validator: this.handlePasswordLevel }], validateTrigger: 'change'}]"
           ></a-input>
         </a-form-item>
 
@@ -44,8 +44,8 @@
           <a-input
             type="password"
             autocomplete="false"
-            :placeholder="$t('user.passwordConfirm-placeholder')"
-            v-decorator="['passwordConfirm', {rules: [{ required: true, message: $t('user.passwordConfirm-required') }, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
+            :placeholder="$t('user.passwordConfirm')"
+            v-decorator="['passwordConfirm', {rules: [{ validator: this.handlePasswordCheck }], validateTrigger: 'change'}]"
           ></a-input>
         </a-form-item>
       </a-form>
@@ -76,10 +76,10 @@ export default {
       confirmLoading: false,
       data: [
         {
-          title: '账户密码',
-          description: '修改当前账户密码 ',
+          title: i18n.t('user.user-password'),
+          description: i18n.t('user.user-password-txt'),
           actions: {
-            title: '修改',
+            title: i18n.t('option.modify'),
             callback: () => { this.handleChangePassword() }
           }
         }
@@ -88,18 +88,20 @@ export default {
     }
   },
   methods: {
+    // 校验密码强度
     handlePasswordLevel (rule, value, callback) {
       if (isPassword(value)) {
         callback()
       } else {
-        callback(new Error((value === '' ? i18n.t('user.password-required') : i18n.t('user.password-level')) + ''))
+        callback(new Error((!value ? i18n.t('message.required') : i18n.t('user.password-level')) + ''))
       }
     },
 
+    // 校验确认密码
     handlePasswordCheck (rule, value, callback) {
       const password = this.form.getFieldValue('passwordNew')
-      if (value === undefined) {
-        callback(new Error(i18n.t('user.password-required') + ''))
+      if (!value) {
+        callback(new Error(i18n.t('message.required') + ''))
       }
       if (value && password && value.trim() !== password.trim()) {
         callback(new Error(i18n.t('user.password-twice') + ''))

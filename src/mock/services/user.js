@@ -2,8 +2,7 @@ import Mock from 'mockjs2'
 import { builder, getBodyByQs } from '../util'
 
 const username = ['admin', 'super']
-// 强硬要求相同密码
-const password = ['demo'] // admin, demo
+const password = ['admin']
 
 const login = (options) => {
   const body = getBodyByQs(options)

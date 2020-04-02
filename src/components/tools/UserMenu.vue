@@ -46,7 +46,7 @@ export default {
   methods: {
     ...mapActions(['Logout']),
     handleLogout () {
-      return this.Logout({}).then(() => {
+      return this.Logout().then(() => {
         setTimeout(() => {
           window.location.reload()
         }, 16)

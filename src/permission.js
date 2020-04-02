@@ -42,7 +42,7 @@ router.beforeEach((to, from, next) => {
             })
           })
           .catch(() => {
-            store.dispatch('Logout').then(() => {
+            store.dispatch('Logout', 'local').then(() => {
               next({ path: '/user/login', query: { redirect: to.fullPath } })
             })
           })

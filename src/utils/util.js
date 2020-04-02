@@ -74,6 +74,14 @@ export function isPassword (password) {
 }
 
 /**
+ * 检测手机号
+ */
+export function isPhone (phone) {
+  const regPhone = /^1[3456789]\d{9}$/
+  return regPhone.test(phone)
+}
+
+/**
  * 检测邮箱
  */
 export function isEmail (email) {

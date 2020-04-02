@@ -5,7 +5,7 @@
         <a-input
           size="large"
           type="text"
-          :placeholder="$t('user.username-placeholder')"
+          :placeholder="$t('user.username')"
           v-decorator="['username', {rules: [{ validator: this.handleCheckUsername }], validateTrigger: ['blur']}]"
         ></a-input>
       </a-form-item>
@@ -13,10 +13,9 @@
       <a-form-item>
         <a-input
           size="large"
-          type="password"
-          autocomplete="false"
-          :placeholder="$t('user.password-placeholder')"
-          v-decorator="['password', {rules: [{ validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
+          type="text"
+          :placeholder="$t('user.realname')"
+          v-decorator="['realname', {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}]"
         ></a-input>
       </a-form-item>
 
@@ -25,23 +24,35 @@
           size="large"
           type="password"
           autocomplete="false"
-          :placeholder="$t('user.passwordConfirm-placeholder')"
-          v-decorator="['passwordConfirm', {rules: [{ required: true, message: $t('user.passwordConfirm-required') }, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
+          :placeholder="$t('user.password-register')"
+          v-decorator="['password', {rules: [{ validator: this.handlePasswordLevel }], validateTrigger: 'change'}]"
         ></a-input>
       </a-form-item>
 
       <a-form-item>
         <a-input
           size="large"
-          :placeholder="$t('user.phone-placeholder')"
-          v-decorator="['phone', {rules: [{ required: true, message: $t('user.phone-wrong-format'), pattern: /^1[3456789]\d{9}$/ }], validateTrigger: ['change', 'blur'] }]">
+          type="password"
+          autocomplete="false"
+          :placeholder="$t('user.passwordConfirm')"
+          v-decorator="['passwordConfirm', {rules: [{ validator: this.handlePasswordCheck }], validateTrigger: 'change'}]"
+        ></a-input>
+      </a-form-item>
+
+      <a-form-item>
+        <a-input
+          size="large"
+          type="text"
+          :placeholder="$t('user.phone')"
+          v-decorator="['phone', {rules: [{ validator: this.handleCheckPhone }], validateTrigger: 'change'}]">
         </a-input>
       </a-form-item>
 
       <a-form-item>
         <a-input
           size="large"
-          :placeholder="$t('user.email-placeholder')"
+          type="text"
+          :placeholder="$t('user.email')"
           v-decorator="['email', {rules: [{ type: 'email', validator: this.handleCheckEmail }], validateTrigger: ['blur'] }]">
         </a-input>
       </a-form-item>
@@ -50,30 +61,32 @@
         <a-input
           size="large"
           type="text"
-          :placeholder="$t('user.empno-placeholder')"
-          v-decorator="['empno', {rules: [{ required: true, message: $t('user.empno-required') }], validateTrigger: ['change', 'blur']}]"
+          :placeholder="$t('user.empno')"
+          v-decorator="['empno', {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}]"
         ></a-input>
       </a-form-item>
 
       <a-form-item>
         <a-select
           size="large"
-          :placeholder="$t('user.department-placeholder')"
-          @focus="getSelectOption('department')"
-          :loading="loading.department"
-          v-decorator="['department', {rules: [{ required: true, message: $t('user.department-required') }], validateTrigger: ['change', 'blur']}]">
-          <a-select-option v-for="list in select.department" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
+          :placeholder="$t('user.department')"
+          @dropdownVisibleChange="getSelectOption('department')"
+          :open="select.department.open"
+          :loading="select.department.loading"
+          v-decorator="['department', {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}]">
+          <a-select-option v-for="list in select.department.data" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
         </a-select>
       </a-form-item>
 
       <a-form-item>
         <a-select
           size="large"
-          :placeholder="$t('user.question-placeholder')"
-          @focus="getSelectOption('question')"
-          :loading="loading.question"
-          v-decorator="['question', {rules: [{ required: true, message: $t('user.question-required') }], validateTrigger: ['change', 'blur']}]">
-          <a-select-option v-for="list in select.question" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
+          :placeholder="$t('user.question')"
+          @dropdownVisibleChange="getSelectOption('question')"
+          :open="select.question.open"
+          :loading="select.question.loading"
+          v-decorator="['question', {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}]">
+          <a-select-option v-for="list in select.question.data" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
         </a-select>
       </a-form-item>
 
@@ -81,8 +94,8 @@
         <a-input
           size="large"
           type="text"
-          :placeholder="$t('user.answer-placeholder')"
-          v-decorator="['answer', {rules: [{ required: true, message: $t('user.answer-required') }], validateTrigger: ['change', 'blur']}]"
+          :placeholder="$t('user.answer')"
+          v-decorator="['answer', {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}]"
         ></a-input>
       </a-form-item>
 
@@ -107,19 +120,23 @@
 import i18n from '@/locales'
 import { register, checkUsername, checkEmail } from '@/api/user'
 import { getCommonConfig } from '@/api/common'
-import { isPassword, isEmail } from '@/utils/util'
+import { isPassword, isPhone, isEmail } from '@/utils/util'
 
 export default {
   name: 'Register',
   data () {
     return {
       select: {
-        department: [],
-        question: []
-      },
-      loading: {
-        department: false,
-        question: false
+        department: {
+          data: [],
+          loading: false,
+          open: false
+        },
+        question: {
+          data: [],
+          loading: false,
+          open: false
+        }
       },
       form: this.$form.createForm(this),
       registerBtn: false
@@ -136,10 +153,24 @@ export default {
         checkUsername({ 'username': value }).then(() => {
           callback()
         }).catch(() => {
-          callback(new Error(i18n.t('user.username-used') + ''))
+          callback(new Error(i18n.t('message.used') + ''))
         })
       } else {
-        callback(new Error(i18n.t('user.username-required') + ''))
+        callback(new Error(i18n.t('message.required') + ''))
+      }
+    },
+
+    // 校验手机
+    handleCheckPhone (rule, value, callback) {
+      if (value) {
+        if (!isPhone(value)) {
+          callback(new Error(i18n.t('message.format') + ''))
+          return
+        }
+
+        callback()
+      } else {
+        callback(new Error(i18n.t('message.required') + ''))
       }
     },
 
@@ -147,17 +178,17 @@ export default {
     handleCheckEmail (rule, value, callback) {
       if (value) {
         if (!isEmail(value)) {
-          callback(new Error(i18n.t('user.email-wrong-format') + ''))
+          callback(new Error(i18n.t('message.format') + ''))
           return
         }
 
         checkEmail({ 'email': value }).then(() => {
           callback()
         }).catch(() => {
-          callback(new Error(i18n.t('user.email-used') + ''))
+          callback(new Error(i18n.t('message.used') + ''))
         })
       } else {
-        callback(new Error(i18n.t('user.email-required') + ''))
+        callback(new Error(i18n.t('message.required') + ''))
       }
     },
 
@@ -166,15 +197,15 @@ export default {
       if (isPassword(value)) {
         callback()
       } else {
-        callback(new Error((value === '' ? i18n.t('user.password-required') : i18n.t('user.password-level')) + ''))
+        callback(new Error((!value ? i18n.t('message.required') : i18n.t('user.password-level')) + ''))
       }
     },
 
     // 校验确认密码
     handlePasswordCheck (rule, value, callback) {
       const password = this.form.getFieldValue('password')
-      if (value === undefined) {
-        callback(new Error(i18n.t('user.password-required') + ''))
+      if (!value) {
+        callback(new Error(i18n.t('message.required') + ''))
       }
       if (value && password && value.trim() !== password.trim()) {
         callback(new Error(i18n.t('user.password-twice') + ''))
@@ -184,15 +215,17 @@ export default {
 
     // 获取common config
     getSelectOption (val) {
-      if (val === '' || this.select[val].length > 0) return
-      this.loading[val] = true
+      this.select[val].data.length > 0 && (this.select[val].open = !this.select[val].open)
+      if (val === '' || this.select[val].data.length > 0) return
+      this.select[val].loading = true
 
       getCommonConfig({ CNF_CODE: val }).then((res) => {
-        this.select[val] = res.data
+        this.select[val].data = res.data
       }).catch(() => {
-        this.select[val] = []
+        this.select[val].data = []
       }).finally(() => {
-        this.loading[val] = false
+        this.select[val].open = true
+        this.select[val].loading = false
       })
     },
 
@@ -204,6 +237,9 @@ export default {
       validateFields((err, values) => {
         if (err) return
         this.registerBtn = true
+
+        // 默认头像
+        values['imagePhoto'] = '/avatar.jpg'
 
         register(values).then((res) => {
           this.$notification['success']({

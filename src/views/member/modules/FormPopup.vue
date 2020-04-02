@@ -14,25 +14,25 @@
           <a-row :gutter="24">
             <a-col :md="15" :sm="24">
               <a-form-item :label="$t('member.username')">
-                <a-input v-decorator="['username', {rules: [{required: true}]}]" />
+                <a-input v-decorator="['username', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
               <a-form-item :label="$t('member.realname')">
-                <a-input v-decorator="['realname', {rules: [{required: true}]}]" />
+                <a-input v-decorator="['realname', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
               <a-form-item :label="$t('member.department')">
-                <a-input v-decorator="['department', {rules: [{required: true}]}]" />
+                <a-input v-decorator="['department', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
               <a-form-item :label="$t('member.empno')">
-                <a-input v-decorator="['empno', {rules: [{required: true}]}]" />
+                <a-input v-decorator="['empno', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
               <a-form-item :label="$t('member.phone')">
-                <a-input v-decorator="['phone', {rules: [{required: true}]}]" />
+                <a-input v-decorator="['phone', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
               <a-form-item :label="$t('member.wechat')">
-                <a-input v-decorator="['wechat', {rules: [{required: true}]}]" />
+                <a-input v-decorator="['wechat', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
               <a-form-item :label="$t('member.email')">
-                <a-input v-decorator="['email', {rules: [{required: true}]}]" />
+                <a-input v-decorator="['email', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
               <a-form-item :label="$t('member.status')">
                 <a-switch v-decorator="['status', {valuePropName: 'checked'}]" />

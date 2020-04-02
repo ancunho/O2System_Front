@@ -59,7 +59,6 @@ export default {
   data () {
     return {
       visible: false,
-      id: null,
       confirmLoading: false,
       fileList: [],
       uploading: false,
@@ -74,13 +73,10 @@ export default {
     }
   },
   methods: {
-    edit (id) {
+    edit () {
       this.visible = true
-      this.id = id
-      /* 获取原始头像 */
     },
     close () {
-      this.id = null
       this.visible = false
     },
     cancelHandel () {
