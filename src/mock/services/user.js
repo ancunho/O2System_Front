@@ -28,7 +28,10 @@ const info = (options) => {
     'empno': '123456789',
     'phone': '17712341234',
     'email': 'admin@admin.com',
-    'department': '销售部',
+    'department': 1002,
+    'question': 2003,
+    'address': ['31', '3101', '310113'],
+    'answer': '问题',
     'wechat': 'wechatId',
     'role': 'ROLE_ADMIN'
   }
@@ -76,5 +79,5 @@ Mock.mock(/\/user\/check_email/, 'post', checkEmail)
 Mock.mock(/\/user\/forget_get_question/, 'post', forgetGetQuestion)
 Mock.mock(/\/user\/forget_check_answer/, 'post', forgetCheckAnswer)
 Mock.mock(/\/user\/forget_reset_password/, 'post', forgetResetPassword)
-Mock.mock(/\/api\/user\/info\/update/, 'post', userInfoUpdate)
+Mock.mock(/\/user\/info\/update/, 'post', userInfoUpdate)
 Mock.mock(/\/user\/update\/password/, 'post', updatePassword)

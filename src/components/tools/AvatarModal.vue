@@ -55,6 +55,7 @@
 
 </template>
 <script>
+
 export default {
   data () {
     return {
@@ -116,21 +117,11 @@ export default {
           this.model = true
           this.modelSrc = img
           formData.append('file', data, this.fileName)
-          this.$http.post('http://www.mocky.io/v2/5e7b6e482d0000664911a0a1', formData, { contentType: false, processData: false, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+          this.$http.post('http://www.mocky.io/v2/5e88251031000025303f4833', formData, { contentType: false, processData: false, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
             .then((response) => {
-              console.log('upload response:', response)
-              // var res = response.data
-              // if (response.status === 'done') {
-              //   _this.imgFile = ''
-              //   _this.headImg = res.realPathList[0] // 完整路径
-              //   _this.uploadImgRelaPath = res.relaPathList[0] // 非完整路径
-              //   _this.$message.success('上传成功')
-              //   this.visible = false
-              // }
-              _this.$message.success('上传成功')
-              _this.$emit('ok', response.url)
+              _this.$emit('ok', response.data.url)
               _this.visible = false
-            })
+            }).catch()
         })
       } else {
         this.$refs.cropper.getCropData((data) => {

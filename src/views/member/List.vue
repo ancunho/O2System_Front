@@ -16,7 +16,8 @@
           <a-col :md="6" :sm="24">
             <a-form-item :label="$t('member.department')">
               <a-select v-model="queryParam.department">
-                <a-select-option value="">all</a-select-option>
+                <a-select-option value="">All</a-select-option>
+                <a-select-option v-for="list in department" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -77,6 +78,7 @@ import FormPopup from './modules/FormPopup'
 import ViewPopup from './modules/ViewPopup'
 import { getMemberList } from '@/api/member'
 import i18n from '@/locales'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'MemberList',
@@ -84,6 +86,9 @@ export default {
     STable,
     FormPopup,
     ViewPopup
+  },
+  computed: {
+    ...mapGetters(['department'])
   },
   data () {
     return {

@@ -16,6 +16,12 @@ const defaultRoutePath = '/dashboard/workplace'
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${i18n.t(to.meta.title)} - ${domTitle}`))
+
+  // 获取common config
+  if (!store.getters.department || !store.getters.question) {
+    store.dispatch('GetCommon').then()
+  }
+
   if (Vue.ls.get(ACCESS_TOKEN)) {
     /* has token */
     if (to.path === '/user/login') {

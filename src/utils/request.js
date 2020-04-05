@@ -19,7 +19,7 @@ const err = (error) => {
 
     notification.error({
       message: data.error || i18n.t('message.error'),
-      description: data.message || data.msg || 'Request error, please try again later'
+      description: data.message || data.msg || i18n.t('message.request-error')
     })
 
     if (data.status === 99 && token) {

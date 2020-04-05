@@ -17,13 +17,13 @@ export default {
   components: {
     PageView
   },
+  computed: {
+    ...mapGetters(['userInfo'])
+  },
   data () {
     return {
       timeFix: timeFix()
     }
-  },
-  computed: {
-    ...mapGetters(['userInfo'])
   }
 }
 </script>

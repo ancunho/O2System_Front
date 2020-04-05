@@ -53,7 +53,7 @@
           size="large"
           type="text"
           :placeholder="$t('user.email')"
-          v-decorator="['email', {rules: [{ type: 'email', validator: this.handleCheckEmail }], validateTrigger: ['blur'] }]">
+          v-decorator="['email', {rules: [{ validator: this.handleCheckEmail }], validateTrigger: ['blur'] }]">
         </a-input>
       </a-form-item>
 
@@ -70,11 +70,8 @@
         <a-select
           size="large"
           :placeholder="$t('user.department')"
-          @dropdownVisibleChange="getSelectOption('department')"
-          :open="select.department.open"
-          :loading="select.department.loading"
           v-decorator="['department', {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}]">
-          <a-select-option v-for="list in select.department.data" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
+          <a-select-option v-for="list in department" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
         </a-select>
       </a-form-item>
 
@@ -82,11 +79,8 @@
         <a-select
           size="large"
           :placeholder="$t('user.question')"
-          @dropdownVisibleChange="getSelectOption('question')"
-          :open="select.question.open"
-          :loading="select.question.loading"
           v-decorator="['question', {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}]">
-          <a-select-option v-for="list in select.question.data" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
+          <a-select-option v-for="list in question" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
         </a-select>
       </a-form-item>
 
@@ -119,25 +113,16 @@
 <script>
 import i18n from '@/locales'
 import { register, checkUsername, checkEmail } from '@/api/user'
-import { getCommonConfig } from '@/api/common'
 import { isPassword, isPhone, isEmail } from '@/utils/util'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Register',
+  computed: {
+    ...mapGetters(['department', 'question'])
+  },
   data () {
     return {
-      select: {
-        department: {
-          data: [],
-          loading: false,
-          open: false
-        },
-        question: {
-          data: [],
-          loading: false,
-          open: false
-        }
-      },
       form: this.$form.createForm(this),
       registerBtn: false
     }
@@ -213,22 +198,6 @@ export default {
       callback()
     },
 
-    // 获取common config
-    getSelectOption (val) {
-      this.select[val].data.length > 0 && (this.select[val].open = !this.select[val].open)
-      if (val === '' || this.select[val].data.length > 0) return
-      this.select[val].loading = true
-
-      getCommonConfig({ CNF_CODE: val }).then((res) => {
-        this.select[val].data = res.data
-      }).catch(() => {
-        this.select[val].data = []
-      }).finally(() => {
-        this.select[val].open = true
-        this.select[val].loading = false
-      })
-    },
-
     // 提交
     handleSubmit (e) {
       e.preventDefault()
@@ -244,7 +213,7 @@ export default {
         register(values).then((res) => {
           this.$notification['success']({
             message: i18n.t('message.success'),
-            description: res.msg,
+            description: i18n.t('register-success'),
             duration: 4
           })
 

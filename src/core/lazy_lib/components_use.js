@@ -47,6 +47,7 @@ import {
   Popconfirm,
   AutoComplete,
   Descriptions,
+  Cascader,
   message,
   notification,
 } from 'ant-design-vue'
@@ -91,6 +92,7 @@ Vue.use(Skeleton)
 Vue.use(Popconfirm)
 Vue.use(AutoComplete)
 Vue.use(Descriptions)
+Vue.use(Cascader)
 // Vue.use(VueCropper)
 Vue.use(notification)
 

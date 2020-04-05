@@ -27,7 +27,7 @@ const user = {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
           const data = response.data
-          Vue.ls.set(ACCESS_TOKEN, data.token, 2 * 60 * 60 * 1000)
+          Vue.ls.set(ACCESS_TOKEN, data.token, 1 * 60 * 60 * 1000) // 一小时
           commit('SET_TOKEN', data.token)
           resolve()
         }).catch(error => {
@@ -60,6 +60,7 @@ const user = {
       return new Promise((resolve) => {
         if (type === 'local') {
           Vue.ls.remove(ACCESS_TOKEN)
+          resolve()
         } else {
           logout().then(() => {
             resolve()

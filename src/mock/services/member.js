@@ -2,8 +2,6 @@ import Mock from 'mockjs2'
 import { builder } from '../util'
 
 const memberList = (options) => {
-  console.log('request options ↓↓↓', options)
-
   const data = []
   for (let i = 1; i < 99; i++) {
     data.push({

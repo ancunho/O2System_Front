@@ -73,7 +73,7 @@ export function forgetResetPassword (parameter) {
 
 export function userInfoUpdate (parameter) {
   return axios({
-    url: '/api/user/info/update',
+    url: '/user/info/update',
     method: 'post',
     data: parameter
   })
