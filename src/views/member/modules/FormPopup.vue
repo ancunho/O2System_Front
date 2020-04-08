@@ -100,7 +100,7 @@ export default {
           phone: val.phone,
           email: val.email,
           department: val.department,
-          status: !!val.status,
+          status: val.status === '1',
           wechat: val.wechat
         })
       })

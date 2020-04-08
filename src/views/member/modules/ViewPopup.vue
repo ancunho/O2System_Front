@@ -18,7 +18,7 @@
           <a-descriptions-item :label="$t('member.wechat')">{{ member.wechat }}</a-descriptions-item>
           <a-descriptions-item :label="$t('member.email')">{{ member.email }}</a-descriptions-item>
           <a-descriptions-item :label="$t('member.status')">
-            <a-switch size="small" :checked="!!member.status" @change="handleStatus" />
+            <a-switch size="small" :checked="member.status === '1'" @change="handleStatus" />
           </a-descriptions-item>
         </a-descriptions>
       </a-col>

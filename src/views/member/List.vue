@@ -21,9 +21,26 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col :md="6" :sm="24" style="text-align: right">
-            <a-button type="primary" @click="$refs.table.refresh('search')">{{ $t('option.search') }}</a-button>
-            <a-button style="margin-left: 8px" @click="() => queryParam = {}">{{ $t('option.reset') }}</a-button>
+          <template v-if="advanced">
+            <a-col :md="6" :sm="24">
+              <a-form-item :label="$t('member.status')">
+                <a-select v-model="queryParam.status">
+                  <a-select-option value="">All</a-select-option>
+                  <a-select-option value="0">冻结</a-select-option>
+                  <a-select-option value="1">激活</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+          </template>
+          <a-col :md="!advanced && 6 || 24" :sm="24" style="text-align: right">
+            <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
+              <a-button type="primary" @click="$refs.table.refresh('search')">{{ $t('option.search') }}</a-button>
+              <a-button style="margin-left: 8px" @click="searchReset()">{{ $t('option.reset') }}</a-button>
+              <a @click="toggleAdvanced" style="margin-left: 8px">
+                {{ advanced ? $t('option.close') : $t('option.open') }}
+                <a-icon :type="advanced ? 'up' : 'down'"/>
+              </a>
+            </span>
           </a-col>
         </a-row>
       </a-form>
@@ -44,7 +61,7 @@
     >
       <span slot="status" slot-scope="text, record">
         <template>
-          <a-switch size="small" :checked="!!text" @change="handleStatus(record)" />
+          <a-switch size="small" :checked="text === '1'" @change="handleStatus(record)" />
         </template>
       </span>
       <span slot="action" slot-scope="text, record" class="table-option">
@@ -92,9 +109,12 @@ export default {
   },
   data () {
     return {
+      // 高级搜索 展开/关闭
+      advanced: false,
       // 查询参数
       queryParam: {
-        department: ''
+        department: '',
+        status: ''
       },
       // 表头
       columns: [
@@ -119,6 +139,10 @@ export default {
           dataIndex: 'department'
         },
         {
+          title: i18n.t('member.createtime'),
+          dataIndex: 'createtime'
+        },
+        {
           title: i18n.t('member.status'),
           dataIndex: 'status',
           scopedSlots: { customRender: 'status' }
@@ -135,14 +159,24 @@ export default {
       loadData: parameter => {
         return getMemberList()
           .then(res => {
+            console.log(res.data)
             return res.data
           })
       }
     }
   },
   methods: {
+    toggleAdvanced () {
+      this.advanced = !this.advanced
+    },
+    searchReset () {
+      this.queryParam = {
+        department: '',
+        status: ''
+      }
+    },
     handleStatus (record) {
-      record.status = !record.status
+      record.status = record.status === '0' ? '1' : '0'
       this.$message.info(`${record.status ? '激活' : '冻结'} - ${record.realname}`)
     },
     handleReset () {

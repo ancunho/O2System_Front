@@ -47,6 +47,7 @@ export default {
     'wechat': '微信',
     'qq': 'QQ',
     'address': '地址',
+    'address-detail': '详细地址',
     'recover-step1': '找回密码 - 1',
     'recover-step2': '找回密码 - 2',
     'recover-step3': '找回密码 - 3',
@@ -68,6 +69,7 @@ export default {
     'status': '启用',
     'wechat': '微信',
     'imagePhoto': '会员照片',
+    'createtime': '注册时间',
     'resetPassword': '初始化密码',
     'projectList': '负责项目列表'
   },

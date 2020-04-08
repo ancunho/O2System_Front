@@ -35,8 +35,8 @@
           </a-form-item>
           <a-form-item :label="$t('user.sex')">
             <a-select v-decorator="['sex']">
-              <a-select-option :key="1">{{ $t('user.man') }}</a-select-option>
-              <a-select-option :key="2">{{ $t('user.woman') }}</a-select-option>
+              <a-select-option key="1">{{ $t('user.man') }}</a-select-option>
+              <a-select-option key="2">{{ $t('user.woman') }}</a-select-option>
             </a-select>
           </a-form-item>
           <a-form-item :label="$t('user.birthday')">
@@ -59,6 +59,12 @@
               placeholder=""
               :fieldNames="address.fieldName"
               :options="address.data"
+              v-decorator="['addressSelect']"
+            />
+          </a-form-item>
+          <a-form-item :label="$t('user.address-detail')">
+            <a-input
+              type="text"
               v-decorator="['address']"
             />
           </a-form-item>
@@ -106,6 +112,7 @@
 import AvatarModal from '@/components/tools/AvatarModal'
 import pca from 'china-division/dist/pca-code.json'
 import { mapGetters } from 'vuex'
+import moment from 'moment'
 import { checkEmail, userInfoUpdate } from '@/api/user'
 import i18n from '@/locales'
 import store from '@/store'
@@ -147,9 +154,10 @@ export default {
         department: this.userInfo.department,
         question: this.userInfo.question,
         answer: this.userInfo.answer,
+        addressSelect: [this.userInfo.province, this.userInfo.city, this.userInfo.area],
         address: this.userInfo.address,
         wechat: this.userInfo.wechat,
-        birthday: this.userInfo.birthday,
+        birthday: moment(this.userInfo.birthday, 'YYYY-MM-DD'),
         sex: this.userInfo.sex,
         qq: this.userInfo.qq
       })
@@ -203,9 +211,15 @@ export default {
       const { form: { validateFields } } = this
 
       validateFields((err, values) => {
-        console.log(values)
         if (err) return
         this.confirmLoading = true
+
+        // 参数整理
+        values.birthday = moment(values.birthday).format('YYYY-MM-DD')
+        values.avatar = this.avatar
+        values.province = values.addressSelect[0]
+        values.city = values.addressSelect[1]
+        values.area = values.addressSelect[2]
 
         userInfoUpdate(values).then((res) => {
           this.$notification['success']({

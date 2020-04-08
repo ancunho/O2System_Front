@@ -117,9 +117,9 @@ export default {
           this.model = true
           this.modelSrc = img
           formData.append('file', data, this.fileName)
-          this.$http.post('http://www.mocky.io/v2/5e88251031000025303f4833', formData, { contentType: false, processData: false, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+          this.$http.post('/common/file/single/upload', formData, { contentType: false, processData: false, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
             .then((response) => {
-              _this.$emit('ok', response.data.url)
+              _this.$emit('ok', response.data)
               _this.visible = false
             }).catch()
         })
