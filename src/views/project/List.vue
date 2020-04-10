@@ -65,12 +65,12 @@
         :queryParam="queryParam"
         showPagination="auto"
       >
-        <span slot="action" slot-scope="text, record" class="table-option">
+        <span slot="action" slot-scope="text, row" class="table-option">
           <template>
-            <a @click="handleView(record)">{{ $t('option.view') }}</a>
+            <a @click="handleView(row)">{{ $t('option.view') }}</a>
             <span v-permission:view="['ROLE_ADMIN']">
               <a-divider type="vertical" />
-              <a @click="handleDelete(record)">{{ $t('option.delete') }}</a>
+              <a @click="handleDelete(row)">{{ $t('option.delete') }}</a>
             </span>
           </template>
         </span>
@@ -146,18 +146,18 @@ export default {
     }
   },
   methods: {
-    handleAdd (record) {
-      record.id = 99
-      this.$refs.table.add(record)
+    handleAdd (row) {
+      row.id = 99
+      this.$refs.table.add(row)
     },
-    handleView (record) {
+    handleView (row) {
       this.$router.push({
         name: 'projectView',
-        params: record
+        params: row
       })
     },
-    handleDelete (record) {
-      this.$refs.table.delete(record)
+    handleDelete (row) {
+      this.$refs.table.delete(row)
     },
     toggleAdvanced () {
       this.advanced = !this.advanced

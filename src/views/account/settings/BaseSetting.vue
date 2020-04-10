@@ -112,7 +112,6 @@
 import AvatarModal from '@/components/tools/AvatarModal'
 import pca from 'china-division/dist/pca-code.json'
 import { mapGetters } from 'vuex'
-import moment from 'moment'
 import { checkEmail, userInfoUpdate } from '@/api/user'
 import i18n from '@/locales'
 import store from '@/store'
@@ -157,7 +156,7 @@ export default {
         addressSelect: [this.userInfo.province, this.userInfo.city, this.userInfo.area],
         address: this.userInfo.address,
         wechat: this.userInfo.wechat,
-        birthday: moment(this.userInfo.birthday, 'YYYY-MM-DD'),
+        birthday: this.$options.filters.filterS2D(this.userInfo.birthday),
         sex: this.userInfo.sex,
         qq: this.userInfo.qq
       })
@@ -215,7 +214,7 @@ export default {
         this.confirmLoading = true
 
         // 参数整理
-        values.birthday = moment(values.birthday).format('YYYY-MM-DD')
+        values.birthday = this.$options.filters.filterD2S(values.birthday)
         values.avatar = this.avatar
         values.province = values.addressSelect[0]
         values.city = values.addressSelect[1]

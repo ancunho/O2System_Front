@@ -12,13 +12,22 @@
         <a-descriptions :column="{ md: 2, sm: 1, xs: 1}">
           <a-descriptions-item :label="$t('member.username')">{{ member.username }}</a-descriptions-item>
           <a-descriptions-item :label="$t('member.realname')">{{ member.realname }}</a-descriptions-item>
-          <a-descriptions-item :label="$t('member.department')">{{ member.department }}</a-descriptions-item>
+          <a-descriptions-item :label="$t('member.sex')">
+            {{ member.sex | filterSex }}
+          </a-descriptions-item>
+          <a-descriptions-item :label="$t('member.birthday')">{{ member.birthday }}</a-descriptions-item>
           <a-descriptions-item :label="$t('member.empno')">{{ member.empno }}</a-descriptions-item>
+          <a-descriptions-item :label="$t('member.department')">{{ member.department }}</a-descriptions-item>
+          <a-descriptions-item :label="$t('member.email')">{{ member.email }}</a-descriptions-item>
           <a-descriptions-item :label="$t('member.phone')">{{ member.phone }}</a-descriptions-item>
           <a-descriptions-item :label="$t('member.wechat')">{{ member.wechat }}</a-descriptions-item>
-          <a-descriptions-item :label="$t('member.email')">{{ member.email }}</a-descriptions-item>
+          <a-descriptions-item :label="$t('member.qq')">{{ member.qq }}</a-descriptions-item>
+          <a-descriptions-item :label="$t('member.address')" :span="2">
+            {{ member.province | filterAddress(member.city, member.area, member.address) }}
+          </a-descriptions-item>
+          <a-descriptions-item :label="$t('member.createtime')">{{ member.createtime }}</a-descriptions-item>
           <a-descriptions-item :label="$t('member.status')">
-            <a-switch size="small" :checked="member.status === '1'" @change="handleStatus" />
+            <a-switch size="small" :checked="member.status | filterStatus" @change="handleStatus" />
           </a-descriptions-item>
         </a-descriptions>
       </a-col>
@@ -102,9 +111,9 @@ export default {
     }
   },
   methods: {
-    view (val) {
+    view (row) {
       this.visible = true
-      this.member = val
+      this.member = row
     },
     handleStatus () {
       this.$emit('status', this.member)

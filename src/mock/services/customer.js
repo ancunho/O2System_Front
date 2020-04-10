@@ -27,4 +27,4 @@ const customerList = (options) => {
   return builder(data)
 }
 
-Mock.mock(/\/customer\/list/, 'get', customerList)
+Mock.mock('/api/customer/list', 'get', customerList)

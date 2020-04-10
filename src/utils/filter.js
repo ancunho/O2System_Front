@@ -1,20 +1,49 @@
 import Vue from 'vue'
 import moment from 'moment'
-import 'moment/locale/zh-cn'
-moment.locale('zh-cn')
+import i18n from '@/locales'
+import store from '@/store'
+import provinces from 'china-division/dist/provinces.json'
+import cities from 'china-division/dist/cities.json'
+import areas from 'china-division/dist/areas.json'
 
-Vue.filter('NumberFormat', function (value) {
-  if (!value) {
-    return '0'
-  }
-  const intPartFormat = value.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
-  return intPartFormat
+// Date转字符串
+Vue.filter('filterD2S', function (val, pattern = 'YYYY-MM-DD') {
+  return val ? moment(val).format(pattern) : ''
 })
 
-Vue.filter('dayjs', function (dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
-  return moment(dataStr).format(pattern)
+// 字符串转Date
+Vue.filter('filterS2D', function (val, pattern = 'YYYY-MM-DD') {
+  return val ? moment(val, pattern) : ''
 })
 
-Vue.filter('moment', function (dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
-  return moment(dataStr).format(pattern)
+// 启用
+Vue.filter('filterStatus', function (val) {
+  return val === '1'
+})
+
+// 性别
+Vue.filter('filterSex', function (val) {
+  return val === '1' ? i18n.t('member.man') : i18n.t('member.woman')
+})
+
+// 部门
+Vue.filter('filterDepartment', function (val) {
+  const obj = store.getters.department.find((x) => x['cnfValue'] === val)
+  return obj['cnfNote']
+})
+
+// 问题
+Vue.filter('filterQuestion', function (val) {
+  const obj = store.getters.question.find((x) => x['cnfValue'] === val)
+  console.log(11)
+  return obj['cnfNote']
+})
+
+// 地址
+Vue.filter('filterAddress', function (v1, v2, v3, v4 = '') {
+  if (!v1 || !v2 || !v2) return false
+  const obj1 = [...provinces].find((x) => x['code'] === v1)
+  const obj2 = [...cities].find((x) => x['code'] === v2)
+  const obj3 = [...areas].find((x) => x['code'] === v3)
+  return obj1['name'] + '-' + obj2['name'] + '-' + obj3['name'] + '-' + v4
 })

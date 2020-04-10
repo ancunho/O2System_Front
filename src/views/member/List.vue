@@ -59,18 +59,18 @@
       :queryParam="queryParam"
       showPagination="auto"
     >
-      <span slot="status" slot-scope="text, record">
+      <span slot="status" slot-scope="text, row">
         <template>
-          <a-switch size="small" :checked="text === '1'" @change="handleStatus(record)" />
+          <a-switch size="small" :checked="text | filterStatus" @change="handleStatus(row)" />
         </template>
       </span>
-      <span slot="action" slot-scope="text, record" class="table-option">
+      <span slot="action" slot-scope="text, row" class="table-option">
         <template>
-          <a @click="$refs.viewModal.view(record)">{{ $t('option.view') }}</a>
+          <a @click="$refs.viewModal.view(row)">{{ $t('option.view') }}</a>
           <a-divider type="vertical" />
-          <a @click="$refs.formModal.edit(record)">{{ $t('option.edit') }}</a>
+          <a @click="$refs.formModal.edit(row)">{{ $t('option.edit') }}</a>
           <a-divider type="vertical" />
-          <a @click="handleDelete(record)">{{ $t('option.delete') }}</a>
+          <a @click="handleDelete(row)">{{ $t('option.delete') }}</a>
         </template>
       </span>
     </s-table>
@@ -93,7 +93,7 @@
 import { STable } from '@/components'
 import FormPopup from './modules/FormPopup'
 import ViewPopup from './modules/ViewPopup'
-import { getMemberList } from '@/api/member'
+import { getMemberList, memberAdd, memberUpdate, memberStatus, memberResetPassword, memberDelete } from '@/api/member'
 import i18n from '@/locales'
 import { mapGetters } from 'vuex'
 
@@ -136,7 +136,10 @@ export default {
         },
         {
           title: i18n.t('member.department'),
-          dataIndex: 'department'
+          dataIndex: 'department',
+          customRender: (text) => {
+            return this.$options.filters.filterDepartment(text)
+          }
         },
         {
           title: i18n.t('member.createtime'),
@@ -157,11 +160,9 @@ export default {
       ],
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
-        return getMemberList()
-          .then(res => {
-            console.log(res.data)
-            return res.data
-          })
+        return getMemberList().then(res => {
+          return res.data
+        })
       }
     }
   },
@@ -175,22 +176,44 @@ export default {
         status: ''
       }
     },
-    handleStatus (record) {
-      record.status = record.status === '0' ? '1' : '0'
-      this.$message.info(`${record.status ? '激活' : '冻结'} - ${record.realname}`)
+    handleStatus (row) {
+      const status = row.status === '0' ? '1' : '0'
+      memberStatus({
+        id: row.id,
+        status: status
+      }).then(res => {
+        this.$message.success(res.msg)
+        row.status = status
+      })
     },
-    handleReset () {
-      this.$message.info('初始化密码')
+    handleReset (row) {
+      memberResetPassword({
+        id: row.id
+      }).then(res => {
+        this.$message.success(res.msg)
+      })
     },
-    handleAdd (record) {
-      record.id = 99
-      this.$refs.table.add(record)
+    handleAdd (row) {
+      memberAdd(row).then(res => {
+        this.$message.success(res.msg)
+        this.$refs.table.add(res)
+      })
     },
-    handleUpdate (record) {
-      this.$refs.table.update(record)
+    handleUpdate (row) {
+      memberUpdate({
+        id: row.id
+      }).then(res => {
+        this.$message.success(res.msg)
+        this.$refs.table.update(row)
+      })
     },
-    handleDelete (record) {
-      this.$refs.table.delete(record)
+    handleDelete (row) {
+      memberDelete({
+        id: row.id
+      }).then(res => {
+        this.$message.success(res.msg)
+        this.$refs.table.delete(row)
+      })
     }
   }
 }

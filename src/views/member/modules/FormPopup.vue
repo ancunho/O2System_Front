@@ -88,24 +88,24 @@ export default {
       this.otherData.id = null
       this.otherData.imagePhoto = null
     },
-    edit (val) {
+    edit (row) {
       this.title = i18n.t('option.edit')
       this.actionType = 'update'
       this.visible = true
       this.$nextTick(() => {
         this.form.setFieldsValue({
-          username: val.username,
-          realname: val.realname,
-          empno: val.empno,
-          phone: val.phone,
-          email: val.email,
-          department: val.department,
-          status: val.status === '1',
-          wechat: val.wechat
+          username: row.username,
+          realname: row.realname,
+          empno: row.empno,
+          phone: row.phone,
+          email: row.email,
+          department: row.department,
+          status: this.$options.filters.filterStatus(row.status),
+          wechat: row.wechat
         })
       })
-      this.otherData.id = val.id
-      this.otherData.imagePhoto = val.imagePhoto
+      this.otherData.id = row.id
+      this.otherData.imagePhoto = row.imagePhoto
     },
     handleSubmit () {
       const { form: { validateFields } } = this

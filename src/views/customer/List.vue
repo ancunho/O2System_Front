@@ -64,18 +64,18 @@
       :queryParam="queryParam"
       showPagination="auto"
     >
-      <span slot="action" slot-scope="text, record" class="table-option">
+      <span slot="action" slot-scope="text, row" class="table-option">
         <template>
           <a>{{ $t('option.project') }}</a>
           <a-divider type="vertical" />
-          <a @click="$refs.viewModal.view(record)">{{ $t('option.view') }}</a>
+          <a @click="$refs.viewModal.view(row)">{{ $t('option.view') }}</a>
           <span v-permission:view="['ROLE_ADMIN']">
             <a-divider type="vertical" />
-            <a @click="$refs.formModal.edit(record)">{{ $t('option.edit') }}</a>
+            <a @click="$refs.formModal.edit(row)">{{ $t('option.edit') }}</a>
           </span>
           <span v-permission:view="['ROLE_ADMIN']">
             <a-divider type="vertical" />
-            <a @click="handleDelete(record)">{{ $t('option.delete') }}</a>
+            <a @click="handleDelete(row)">{{ $t('option.delete') }}</a>
           </span>
         </template>
       </span>
@@ -157,15 +157,15 @@ export default {
     }
   },
   methods: {
-    handleAdd (record) {
-      record.id = 99
-      this.$refs.table.add(record)
+    handleAdd (row) {
+      row.id = 99
+      this.$refs.table.add(row)
     },
-    handleUpdate (record) {
-      this.$refs.table.update(record)
+    handleUpdate (row) {
+      this.$refs.table.update(row)
     },
-    handleDelete (record) {
-      this.$refs.table.delete(record)
+    handleDelete (row) {
+      this.$refs.table.delete(row)
     },
     toggleAdvanced () {
       this.advanced = !this.advanced

@@ -17,7 +17,7 @@ const memberList = (options) => {
       'province': '31',
       'city': '3101',
       'area': '310112',
-      'address': Mock.mock('@county(true)'),
+      'address': Mock.mock('@ctitle(7)'),
       'answer': Mock.mock('@ctitle(7)'),
       'wechat': Mock.mock(/\d{8}/),
       'qq': Mock.mock(/\d{10}/),
@@ -31,4 +31,29 @@ const memberList = (options) => {
   return builder(data)
 }
 
-Mock.mock(/\/member\/list/, 'get', memberList)
+const memberAdd = () => {
+  return builder({}, '新建成功')
+}
+
+const memberUpdate = () => {
+  return builder({}, '更新成功')
+}
+
+const memberStatus = () => {
+  return builder({}, '修改状态成功')
+}
+
+const memberResetPassword = () => {
+  return builder({}, '初始化成功')
+}
+
+const memberDelete = () => {
+  return builder({}, '删除成功')
+}
+
+Mock.mock('/api/member/list', 'get', memberList)
+Mock.mock('/api/member/create', 'post', memberAdd)
+Mock.mock('/api/member/update', 'post', memberUpdate)
+Mock.mock('/api/member/update/status', 'post', memberStatus)
+Mock.mock('/api/member/update/reset/password', 'post', memberResetPassword)
+Mock.mock('/api/member/delete', 'post', memberDelete)

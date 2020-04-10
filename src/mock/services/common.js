@@ -25,4 +25,4 @@ const getCommonConfig = (options) => {
   return builder(list[body['CNF_CODE']])
 }
 
-Mock.mock(/\/common\/config/, 'post', getCommonConfig)
+Mock.mock('/api/common/config', 'post', getCommonConfig)

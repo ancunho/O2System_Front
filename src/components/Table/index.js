@@ -92,26 +92,23 @@ export default {
     /**
      * 新建
      */
-    add (record) {
-      this.SearchDataSource.unshift(record)
+    add (row) {
+      this.SearchDataSource.unshift(row)
       this.refresh('add')
-      this.$message.success('新建成功')
     },
     /**
      * 编辑
      */
-    update (record) {
-      this.SearchDataSource.splice(this.SearchDataSource.findIndex(item => item.id === record.id), 1, record)
+    update (row) {
+      this.SearchDataSource.splice(this.SearchDataSource.findIndex(item => item.id === row.id), 1, row)
       this.refresh('update')
-      this.$message.success('编辑成功')
     },
     /**
      * 删除
      */
-    delete (record) {
-      this.SearchDataSource.splice(this.SearchDataSource.findIndex(item => item.id === record.id), 1)
+    delete (row) {
+      this.SearchDataSource.splice(this.SearchDataSource.findIndex(item => item.id === row.id), 1)
       this.refresh('delete')
-      this.$message.success('删除成功')
     }
   },
 
