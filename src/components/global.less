@@ -528,7 +528,7 @@ body {
   position: relative;
   margin: 0 auto;
   width: 100%;
-  max-width: 180px;
+  max-width: 150px;
   border-radius: 10px;
   box-shadow: 0 0 4px #ccc;
 
@@ -570,7 +570,7 @@ body {
 
   img, .mask {
     width: 100%;
-    max-width: 180px;
+    max-width: 150px;
     height: 100%;
     border-radius: 10px;
     overflow: hidden;
@@ -580,15 +580,31 @@ body {
 //model popup
 .table-page-popup-wrapper {
   .ant-form-inline {
+
+    .twoLine:after {
+      content: "";
+      display: block;
+      clear: both;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .twoLine .ant-form-item {
+      float: left;
+      width: calc(50% - 15px);
+      margin-right: 15px;
+    }
+
     .ant-form-item {
       display: flex;
-      margin-bottom: 20px;
+      margin-bottom: 20px !important;
       margin-right: 0;
 
       .ant-form-item-control-wrapper {
         flex: 1 1;
         display: inline-block;
         vertical-align: middle;
+        height: 32px;
       }
 
       > .ant-form-item-label {

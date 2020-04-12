@@ -111,6 +111,9 @@ export default {
     }
   },
   methods: {
+    setVisible (val = false) {
+      this.visible = val
+    },
     view (row) {
       this.visible = true
       this.member = row
@@ -127,7 +130,6 @@ export default {
     },
     handleDelete () {
       this.$emit('delete', this.member)
-      this.visible = false
     },
     handleCancel () {
       this.visible = false

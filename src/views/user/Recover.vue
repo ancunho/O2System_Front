@@ -158,12 +158,7 @@ export default {
         } else if (currentStep === 3) {
           // 修改密码
           forgetResetPassword(parameter).then((res) => {
-            this.$notification['success']({
-              message: i18n.t('message.success'),
-              description: i18n.t('user.recover-success'),
-              duration: 4
-            })
-
+            this.$message.success(res.msg)
             this.$router.push({ name: 'login' })
           }).catch((e) => {}).finally(() => {
             this.confirmLoading = false

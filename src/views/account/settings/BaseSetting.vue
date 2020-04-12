@@ -98,7 +98,7 @@
             <div class="mask">
               <a-icon type="plus" />
             </div>
-            <img :src="avatar"/>
+            <img :src="formData.imagePhoto"/>
           </div>
         </a-col>
       </a-row>
@@ -126,6 +126,9 @@ export default {
   },
   data () {
     return {
+      confirmLoading: false,
+      form: this.$form.createForm(this),
+      formData: {},
       address: {
         fieldName: {
           label: 'name',
@@ -133,16 +136,14 @@ export default {
           children: 'children'
         },
         data: [...pca]
-      },
-      avatar: '',
-      email: '',
-      confirmLoading: false,
-      form: this.$form.createForm(this)
+      }
     }
   },
   created () {
-    this.avatar = this.userInfo.imagePhoto
-    this.email = this.userInfo.email
+    this.formData = {
+      imagePhoto: this.userInfo.imagePhoto,
+      email: this.userInfo.email
+    }
 
     this.$nextTick(() => {
       this.form.setFieldsValue({
@@ -185,7 +186,7 @@ export default {
           return
         }
 
-        if (this.email === value) {
+        if (this.formData.email === value) {
           callback()
           return
         }
@@ -202,7 +203,7 @@ export default {
 
     // 修改头像
     setAvatar (url) {
-      this.avatar = url
+      this.formData.imagePhoto = url
     },
 
     // 保存
@@ -215,17 +216,14 @@ export default {
 
         // 参数整理
         values.birthday = this.$options.filters.filterD2S(values.birthday)
-        values.avatar = this.avatar
-        values.province = values.addressSelect[0]
-        values.city = values.addressSelect[1]
-        values.area = values.addressSelect[2]
+        if (values.addressSelect) {
+          values.province = values.addressSelect[0]
+          values.city = values.addressSelect[1]
+          values.area = values.addressSelect[2]
+        }
 
-        userInfoUpdate(values).then((res) => {
-          this.$notification['success']({
-            message: i18n.t('message.success'),
-            description: i18n.t('user.save-success'),
-            duration: 4
-          })
+        userInfoUpdate(Object.assign({}, this.formData, values)).then((res) => {
+          this.$message.success(res.msg)
           store.dispatch('GetInfo')
         }).catch((e) => {}).finally(() => {
           this.confirmLoading = false

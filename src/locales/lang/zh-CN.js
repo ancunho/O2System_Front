@@ -51,16 +51,14 @@ export default {
     'recover-step1': '找回密码 - 1',
     'recover-step2': '找回密码 - 2',
     'recover-step3': '找回密码 - 3',
-    'recover-success': '密码修改成功，请重新登录',
-    'changePw-success': '密码修改成功',
-    'register-success': '注册成功',
-    'save-success': '保存成功',
     'change-password': '修改密码',
     'user-password': '账户密码',
     'user-password-txt': '修改当前账户密码'
   },
   member: {
     'username': '账号',
+    'password': '密码',
+    'passwordConfirm': '确认密码',
     'realname': '姓名',
     'empno': '社员工号',
     'phone': '电话号码',
@@ -80,7 +78,10 @@ export default {
     'imagePhoto': '会员照片',
     'createtime': '注册时间',
     'resetPassword': '初始化密码',
-    'projectList': '负责项目列表'
+    'projectList': '负责项目列表',
+    'handleResetInfo': '确定要初始化密码吗？',
+    'handleUpdateInfo': '确定要修改吗？',
+    'handleDeleteInfo': '确定要删除吗？'
   },
   customer: {
     'customerName': '客户名',

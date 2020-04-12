@@ -211,12 +211,7 @@ export default {
         values['imagePhoto'] = '/avatar.jpg'
 
         register(values).then((res) => {
-          this.$notification['success']({
-            message: i18n.t('message.success'),
-            description: i18n.t('register-success'),
-            duration: 4
-          })
-
+          this.$message.success(res.msg)
           this.$router.push({ name: 'login' })
         }).catch((e) => {}).finally(() => {
           this.registerBtn = false

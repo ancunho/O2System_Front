@@ -121,11 +121,7 @@ export default {
         this.confirmLoading = true
 
         updatePassword(values).then((res) => {
-          this.$notification['success']({
-            message: i18n.t('message.success'),
-            description: i18n.t('user.changePw-success'),
-            duration: 4
-          })
+          this.$message.success(res.msg)
           this.handleCancel()
         }).catch((e) => {}).finally(() => {
           this.confirmLoading = false

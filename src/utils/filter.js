@@ -28,20 +28,21 @@ Vue.filter('filterSex', function (val) {
 
 // 部门
 Vue.filter('filterDepartment', function (val) {
+  if (!val) return ''
   const obj = store.getters.department.find((x) => x['cnfValue'] === val)
   return obj['cnfNote']
 })
 
 // 问题
 Vue.filter('filterQuestion', function (val) {
+  if (!val) return ''
   const obj = store.getters.question.find((x) => x['cnfValue'] === val)
-  console.log(11)
   return obj['cnfNote']
 })
 
 // 地址
 Vue.filter('filterAddress', function (v1, v2, v3, v4 = '') {
-  if (!v1 || !v2 || !v2) return false
+  if (!v1 || !v2 || !v2) return ''
   const obj1 = [...provinces].find((x) => x['code'] === v1)
   const obj2 = [...cities].find((x) => x['code'] === v2)
   const obj3 = [...areas].find((x) => x['code'] === v3)

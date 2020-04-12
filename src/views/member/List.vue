@@ -5,12 +5,12 @@
         <a-row :gutter="48">
           <a-col :md="6" :sm="24">
             <a-form-item :label="$t('member.realname')">
-              <a-input v-model="queryParam.realname" placeholder=""/>
+              <a-input v-model="queryParam.realname"/>
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
             <a-form-item :label="$t('member.empno')">
-              <a-input v-model="queryParam.empno" placeholder=""/>
+              <a-input v-model="queryParam.empno"/>
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
@@ -187,32 +187,46 @@ export default {
       })
     },
     handleReset (row) {
-      memberResetPassword({
-        id: row.id
-      }).then(res => {
-        this.$message.success(res.msg)
+      this.$confirm({
+        title: i18n.t('member.handleResetInfo'),
+        okType: 'danger',
+        onOk: () => {
+          return memberResetPassword({
+            id: row.id
+          }).then(res => {
+            this.$message.success(res.msg)
+          })
+        }
       })
     },
     handleAdd (row) {
       memberAdd(row).then(res => {
         this.$message.success(res.msg)
-        this.$refs.table.add(res)
+        this.$refs.formModal.setConfirmLoading()
+        this.$refs.formModal.setVisible()
+        this.$refs.table.add(res.data)
       })
     },
     handleUpdate (row) {
-      memberUpdate({
-        id: row.id
-      }).then(res => {
+      memberUpdate(row).then(res => {
         this.$message.success(res.msg)
+        this.$refs.formModal.setConfirmLoading()
         this.$refs.table.update(row)
       })
     },
     handleDelete (row) {
-      memberDelete({
-        id: row.id
-      }).then(res => {
-        this.$message.success(res.msg)
-        this.$refs.table.delete(row)
+      this.$confirm({
+        title: i18n.t('member.handleDeleteInfo'),
+        okType: 'danger',
+        onOk: () => {
+          return memberDelete({
+            id: row.id
+          }).then(res => {
+            this.$message.success(res.msg)
+            this.$refs.viewModal.setVisible()
+            this.$refs.table.delete(row)
+          })
+        }
       })
     }
   }

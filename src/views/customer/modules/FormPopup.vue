@@ -12,7 +12,7 @@
       <div class="table-page-popup-wrapper">
         <a-form :form="form" layout="inline">
           <a-row :gutter="24">
-            <a-col :md="15" :sm="24">
+            <a-col :md="18" :sm="24" :class="isMobile() || 'twoLine'">
               <a-form-item :label="$t('customer.customerName')">
                 <a-input v-decorator="['customerName', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
@@ -57,13 +57,13 @@
               </a-form-item>
             </a-col>
 
-            <a-col :md="9" :sm="24">
+            <a-col :md="6" :sm="24">
               <div class="ant-upload-preview" @click="$refs.modal.edit(1)" >
                 <a-icon type="cloud-upload-o" class="upload-icon"/>
                 <div class="mask">
                   <a-icon type="plus" />
                 </div>
-                <a-avatar shape="square" :size="180" icon="user" :src="otherData.imagePhoto" />
+                <a-avatar shape="square" :size="150" icon="user" :src="formData.imagePhoto" />
               </div>
             </a-col>
           </a-row>
@@ -78,12 +78,14 @@
 <script>
 import i18n from '@/locales'
 import AvatarModal from '@/components/tools/AvatarModal'
+import { mixinDevice } from '@/utils/mixin'
 
 export default {
   name: 'CustomerForm',
   components: {
     AvatarModal
   },
+  mixins: [mixinDevice],
   data () {
     return {
       title: i18n.t('option.add'),
@@ -91,10 +93,7 @@ export default {
       visible: false,
       confirmLoading: false,
       form: this.$form.createForm(this),
-      otherData: {
-        id: null,
-        imagePhoto: null
-      }
+      formData: {}
     }
   },
   methods: {
@@ -103,49 +102,57 @@ export default {
       this.actionType = 'add'
       this.form.resetFields()
       this.visible = true
-      this.otherData.id = null
-      this.otherData.imagePhoto = null
+      this.formData = {
+        id: null,
+        imagePhoto: '/avatar.jpg'
+      }
     },
-    edit (val) {
+    edit (row) {
       this.title = i18n.t('option.edit')
       this.actionType = 'update'
       this.visible = true
       this.$nextTick(() => {
         this.form.setFieldsValue({
-          customerName: val.customerName,
-          director: val.director,
-          phone: val.phone,
-          wechat: val.wechat,
-          description: val.description,
-          salesVolumn: val.salesVolumn,
-          developmentSkill: val.developmentSkill,
-          target: val.target,
-          productList: val.productList,
-          city: val.city,
-          address: val.address
+          customerName: row.customerName,
+          director: row.director,
+          phone: row.phone,
+          wechat: row.wechat,
+          description: row.description,
+          salesVolumn: row.salesVolumn,
+          developmentSkill: row.developmentSkill,
+          target: row.target,
+          productList: row.productList,
+          city: row.city,
+          address: row.address
         })
       })
-      this.otherData.id = val.id
-      this.otherData.imagePhoto = val.imagePhoto
+      this.formData = Object.assign({}, this.formData, row)
     },
     handleSubmit () {
       const { form: { validateFields } } = this
-      this.confirmLoading = true
-      validateFields((errors, values) => {
-        if (!errors) {
-          this.visible = false
-          this.confirmLoading = false
-          this.$emit(this.actionType, Object.assign({}, values, this.otherData))
-        } else {
-          this.confirmLoading = false
-        }
+      validateFields((err, values) => {
+        if (err) return
+        this.confirmLoading = true
+        // 参数整理
+        // values.birthday = this.$options.filters.filterD2S(values.birthday)
+        // values.province = values.addressSelect[0]
+        // values.city = values.addressSelect[1]
+        // values.area = values.addressSelect[2]
+
+        this.$emit(this.actionType, Object.assign({}, this.formData, values))
       })
     },
     handleCancel () {
       this.visible = false
     },
     setAvatar (url) {
-      this.otherData.imagePhoto = url
+      this.formData.imagePhoto = url
+    },
+    setConfirmLoading (val = false) {
+      this.confirmLoading = val
+    },
+    setVisible (val = false) {
+      this.visible = val
     }
   }
 }
