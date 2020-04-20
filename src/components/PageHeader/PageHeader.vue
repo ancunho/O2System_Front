@@ -18,9 +18,9 @@
             <div v-if="this.$slots.content" class="headerContent">
               <slot name="content"></slot>
             </div>
-            <div v-if="this.$slots.extra" class="extra">
-              <slot name="extra"></slot>
-            </div>
+            <!--            <div v-if="this.$slots.extra" class="extra">-->
+            <!--              <slot name="extra"></slot>-->
+            <!--            </div>-->
           </div>
           <div>
             <slot name="pageMenu"></slot>

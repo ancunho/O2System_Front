@@ -8,6 +8,21 @@ export function getCustomerList () {
   })
 }
 
+export function getCustomerNameList () {
+  return axios({
+    url: '/customer/list/name',
+    method: 'get'
+  })
+}
+
+export function getCustomerById (parameter) {
+  return axios({
+    url: '/customer/detail',
+    method: 'post',
+    data: QS.stringify(parameter)
+  })
+}
+
 export function customerAdd (parameter) {
   return axios({
     url: '/customer/create',

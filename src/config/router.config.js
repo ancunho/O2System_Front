@@ -85,6 +85,12 @@ export const asyncRouterMap = [
             name: 'projectView',
             component: () => import('@/views/project/View'),
             meta: { title: 'menu.project-view', permission: [ 'ROLE_ADMIN', 'ROLE_USER' ] }
+          },
+          {
+            path: '/project/edit',
+            name: 'projectEdit',
+            component: () => import('@/views/project/Edit'),
+            meta: { title: 'menu.project-edit', permission: [ 'ROLE_ADMIN', 'ROLE_USER' ] }
           }
         ]
       },

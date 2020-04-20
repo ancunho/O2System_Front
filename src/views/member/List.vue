@@ -179,8 +179,7 @@ export default {
     handleStatus (row) {
       const status = row.status === '0' ? '1' : '0'
       memberStatus({
-        id: row.id,
-        status: status
+        id: row.id
       }).then(res => {
         this.$message.success(res.msg)
         row.status = status
@@ -204,7 +203,7 @@ export default {
         this.$message.success(res.msg)
         this.$refs.formModal.setConfirmLoading()
         this.$refs.formModal.setVisible()
-        this.$refs.table.add(res.data)
+        this.$refs.table.init()
       })
     },
     handleUpdate (row) {

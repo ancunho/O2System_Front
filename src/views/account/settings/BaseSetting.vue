@@ -154,7 +154,7 @@ export default {
         department: this.userInfo.department,
         question: this.userInfo.question,
         answer: this.userInfo.answer,
-        addressSelect: [this.userInfo.province, this.userInfo.city, this.userInfo.area],
+        addressSelect: this.userInfo.province ? [this.userInfo.province, this.userInfo.city, this.userInfo.area] : null,
         address: this.userInfo.address,
         wechat: this.userInfo.wechat,
         birthday: this.$options.filters.filterS2D(this.userInfo.birthday),

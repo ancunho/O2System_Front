@@ -1,5 +1,5 @@
 <template>
-  <page-view title="项目编号：234231029431" logo="/logo.png">
+  <page-view title="项目编号：234231029431" logo="/logo.png" class="project-box">
     <!-- 负责人信息 -->
     <a-descriptions slot="headerContent" class="detail-layout">
       <a-descriptions-item label="负责人姓名">某某</a-descriptions-item>
@@ -218,31 +218,3 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-  .ant-card {
-    margin-top: 24px;
-
-    &.card-tabs-box /deep/ .ant-card-head-wrapper {
-      float: left;
-    }
-
-    &.card-tabs-box /deep/ .ant-tabs {
-      float: right;
-      clear: none;
-    }
-  }
-  .mobile {
-    .ant-card {
-      margin-top: 15px;
-
-      &.card-tabs-box /deep/ .ant-card-head-wrapper {
-        float: none;
-      }
-
-      &.card-tabs-box /deep/ .ant-tabs {
-        float: none;
-        clear: both;
-      }
-    }
-  }
-</style>

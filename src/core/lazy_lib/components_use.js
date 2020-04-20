@@ -19,6 +19,7 @@ import {
   Select,
   Card,
   Form,
+  FormModel,
   Row,
   Col,
   Modal,
@@ -48,6 +49,7 @@ import {
   AutoComplete,
   Descriptions,
   Cascader,
+  Timeline,
   message,
   notification,
 } from 'ant-design-vue'
@@ -64,6 +66,7 @@ Vue.use(Checkbox)
 Vue.use(Select)
 Vue.use(Card)
 Vue.use(Form)
+Vue.use(FormModel)
 Vue.use(Row)
 Vue.use(Col)
 Vue.use(Modal)
@@ -93,6 +96,7 @@ Vue.use(Popconfirm)
 Vue.use(AutoComplete)
 Vue.use(Descriptions)
 Vue.use(Cascader)
+Vue.use(Timeline)
 // Vue.use(VueCropper)
 Vue.use(notification)
 

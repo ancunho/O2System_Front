@@ -99,6 +99,7 @@
 
               <a-form-item :label="$t('member.address')">
                 <a-cascader
+                  placeholder=""
                   :fieldNames="address.fieldName"
                   :options="address.data"
                   v-decorator="['addressSelect']"
@@ -207,7 +208,7 @@ export default {
           phone: row.phone,
           email: row.email,
           department: row.department,
-          addressSelect: [row.province, row.city, row.area],
+          addressSelect: row.province ? [row.province, row.city, row.area] : null,
           address: row.address,
           wechat: row.wechat,
           birthday: this.$options.filters.filterS2D(row.birthday),

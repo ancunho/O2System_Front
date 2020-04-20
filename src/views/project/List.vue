@@ -5,40 +5,43 @@
         <a-form layout="inline">
           <a-row :gutter="48">
             <a-col :md="6" :sm="24">
-              <a-form-item :label="$t('customer.customerName')">
-                <a-input v-model="queryParam.customerName" placeholder=""/>
+              <a-form-item :label="$t('project.projectName')">
+                <a-input v-model="queryParam.projectName"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
-              <a-form-item :label="$t('customer.wechat')">
-                <a-input v-model="queryParam.wechat" placeholder=""/>
+              <a-form-item :label="$t('project.projectCustomer')">
+                <a-input v-model="queryParam.projectCustomer"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
-              <a-form-item :label="$t('customer.director')">
-                <a-input v-model="queryParam.director" placeholder=""/>
+              <a-form-item :label="$t('project.projectSalesMan')">
+                <a-select v-model="queryParam.projectSalesMan">
+                  <a-select-option value="">All</a-select-option>
+                  <a-select-option v-for="item in userList" :key="item.id" :value="item.id">
+                    {{ item.realname }}
+                  </a-select-option>
+                </a-select>
               </a-form-item>
             </a-col>
             <template v-if="advanced">
               <a-col :md="6" :sm="24">
-                <a-form-item :label="$t('customer.productList')">
-                  <a-input v-model="queryParam.productList" placeholder=""/>
+                <a-form-item :label="$t('project.projectProduct')">
+                  <a-input v-model="queryParam.projectProduct"/>
                 </a-form-item>
               </a-col>
               <a-col :md="6" :sm="24">
-                <a-form-item :label="$t('customer.developmentSkill')">
-                  <a-select v-model="queryParam.developmentSkill">
-                    <a-select-option value="">all</a-select-option>
+                <a-form-item :label="$t('project.projectStatus')">
+                  <a-select v-model="queryParam.projectStatus">
+                    <a-select-option value="">All</a-select-option>
+                    <a-select-option v-for="item in statusMap" :key="item.k" :value="item.k">
+                      {{ item.v }}
+                    </a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
-              <a-col :md="6" :sm="24">
-                <a-form-item :label="$t('customer.productList')">
-                  <a-input v-model="queryParam.target" placeholder=""/>
-                </a-form-item>
-              </a-col>
             </template>
-            <a-col :md="!advanced && 6 || 12" :sm="24" style="text-align: right">
+            <a-col :md="!advanced && 6 || 18" :sm="24" style="text-align: right">
               <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
                 <a-button type="primary" @click="$refs.table.refresh('search')">{{ $t('option.search') }}</a-button>
                 <a-button style="margin-left: 8px" @click="() => queryParam = {}">{{ $t('option.reset') }}</a-button>
@@ -65,8 +68,20 @@
         :queryParam="queryParam"
         showPagination="auto"
       >
+        <span slot="projectSalesMan" slot-scope="text">
+          <template>
+            {{ text | filterMemberName(userList) }}
+          </template>
+        </span>
+        <span slot="projectStatus" slot-scope="text">
+          <template>
+            <a-tag :color="text | filterStepColor">{{ text | filterStep }}</a-tag>
+          </template>
+        </span>
         <span slot="action" slot-scope="text, row" class="table-option">
           <template>
+            <a @click="handleTimelineView(row)">{{ $t('option.timeline') }}</a>
+            <a-divider type="vertical" />
             <a @click="handleView(row)">{{ $t('option.view') }}</a>
             <span v-permission:view="['ROLE_ADMIN']">
               <a-divider type="vertical" />
@@ -78,7 +93,16 @@
       <form-popup
         ref="formModal"
         @add="handleAdd($event)"
-        @update="handleUpdate($event)"
+      />
+
+      <!--时间轴-->
+      <view-timeline-popup
+        ref="timelineViewModal"
+        @edit="handleTimelineEdit($event)"
+      />
+      <edit-timeline-popup
+        ref="timelineEditModal"
+        @save="handleTimelineEdit($event)"
       />
     </a-card>
   </page-view>
@@ -88,67 +112,146 @@
 import { STable } from '@/components'
 import { PageView } from '@/layouts'
 import FormPopup from './modules/FormPopup'
-import { getCustomerList } from '@/api/customer'
+import ViewTimelinePopup from './modules/ViewTimelinePopup'
+import EditTimelinePopup from './modules/EditTimelinePopup'
+import { getProjectList, getProjectTimelineList, projectBaseInfoAdd } from '@/api/project'
+import { getMemberNameList } from '@/api/member'
+import { getCustomerNameList } from '@/api/customer'
 import i18n from '@/locales'
+
+const statusMap = [
+  {
+    k: '1',
+    c: 'orange',
+    v: '产品咨询/确认'
+  },
+  {
+    k: '2',
+    c: 'cyan',
+    v: '标签和出口准备'
+  },
+  {
+    k: '3',
+    c: 'blue',
+    v: 'PO/合同/订单'
+  },
+  {
+    k: '4',
+    c: 'purple',
+    v: '生产/发货'
+  },
+  {
+    k: '5',
+    c: 'green',
+    v: '出口/AS'
+  }
+]
 
 export default {
   name: 'ProjectList',
   components: {
     PageView,
     STable,
-    FormPopup
+    FormPopup,
+    ViewTimelinePopup,
+    EditTimelinePopup
+  },
+  filters: {
+    filterStep (val) {
+      return statusMap.find(x => x['k'] === val)['v']
+    },
+    filterStepColor (val) {
+      return statusMap.find(x => x['k'] === val)['c']
+    }
   },
   data () {
     return {
       // 高级搜索 展开/关闭
       advanced: false,
       // 查询参数
-      queryParam: {
-        department: ''
-      },
+      queryParam: {},
+      statusMap: statusMap,
       // 表头
       columns: [
         {
-          title: i18n.t('customer.customerName'),
-          dataIndex: 'customerName'
+          title: i18n.t('project.projectName'),
+          dataIndex: 'projectName'
         },
         {
-          title: i18n.t('customer.director'),
-          dataIndex: 'director'
+          title: i18n.t('project.projectCustomer'),
+          dataIndex: 'projectCustomer'
         },
         {
-          title: i18n.t('customer.salesVolumn'),
-          dataIndex: 'salesVolumn'
+          title: i18n.t('project.projectSalesMan'),
+          dataIndex: 'projectSalesMan',
+          scopedSlots: { customRender: 'projectSalesMan' }
         },
         {
-          title: i18n.t('customer.developmentSkill'),
-          dataIndex: 'developmentSkill'
+          title: i18n.t('project.productName'),
+          dataIndex: 'productName'
         },
         {
-          title: i18n.t('customer.city'),
-          dataIndex: 'city'
+          title: i18n.t('project.projectStatus'),
+          dataIndex: 'projectStatus',
+          scopedSlots: { customRender: 'projectStatus' }
+        },
+        {
+          title: i18n.t('project.projectStarttime'),
+          dataIndex: 'projectStarttime'
+        },
+        {
+          title: i18n.t('project.projectEndtime'),
+          dataIndex: 'projectEndtime'
         },
         {
           title: i18n.t('option.action'),
           dataIndex: 'action',
-          width: '150px',
+          width: '170px',
           align: 'right',
           scopedSlots: { customRender: 'action' }
         }
       ],
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
-        return getCustomerList()
+        return getProjectList()
           .then(res => {
             return res.data
           })
-      }
+      },
+      userList: [],
+      customerList: []
     }
   },
+  created () {
+    this.$nextTick(() => {
+      getMemberNameList().then(res => {
+        this.userList = res.data
+      })
+      getCustomerNameList().then(res => {
+        this.customerList = res.data
+      })
+    })
+  },
   methods: {
-    handleAdd (row) {
-      row.id = 99
-      this.$refs.table.add(row)
+    handleTimelineView (row) {
+      getProjectTimelineList({
+        projectId: row.id
+      }).then(res => {
+        this.$refs.timelineViewModal.view(res.data)
+      })
+    },
+    handleTimelineEdit (list) {
+      this.$refs.timelineEditModal.edit(list)
+    },
+    handleAdd (values) {
+      projectBaseInfoAdd(values).then(res => {
+        this.$refs.formModal.setConfirmLoading()
+        this.$refs.formModal.setVisible()
+        this.$router.push({
+          name: 'projectEdit',
+          params: res.data
+        })
+      })
     },
     handleView (row) {
       this.$router.push({

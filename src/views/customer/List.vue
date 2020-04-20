@@ -30,7 +30,7 @@
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
-              <a-form-item :label="$t('customer.productList')">
+              <a-form-item :label="$t('customer.target')">
                 <a-input v-model="queryParam.target"/>
               </a-form-item>
             </a-col>
@@ -50,7 +50,14 @@
     </div>
 
     <div class="table-operator">
-      <a-button type="primary" icon="plus" @click="$refs.formModal.add()">{{ $t('option.add') }}</a-button>
+      <a-button
+        v-permission:view="['ROLE_ADMIN']"
+        type="primary"
+        icon="plus"
+        @click="$refs.formModal.add()"
+      >
+        {{ $t('option.add') }}
+      </a-button>
     </div>
 
     <s-table
@@ -70,8 +77,6 @@
           <span v-permission:view="['ROLE_ADMIN']">
             <a-divider type="vertical" />
             <a @click="$refs.formModal.edit(row)">{{ $t('option.edit') }}</a>
-          </span>
-          <span v-permission:view="['ROLE_ADMIN']">
             <a-divider type="vertical" />
             <a @click="handleDelete(row)">{{ $t('option.delete') }}</a>
           </span>
@@ -95,6 +100,7 @@
 import { STable } from '@/components'
 import FormPopup from './modules/FormPopup'
 import ViewPopup from './modules/ViewPopup'
+import { getMemberNameList } from '@/api/member'
 import { getCustomerList, customerAdd, customerUpdate, customerDelete } from '@/api/customer'
 import i18n from '@/locales'
 
@@ -132,8 +138,17 @@ export default {
           dataIndex: 'developmentSkill'
         },
         {
-          title: i18n.t('customer.city'),
-          dataIndex: 'city'
+          title: i18n.t('customer.address'),
+          key: 'id',
+          customRender: (row) => {
+            return this.$options.filters.filterCity(row.province, row.city)
+          }
+        },
+        {
+          title: i18n.t('customer.description'),
+          dataIndex: 'description',
+          width: '170px',
+          ellipsis: true
         },
         {
           title: i18n.t('option.action'),
@@ -148,8 +163,16 @@ export default {
         return getCustomerList().then(res => {
           return res.data
         })
-      }
+      },
+      userList: []
     }
+  },
+  created () {
+    this.$nextTick(() => {
+      getMemberNameList().then(res => {
+        this.userList = res.data
+      })
+    })
   },
   methods: {
     handleAdd (row) {
@@ -157,7 +180,7 @@ export default {
         this.$message.success(res.msg)
         this.$refs.formModal.setConfirmLoading()
         this.$refs.formModal.setVisible()
-        this.$refs.table.add(res.data)
+        this.$refs.table.init()
       })
     },
     handleUpdate (row) {

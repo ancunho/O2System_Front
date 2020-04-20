@@ -8,6 +8,13 @@ export function getMemberList () {
   })
 }
 
+export function getMemberNameList () {
+  return axios({
+    url: '/member/list/name',
+    method: 'get'
+  })
+}
+
 export function memberAdd (parameter) {
   return axios({
     url: '/member/create',

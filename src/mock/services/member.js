@@ -1,7 +1,7 @@
 import Mock from 'mockjs2'
 import { builder } from '../util'
 
-const memberList = (options) => {
+const memberList = () => {
   const data = []
   for (let i = 1; i < 16; i++) {
     data.push({
@@ -25,6 +25,18 @@ const memberList = (options) => {
       'sex': Mock.mock('@pick(["1", "2"])'),
       'status': Mock.mock('@pick(["0", "1"])'),
       'createtime': Mock.mock('@date')
+    })
+  }
+
+  return builder(data)
+}
+
+const memberNameList = () => {
+  const data = []
+  for (let i = 1; i < 16; i++) {
+    data.push({
+      'id': i,
+      'realname': Mock.mock('@cname')
     })
   }
 
@@ -73,6 +85,7 @@ const memberDelete = () => {
 }
 
 Mock.mock('/api/member/list', 'get', memberList)
+Mock.mock('/api/member/list/name', 'get', memberNameList)
 Mock.mock('/api/member/create', 'post', memberAdd)
 Mock.mock('/api/member/update', 'post', memberUpdate)
 Mock.mock('/api/member/update/status', 'post', memberStatus)
