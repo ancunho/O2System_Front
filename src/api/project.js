@@ -8,10 +8,18 @@ export function getProjectList () {
   })
 }
 
-export function getProjectTimelineList (parameter) {
+export function getProjectBaseinfo (parameter) {
   return axios({
-    url: '/project/timeline/list',
-    method: 'post',
+    url: '/project/baseinfo',
+    method: 'get',
+    data: QS.stringify(parameter)
+  })
+}
+
+export function getProjectDetail (parameter) {
+  return axios({
+    url: '/project/detail',
+    method: 'get',
     data: QS.stringify(parameter)
   })
 }
@@ -32,10 +40,34 @@ export function projectDetailAdd (parameter) {
   })
 }
 
-// /api/project/list
-// /api/project/list
-// /api/project/list
+export function getProjectTimelineList (parameter) {
+  return axios({
+    url: '/project/timeline/list',
+    method: 'get',
+    data: QS.stringify(parameter)
+  })
+}
 
-// /api/member/list/name ---- 只返回id和realname的借口
+export function projectTimelineAdd (parameter) {
+  return axios({
+    url: '/project/timeline/create',
+    method: 'post',
+    data: parameter
+  })
+}
 
-// /api/customer/list/name ----아이디와 고객이름만 반환
+export function projectTimelineUpdate (parameter) {
+  return axios({
+    url: '/project/timeline/update',
+    method: 'post',
+    data: parameter
+  })
+}
+
+export function projectTimelineDelete (parameter) {
+  return axios({
+    url: '/project/timeline/delete',
+    method: 'post',
+    data: QS.stringify(parameter)
+  })
+}

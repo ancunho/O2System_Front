@@ -149,7 +149,8 @@ export default {
     'reset': '重置',
     'ok': '确认',
     'cancel': '取消',
-    'add': '新建',
+    'create': '新建',
+    'add': '添加',
     'edit': '编辑',
     'view': '查看',
     'save': '保存',
@@ -163,7 +164,7 @@ export default {
     'prev': '上一步',
     'next': '下一步',
     'done': '完成',
-    'timeline': '时间轴',
+    'timeline': '进度',
     'createProject': '生成项目'
   },
   message: {

@@ -56,7 +56,7 @@
       </div>
 
       <div class="table-operator">
-        <a-button type="primary" icon="plus" @click="$refs.formModal.add()">{{ $t('option.add') }}</a-button>
+        <a-button type="primary" icon="plus" @click="$refs.formModal.add()">{{ $t('option.create') }}</a-button>
       </div>
 
       <s-table
@@ -80,7 +80,7 @@
         </span>
         <span slot="action" slot-scope="text, row" class="table-option">
           <template>
-            <a @click="handleTimelineView(row)">{{ $t('option.timeline') }}</a>
+            <a @click="$refs.timelineViewModal.view(row.id)">{{ $t('option.timeline') }}</a>
             <a-divider type="vertical" />
             <a @click="handleView(row)">{{ $t('option.view') }}</a>
             <span v-permission:view="['ROLE_ADMIN']">
@@ -98,11 +98,6 @@
       <!--时间轴-->
       <view-timeline-popup
         ref="timelineViewModal"
-        @edit="handleTimelineEdit($event)"
-      />
-      <edit-timeline-popup
-        ref="timelineEditModal"
-        @save="handleTimelineEdit($event)"
       />
     </a-card>
   </page-view>
@@ -113,8 +108,7 @@ import { STable } from '@/components'
 import { PageView } from '@/layouts'
 import FormPopup from './modules/FormPopup'
 import ViewTimelinePopup from './modules/ViewTimelinePopup'
-import EditTimelinePopup from './modules/EditTimelinePopup'
-import { getProjectList, getProjectTimelineList, projectBaseInfoAdd } from '@/api/project'
+import { getProjectList, projectBaseInfoAdd } from '@/api/project'
 import { getMemberNameList } from '@/api/member'
 import { getCustomerNameList } from '@/api/customer'
 import i18n from '@/locales'
@@ -153,8 +147,7 @@ export default {
     PageView,
     STable,
     FormPopup,
-    ViewTimelinePopup,
-    EditTimelinePopup
+    ViewTimelinePopup
   },
   filters: {
     filterStep (val) {
@@ -233,16 +226,6 @@ export default {
     })
   },
   methods: {
-    handleTimelineView (row) {
-      getProjectTimelineList({
-        projectId: row.id
-      }).then(res => {
-        this.$refs.timelineViewModal.view(res.data)
-      })
-    },
-    handleTimelineEdit (list) {
-      this.$refs.timelineEditModal.edit(list)
-    },
     handleAdd (values) {
       projectBaseInfoAdd(values).then(res => {
         this.$refs.formModal.setConfirmLoading()

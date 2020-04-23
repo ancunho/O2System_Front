@@ -227,7 +227,7 @@
               </tr>
               <tr>
                 <td colspan="5" class="btns">
-                  <a-button type="primary" icon="plus" @click="handlePricePush" >添加一行</a-button>
+                  <a-button type="primary" size="small" icon="plus" @click="handlePricePush" >添加一行</a-button>
                 </td>
               </tr>
               <tr>
@@ -258,6 +258,9 @@
                   </a-form-model-item>
                 </td>
               </tr>
+              <tr>
+                <th colspan="2">说明</th>
+              </tr>
               <tr v-for="(item, index) in form.projectPrice.descriptionList" :key="index">
                 <td>
                   <a-form-model-item>
@@ -272,7 +275,7 @@
               </tr>
               <tr>
                 <td colspan="2" class="btns">
-                  <a-button type="primary" icon="plus" @click="handleDescriptionPush" >添加一行</a-button>
+                  <a-button type="primary" size="small" icon="plus" @click="handleDescriptionPush" >添加一行</a-button>
                 </td>
               </tr>
               <tr>
@@ -298,6 +301,7 @@
       >
         <template slot="title">
           历史信息
+          <a-button style="float: right" type="primary" size="small" @click="$refs.timelineViewModal.view(baseInfo.projectId)" >{{ $t('option.timeline') }}</a-button>
         </template>
         <div
           v-if="activeTabKey === item.key"
@@ -348,7 +352,7 @@
               </template>
               <tr>
                 <td colspan="5" class="btns">
-                  <a-button type="primary" icon="plus" @click="handleRecordPush(item.id)" >添加一行</a-button>
+                  <a-button type="primary" size="small" icon="plus" @click="handleRecordPush(item.id)" >添加一行</a-button>
                 </td>
               </tr>
             </tbody>
@@ -377,21 +381,28 @@
     </a-form-model>
 
     <div class="button-box">
-<!--      <a-button type="primary">编辑基本信息</a-button>-->
+      <!--<a-button type="primary">编辑基本信息</a-button>-->
       <a-button type="primary" @click="handleSubmit">保存</a-button>
     </div>
+
+    <!--时间轴-->
+    <view-timeline-popup
+      ref="timelineViewModal"
+    />
   </page-view>
 </template>
 
 <script>
 import { PageView } from '@/layouts'
+import ViewTimelinePopup from './modules/ViewTimelinePopup'
 import { getMemberNameList } from '@/api/member'
 import { projectDetailAdd } from '@/api/project'
 
 export default {
   name: 'ProjectEdit',
   components: {
-    PageView
+    PageView,
+    ViewTimelinePopup
   },
   data () {
     return {
@@ -431,8 +442,7 @@ export default {
           valueNoVat: '',
           specialComment: ''
         },
-        projectRecordList: [],
-        projectTimelineList: []
+        projectRecordList: []
       },
       tabList: [
         {
@@ -563,8 +573,6 @@ export default {
 </script>
 <style lang="less" scoped>
   .ant-card {
-    margin-top: 24px;
-
     .ant-form-item {
       margin-bottom: 0;
 
@@ -582,12 +590,6 @@ export default {
         margin-top: 8px;
         color: #666;
       }
-    }
-  }
-
-  .mobile {
-    .ant-card {
-      margin-top: 15px;
     }
   }
 </style>

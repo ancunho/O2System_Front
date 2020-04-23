@@ -47,7 +47,7 @@
     </div>
 
     <div class="table-operator">
-      <a-button type="primary" icon="plus" @click="$refs.formModal.add()">{{ $t('option.add') }}</a-button>
+      <a-button type="primary" icon="plus" @click="$refs.formModal.add()">{{ $t('option.create') }}</a-button>
     </div>
 
     <s-table
@@ -190,7 +190,7 @@ export default {
         title: i18n.t('member.handleResetInfo'),
         okType: 'danger',
         onOk: () => {
-          return memberResetPassword({
+          memberResetPassword({
             id: row.id
           }).then(res => {
             this.$message.success(res.msg)
@@ -218,7 +218,7 @@ export default {
         title: i18n.t('member.handleDeleteInfo'),
         okType: 'danger',
         onOk: () => {
-          return memberDelete({
+          memberDelete({
             id: row.id
           }).then(res => {
             this.$message.success(res.msg)

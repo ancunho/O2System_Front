@@ -56,7 +56,7 @@
         icon="plus"
         @click="$refs.formModal.add()"
       >
-        {{ $t('option.add') }}
+        {{ $t('option.create') }}
       </a-button>
     </div>
 
@@ -195,7 +195,7 @@ export default {
         title: i18n.t('member.handleDeleteInfo'),
         okType: 'danger',
         onOk: () => {
-          return customerDelete({
+          customerDelete({
             id: row.id
           }).then(res => {
             this.$message.success(res.msg)

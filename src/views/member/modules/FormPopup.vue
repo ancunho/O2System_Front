@@ -166,7 +166,7 @@ export default {
   mixins: [mixinDevice],
   data () {
     return {
-      title: i18n.t('option.add'),
+      title: i18n.t('option.create'),
       actionType: 'add',
       visible: false,
       confirmLoading: false,
@@ -185,7 +185,7 @@ export default {
   methods: {
     // 新建
     add () {
-      this.title = i18n.t('option.add')
+      this.title = i18n.t('option.create')
       this.actionType = 'add'
       this.form.resetFields()
       this.visible = true

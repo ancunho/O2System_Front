@@ -50,6 +50,7 @@ import {
   Descriptions,
   Cascader,
   Timeline,
+  Slider,
   message,
   notification,
 } from 'ant-design-vue'
@@ -97,6 +98,7 @@ Vue.use(AutoComplete)
 Vue.use(Descriptions)
 Vue.use(Cascader)
 Vue.use(Timeline)
+Vue.use(Slider)
 // Vue.use(VueCropper)
 Vue.use(notification)
 

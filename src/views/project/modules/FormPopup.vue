@@ -173,7 +173,7 @@ export default {
   data () {
     return {
       advanced: false,
-      title: i18n.t('option.add'),
+      title: i18n.t('option.create'),
       actionType: 'add',
       visible: false,
       visibleCustomer: false,
@@ -192,7 +192,7 @@ export default {
   },
   methods: {
     add () {
-      this.title = i18n.t('option.add')
+      this.title = i18n.t('option.create')
       this.actionType = 'add'
       this.form.resetFields()
       this.visible = true
@@ -208,7 +208,6 @@ export default {
     },
     handleSubmit () {
       const { form: { validateFields } } = this
-      this.confirmLoading = true
       validateFields((err, values) => {
         if (err) return
         this.confirmLoading = true
