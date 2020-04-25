@@ -121,7 +121,7 @@ export default {
     'productCategory': '分类',
     'productPackage': '包装类型',
     'productConcept': '产品概念',
-    'productType': '饰品类型',
+    'productType': '产品类型',
     'productQuantity': '数量',
     'productTargetPrice': '目标价格',
     'productDetail': '详细说明',

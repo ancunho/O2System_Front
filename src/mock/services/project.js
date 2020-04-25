@@ -62,11 +62,11 @@ const getProjectDetail = (options) => {
       'actualInput': '11111',
       'actualProduction': '9999',
       'dealPlace': 'text',
-      'descriptionList': 'json',
+      'descriptionList': '[{"key":"key","value":"value"}]',
       'orderQuantity': '111',
       'packageSpec': '22222',
       'personInCharge': 'text',
-      'priceList': 'json',
+      'priceList': '[{"project":"project","price":"price","setPrice":"setPrice","percent":"percent"}]',
       'productName': '제품명',
       'projectId': 1,
       'projectProductId': 2,
@@ -80,56 +80,30 @@ const getProjectDetail = (options) => {
       'yieldPercent': '8'
     },
     'projectProduct': {
-      'productCategory': '2',
-      'productConcept': 'text text text',
+      'productCategory': '3002',
+      'productConcept': '5001',
       'productDetail': 'text text text text',
-      'productImage': 'http://114.xxxxxxxx/xxxx.jpg',
+      'productImage': '',
       'productMainMaterial': '["text1","222","333","444"]',
       'productName': '제품명',
-      'productPackage': '4',
+      'productPackage': '4004',
       'productQuantity': '234',
       'productSubMaterial': '["aaa","bbb","cccc","dddd"]',
       'productTargetContent': 'text text text',
       'productTargetPrice': '3999',
-      'productType': '33',
+      'productType': '6005',
       'projectId': 1
     },
     'projectRecordList': [{
       'projectId': 1,
-      'recordContent': 'json json json json json',
+      'recordContent': '[{"title":"title","date":"2020-05-05","content":"content","principal":"principal","check":"check"}]',
       'recordId': '1'
-    }, {
-      'projectId': 1,
-      'recordContent': 'json json json json json',
-      'recordId': '2'
-    }, {
-      'projectId': 1,
-      'recordContent': 'json2 json json json json',
-      'recordId': '3'
-    }, {
-      'projectId': 1,
-      'recordContent': 'json4 json json json json',
-      'recordId': '4'
-    }, {
-      'projectId': 1,
-      'recordContent': 'json5 json json json json',
-      'recordId': '5'
     }],
     'projectTimelineList': [{
       'projectId': 1,
       'timelineAuthor': 'XXXXX',
       'timelineContent': 'json',
       'timelineId': '1'
-    }, {
-      'projectId': 1,
-      'timelineAuthor': 'XXXXX',
-      'timelineContent': 'json',
-      'timelineId': '2'
-    }, {
-      'projectId': 1,
-      'timelineAuthor': 'XXXXX',
-      'timelineContent': 'json',
-      'timelineId': '3'
     }]
   })
 }
@@ -171,8 +145,16 @@ const projectBaseInfoAdd = () => {
   }, '新建成功')
 }
 
+const projectBaseInfoUpdate = () => {
+  return builder({}, '更新成功')
+}
+
 const projectDetailAdd = () => {
   return builder({}, '新建成功')
+}
+
+const projectDetailUpdate = () => {
+  return builder({}, '更新成功')
 }
 
 const getProjectTimelineList = (options) => {
@@ -207,7 +189,9 @@ Mock.mock('/api/project/list', 'get', projectList)
 Mock.mock('/api/project/baseinfo', 'get', getProjectBaseinfo)
 Mock.mock('/api/project/detail', 'get', getProjectDetail)
 Mock.mock('/api/project/baseinfo/create', 'post', projectBaseInfoAdd)
+Mock.mock('/api/project/baseinfo/update', 'post', projectBaseInfoUpdate)
 Mock.mock('/api/project/detail/create', 'post', projectDetailAdd)
+Mock.mock('/api/project/detail/update', 'post', projectDetailUpdate)
 Mock.mock('/api/project/timeline/list', 'get', getProjectTimelineList)
 Mock.mock('/api/project/timeline/create', 'post', projectTimelineAdd)
 Mock.mock('/api/project/timeline/update', 'post', projectTimelineUpdate)

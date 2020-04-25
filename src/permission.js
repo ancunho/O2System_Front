@@ -18,7 +18,12 @@ router.beforeEach((to, from, next) => {
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${i18n.t(to.meta.title)} - ${domTitle}`))
 
   // 获取common config
-  if (!store.getters.department || !store.getters.question) {
+  if (!store.getters.department ||
+    !store.getters.question ||
+    !store.getters.productCategory ||
+    !store.getters.productPackage ||
+    !store.getters.productConcept ||
+    !store.getters.productType) {
     store.dispatch('GetCommon').then()
   }
 

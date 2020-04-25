@@ -8,8 +8,3 @@ export function getCommonConfig (parameter) {
     data: QS.stringify(parameter)
   })
 }
-
-// PRODUCT_CATEGORY - 카테고리
-// PRODUCT_PACKAGE - 포장유형
-// PRODUCT_CONCEPT - 제품컨셉
-// PRODUCT_TYPE - 식품유형

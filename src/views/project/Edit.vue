@@ -3,8 +3,7 @@
     <!-- 负责人信息 -->
     <a-descriptions :column="{ md: 4, sm: 3, xs: 1}" slot="headerContent" class="detail-layout">
       <a-descriptions-item :label="$t('project.projectName')">{{ baseInfo.projectName }}</a-descriptions-item>
-      <a-descriptions-item :label="$t('project.projectCustomer')">{{ baseInfo.projectCustomer }}</a-descriptions-item>
-      <a-descriptions-item :label="$t('project.productName')">{{ baseInfo.productName }}</a-descriptions-item>
+      <a-descriptions-item :label="$t('project.projectCustomer')">{{ baseInfo.customer.customerName }}</a-descriptions-item>
       <a-descriptions-item :label="$t('project.projectSalesMan')">{{ baseInfo.projectSalesMan | filterMemberName(userList) }}</a-descriptions-item>
       <a-descriptions-item :label="$t('project.projectPriceTotal')">{{ baseInfo.projectPriceTotal }}</a-descriptions-item>
       <a-descriptions-item :label="$t('project.projectStarttime')">{{ baseInfo.projectStarttime }}</a-descriptions-item>
@@ -25,22 +24,30 @@
           </a-col>
           <a-col :lg="6" :md="8" :sm="24">
             <a-form-model-item :label="$t('project.productCategory')">
-              <a-input v-model="form.projectProduct.productCategory" />
+              <a-select v-model="form.projectProduct.productCategory">
+                <a-select-option v-for="list in productCategory" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
+              </a-select>
             </a-form-model-item>
           </a-col>
           <a-col :lg="6" :md="8" :sm="24">
             <a-form-model-item :label="$t('project.productPackage')">
-              <a-input v-model="form.projectProduct.productPackage" />
+              <a-select v-model="form.projectProduct.productPackage">
+                <a-select-option v-for="list in productPackage" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
+              </a-select>
             </a-form-model-item>
           </a-col>
           <a-col :lg="6" :md="8" :sm="24">
             <a-form-model-item :label="$t('project.productConcept')">
-              <a-input v-model="form.projectProduct.productConcept" />
+              <a-select v-model="form.projectProduct.productConcept">
+                <a-select-option v-for="list in productConcept" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
+              </a-select>
             </a-form-model-item>
           </a-col>
           <a-col :lg="6" :md="8" :sm="24">
             <a-form-model-item :label="$t('project.productType')">
-              <a-input v-model="form.projectProduct.productType" />
+              <a-select v-model="form.projectProduct.productType">
+                <a-select-option v-for="list in productType" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
+              </a-select>
             </a-form-model-item>
           </a-col>
           <a-col :lg="6" :md="8" :sm="24">
@@ -301,7 +308,7 @@
       >
         <template slot="title">
           历史信息
-          <a-button style="float: right" type="primary" size="small" @click="$refs.timelineViewModal.view(baseInfo.projectId)" >{{ $t('option.timeline') }}</a-button>
+          <a-button style="float: right" type="primary" @click="$refs.timelineViewModal.view(baseInfo.projectId)" >{{ $t('option.timeline') }}</a-button>
         </template>
         <div
           v-if="activeTabKey === item.key"
@@ -396,7 +403,8 @@
 import { PageView } from '@/layouts'
 import ViewTimelinePopup from './modules/ViewTimelinePopup'
 import { getMemberNameList } from '@/api/member'
-import { projectDetailAdd } from '@/api/project'
+import { projectDetailAdd, projectDetailUpdate } from '@/api/project'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ProjectEdit',
@@ -404,9 +412,15 @@ export default {
     PageView,
     ViewTimelinePopup
   },
+  computed: {
+    ...mapGetters(['productCategory', 'productPackage', 'productConcept', 'productType'])
+  },
   data () {
     return {
-      baseInfo: {},
+      type: 'add',
+      baseInfo: {
+        customer: {}
+      },
       userList: [],
       form: {
         projectProduct: {
@@ -475,7 +489,28 @@ export default {
     }
   },
   created () {
-    this.baseInfo = this.$route.params
+    if (!this.$route.params.data) {
+      this.$router.push({
+        name: 'projectList'
+      })
+      return false
+    }
+
+    if (this.$route.params.type === 'add') {
+      this.type = 'add'
+      this.baseInfo = this.$route.params.data
+    } else {
+      this.type = 'edit'
+      this.baseInfo = this.$route.params.data.baseInfo
+      this.form = this.$route.params.data.form
+      this.form.projectPrice.releaseDate = this.$options.filters.filterS2D(this.form.projectPrice.releaseDate)
+      this.form.projectRecordList.forEach((item, index) => {
+        item.recordContent.forEach((item, index) => {
+          item.date = this.$options.filters.filterS2D(item.date)
+        })
+      })
+    }
+
     this.$nextTick(() => {
       getMemberNameList().then(res => {
         this.userList = res.data
@@ -561,12 +596,21 @@ export default {
       param.projectPrice.descriptionList = JSON.stringify(param.projectPrice.descriptionList)
 
       param.projectRecordList.forEach((item, index) => {
+        item.recordContent.forEach((item, index) => {
+          item.date = this.$options.filters.filterD2S(item.date)
+        })
         item.recordContent = JSON.stringify(item.recordContent)
       })
 
-      projectDetailAdd(param).then(res => {
-        console.log(res)
-      })
+      if (this.type === 'add') {
+        projectDetailAdd(param).then(res => {
+          this.$message.success(res.msg)
+        })
+      } else if (this.type === 'edit') {
+        projectDetailUpdate(param).then(res => {
+          this.$message.success(res.msg)
+        })
+      }
     }
   }
 }

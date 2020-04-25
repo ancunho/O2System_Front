@@ -13,6 +13,7 @@ if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_PREVIEW === 'tr
   require('./services/member')
   require('./services/customer')
   require('./services/project')
+  require('./services/workplace')
 
   Mock.setup({
     timeout: 100 // setter delay time

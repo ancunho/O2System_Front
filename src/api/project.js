@@ -32,9 +32,25 @@ export function projectBaseInfoAdd (parameter) {
   })
 }
 
+export function projectBaseInfoUpdate (parameter) {
+  return axios({
+    url: '/project/baseinfo/update',
+    method: 'post',
+    data: parameter
+  })
+}
+
 export function projectDetailAdd (parameter) {
   return axios({
     url: '/project/detail/create',
+    method: 'post',
+    data: parameter
+  })
+}
+
+export function projectDetailUpdate (parameter) {
+  return axios({
+    url: '/project/detail/update',
     method: 'post',
     data: parameter
   })

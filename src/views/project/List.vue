@@ -232,7 +232,10 @@ export default {
         this.$refs.formModal.setVisible()
         this.$router.push({
           name: 'projectEdit',
-          params: res.data
+          params: {
+            type: 'add',
+            data: res.data
+          }
         })
       })
     },

@@ -9,6 +9,10 @@ const getters = {
   userInfo: state => state.user.info,
   department: state => state.common.department,
   question: state => state.common.question,
+  productCategory: state => state.common.productCategory,
+  productPackage: state => state.common.productPackage,
+  productConcept: state => state.common.productConcept,
+  productType: state => state.common.productType,
   lang: state => state.i18n.lang
 }
 
