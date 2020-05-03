@@ -4,7 +4,6 @@ import store from './store'
 
 import NProgress from 'nprogress' // progress bar
 import '@/components/NProgress/nprogress.less' // progress bar custom style
-import notification from 'ant-design-vue/es/notification'
 import { setDocumentTitle, domTitle } from '@/utils/domUtil'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import i18n from '@/locales'
@@ -17,6 +16,17 @@ const defaultRoutePath = '/dashboard/workplace'
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${i18n.t(to.meta.title)} - ${domTitle}`))
+
+  // 获取common config
+  if (!store.getters.department ||
+    !store.getters.question ||
+    !store.getters.productCategory ||
+    !store.getters.productPackage ||
+    !store.getters.productConcept ||
+    !store.getters.productType) {
+    store.dispatch('GetCommon').then()
+  }
+
   if (Vue.ls.get(ACCESS_TOKEN)) {
     /* has token */
     if (to.path === '/user/login') {
@@ -43,11 +53,7 @@ router.beforeEach((to, from, next) => {
             })
           })
           .catch(() => {
-            notification.error({
-              message: 'Error',
-              description: 'Requesting user information failed, please try again'
-            })
-            store.dispatch('Logout').then(() => {
+            store.dispatch('Logout', 'local').then(() => {
               next({ path: '/user/login', query: { redirect: to.fullPath } })
             })
           })

@@ -27,7 +27,7 @@ const user = {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
           const data = response.data
-          Vue.ls.set(ACCESS_TOKEN, data.token, 7 * 24 * 60 * 60 * 1000)
+          Vue.ls.set(ACCESS_TOKEN, data.token, 1 * 60 * 60 * 1000) // 一小时
           commit('SET_TOKEN', data.token)
           resolve()
         }).catch(error => {
@@ -41,7 +41,6 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
           const data = response.data
-
           if (data.role) {
             commit('SET_ROLE', data.role)
             commit('SET_INFO', data)
@@ -57,17 +56,22 @@ const user = {
     },
 
     // 登出
-    Logout ({ commit, state }) {
+    Logout ({ commit, state }, type) {
       return new Promise((resolve) => {
-        logout(state.token).then(() => {
-          resolve()
-        }).catch(() => {
-          resolve()
-        }).finally(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLE', '')
+        if (type === 'local') {
           Vue.ls.remove(ACCESS_TOKEN)
-        })
+          resolve()
+        } else {
+          logout().then(() => {
+            resolve()
+          }).catch(() => {
+            resolve()
+          }).finally(() => {
+            commit('SET_TOKEN', '')
+            commit('SET_ROLE', '')
+            Vue.ls.remove(ACCESS_TOKEN)
+          })
+        }
       })
     }
 

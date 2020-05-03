@@ -1,3 +1,5 @@
+// import i18n from '@/locales'
+
 export function timeFix () {
   const time = new Date()
   const hour = time.getHours()
@@ -58,4 +60,31 @@ export function removeLoadingAnimate (id = '', timeout = 1500) {
   setTimeout(() => {
     document.body.removeChild(document.getElementById(id))
   }, timeout)
+}
+
+/**
+ * 检测密码强度
+ * 判断有没有数字,有没有字母,长度5以上
+ */
+export function isPassword (password) {
+  return !(password === undefined ||
+    password === '' ||
+    password.length < 6 ||
+    !(/[0-9]/.test(password) && /[a-zA-Z]/.test(password)))
+}
+
+/**
+ * 检测手机号
+ */
+export function isPhone (phone) {
+  const regPhone = /^1[3456789]\d{9}$/
+  return regPhone.test(phone)
+}
+
+/**
+ * 检测邮箱
+ */
+export function isEmail (email) {
+  const regEmail = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+  return regEmail.test(email)
 }

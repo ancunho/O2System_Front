@@ -12,10 +12,10 @@
         <a-input
           size="large"
           type="text"
-          :placeholder="`${$t('user.username')}: admin`"
+          :placeholder="$t('user.username')"
           v-decorator="[
             'username',
-            {rules: [{ required: true, message: $t('user.username-required') }], validateTrigger: 'change'}
+            {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}
           ]"
         >
           <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
@@ -27,10 +27,10 @@
           size="large"
           type="password"
           autocomplete="false"
-          :placeholder="`${$t('user.password')}: demo`"
+          :placeholder="$t('user.password')"
           v-decorator="[
             'password',
-            {rules: [{ required: true, message: $t('user.password-required') }], validateTrigger: 'blur'}
+            {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}
           ]"
         >
           <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
@@ -88,26 +88,19 @@ export default {
         if (!err) {
           const loginParams = { ...values }
           Login(loginParams)
-            .then((res) => this.loginSuccess(res))
-            .catch(err => this.requestFailed(err))
+            .then(() => {
+              this.$router.push({ path: '/' })
+              this.isLoginError = false
+            })
+            .catch((err) => {
+              if (err.status === 1) this.isLoginError = true
+            })
             .finally(() => {
               state.loginBtn = false
             })
         } else {
           state.loginBtn = false
         }
-      })
-    },
-    loginSuccess (res) {
-      this.$router.push({ path: '/' })
-      this.isLoginError = false
-    },
-    requestFailed (err) {
-      this.isLoginError = true
-      this.$notification['error']({
-        message: 'Error',
-        description: ((err.response || {}).data || {}).msg || 'Request error, please try again later',
-        duration: 4
       })
     }
   }

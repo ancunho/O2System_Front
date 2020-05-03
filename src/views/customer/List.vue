@@ -5,35 +5,33 @@
         <a-row :gutter="48">
           <a-col :md="6" :sm="24">
             <a-form-item :label="$t('customer.customerName')">
-              <a-input v-model="queryParam.customerName" placeholder=""/>
+              <a-input v-model="queryParam.customerName"/>
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
             <a-form-item :label="$t('customer.wechat')">
-              <a-input v-model="queryParam.wechat" placeholder=""/>
+              <a-input v-model="queryParam.wechat"/>
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
             <a-form-item :label="$t('customer.director')">
-              <a-input v-model="queryParam.director" placeholder=""/>
+              <a-input v-model="queryParam.director"/>
             </a-form-item>
           </a-col>
           <template v-if="advanced">
             <a-col :md="6" :sm="24">
               <a-form-item :label="$t('customer.productList')">
-                <a-input v-model="queryParam.productList" placeholder=""/>
+                <a-input v-model="queryParam.productList"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item :label="$t('customer.developmentSkill')">
-                <a-select v-model="queryParam.developmentSkill">
-                  <a-select-option value="">all</a-select-option>
-                </a-select>
+                <a-input v-model="queryParam.developmentSkill"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
-              <a-form-item :label="$t('customer.productList')">
-                <a-input v-model="queryParam.target" placeholder=""/>
+              <a-form-item :label="$t('customer.target')">
+                <a-input v-model="queryParam.target"/>
               </a-form-item>
             </a-col>
           </template>
@@ -52,7 +50,13 @@
     </div>
 
     <div class="table-operator">
-      <a-button type="primary" icon="plus" @click="$refs.formModal.add()">{{ $t('option.add') }}</a-button>
+      <a-button
+        type="primary"
+        icon="plus"
+        @click="$refs.formModal.add()"
+      >
+        {{ $t('option.create') }}
+      </a-button>
     </div>
 
     <s-table
@@ -64,15 +68,19 @@
       :queryParam="queryParam"
       showPagination="auto"
     >
-      <span slot="action" slot-scope="text, record" class="table-option">
+      <span slot="action" slot-scope="text, row" class="table-option">
         <template>
           <a>{{ $t('option.project') }}</a>
           <a-divider type="vertical" />
-          <a @click="$refs.viewModal.view(record)">{{ $t('option.view') }}</a>
-          <a-divider type="vertical" />
-          <a @click="$refs.formModal.edit(record)">{{ $t('option.edit') }}</a>
-          <a-divider type="vertical" />
-          <a @click="handleDelete(record)">{{ $t('option.delete') }}</a>
+          <a @click="$refs.viewModal.view(row)">{{ $t('option.view') }}</a>
+          <span v-permission:b="row.salesMan">
+            <a-divider type="vertical" />
+            <a @click="$refs.formModal.edit(row)">{{ $t('option.edit') }}</a>
+          </span>
+          <span v-permission:b="[]">
+            <a-divider type="vertical" />
+            <a @click="handleDelete(row)">{{ $t('option.delete') }}</a>
+          </span>
         </template>
       </span>
     </s-table>
@@ -83,8 +91,6 @@
     />
     <view-popup
       ref="viewModal"
-      @reset="handleReset($event)"
-      @status="handleStatus($event)"
       @edit="$refs.formModal.edit($event)"
       @delete="handleDelete($event)"
     />
@@ -95,7 +101,8 @@
 import { STable } from '@/components'
 import FormPopup from './modules/FormPopup'
 import ViewPopup from './modules/ViewPopup'
-import { getCustomerList } from '@/api/customer'
+import { getMemberNameList } from '@/api/member'
+import { getCustomerList, customerAdd, customerUpdate, customerDelete } from '@/api/customer'
 import i18n from '@/locales'
 
 export default {
@@ -132,35 +139,72 @@ export default {
           dataIndex: 'developmentSkill'
         },
         {
-          title: i18n.t('customer.city'),
-          dataIndex: 'city'
+          title: i18n.t('customer.address'),
+          key: 'id',
+          customRender: (row) => {
+            return this.$options.filters.filterCity(row.province, row.city)
+          }
+        },
+        {
+          title: i18n.t('customer.description'),
+          dataIndex: 'description',
+          width: '170px',
+          ellipsis: true
         },
         {
           title: i18n.t('option.action'),
           dataIndex: 'action',
-          width: '210px',
+          width: '200px',
+          align: 'right',
           scopedSlots: { customRender: 'action' }
         }
       ],
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
-        return getCustomerList()
-          .then(res => {
-            return res.data
-          })
-      }
+        return getCustomerList().then(res => {
+          return res.data
+        })
+      },
+      userList: []
     }
   },
+  created () {
+    this.$nextTick(() => {
+      getMemberNameList().then(res => {
+        this.userList = res.data
+      })
+    })
+  },
   methods: {
-    handleAdd (record) {
-      record.id = 99
-      this.$refs.table.add(record)
+    handleAdd (row) {
+      customerAdd(row).then(res => {
+        this.$message.success(res.msg)
+        this.$refs.formModal.setConfirmLoading()
+        this.$refs.formModal.setVisible()
+        this.$refs.table.init()
+      })
     },
-    handleUpdate (record) {
-      this.$refs.table.update(record)
+    handleUpdate (row) {
+      customerUpdate(row).then(res => {
+        this.$message.success(res.msg)
+        this.$refs.formModal.setConfirmLoading()
+        this.$refs.table.update(row)
+      })
     },
-    handleDelete (record) {
-      this.$refs.table.delete(record)
+    handleDelete (row) {
+      this.$confirm({
+        title: i18n.t('message.handleDeleteInfo'),
+        okType: 'danger',
+        onOk: () => {
+          customerDelete({
+            id: row.id
+          }).then(res => {
+            this.$message.success(res.msg)
+            this.$refs.viewModal.setVisible()
+            this.$refs.table.delete(row)
+          })
+        }
+      })
     },
     toggleAdvanced () {
       this.advanced = !this.advanced

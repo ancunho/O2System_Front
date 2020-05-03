@@ -28,42 +28,42 @@ export default {
     }
   }),
   created () {
-    this.localLoading = true
-    const data = this.data()
-
-    // 对接自己的通用数据接口需要修改下方代码
-    if ((typeof data === 'object' || typeof data === 'function') && typeof data.then === 'function') {
-      data.then(res => {
-        // 初始化分页
-        this.localPagination = {
-          current: 1,
-          total: res.data.length,
-          showSizeChanger: true,
-          pageSize: 10
-        }
-
-        // 数据不满足分页大小，关闭 table 分页功能
-        try {
-          if ((['auto', true].includes(this.showPagination) && res.data.length <= this.localPagination.pageSize)) {
-            this.localPagination.hideOnSinglePage = true
-          }
-        } catch (e) {
-          this.localPagination = false
-        }
-        this.localDataSource = res.data // 返回结果中的数组数据
-        this.SearchDataSource = [...res.data] // 返回结果中的数组数据(深拷贝)
-      }).catch(err => {
-        this.$notification['error']({
-          message: 'Error',
-          description: ((err.response || {}).data || {}).msg || 'Request error, please try again later',
-          duration: 4
-        })
-      }).finally(_ => {
-        this.localLoading = false
-      })
-    }
+    this.init()
   },
   methods: {
+    /**
+     * 初始化
+     */
+    init () {
+      this.localLoading = true
+      const data = this.data()
+
+      // 对接自己的通用数据接口需要修改下方代码
+      if ((typeof data === 'object' || typeof data === 'function') && typeof data.then === 'function') {
+        data.then(res => {
+          // 初始化分页
+          this.localPagination = {
+            current: 1,
+            total: res.length,
+            showSizeChanger: true,
+            pageSize: 10
+          }
+
+          // 数据不满足分页大小，关闭 table 分页功能
+          try {
+            if ((['auto', true].includes(this.showPagination) && res.length <= this.localPagination.pageSize)) {
+              this.localPagination.hideOnSinglePage = true
+            }
+          } catch (e) {
+            this.localPagination = false
+          }
+          this.localDataSource = res // 返回结果中的数组数据
+          this.SearchDataSource = [...res] // 返回结果中的数组数据(深拷贝)
+        }).finally(_ => {
+          this.localLoading = false
+        })
+      }
+    },
     /**
      * 表格重新加载方法
      */
@@ -98,26 +98,23 @@ export default {
     /**
      * 新建
      */
-    add (record) {
-      this.SearchDataSource.unshift(record)
+    add (row) {
+      this.SearchDataSource.unshift(row)
       this.refresh('add')
-      this.$message.success('新建成功')
     },
     /**
      * 编辑
      */
-    update (record) {
-      this.SearchDataSource.splice(this.SearchDataSource.findIndex(item => item.id === record.id), 1, record)
+    update (row) {
+      this.SearchDataSource.splice(this.SearchDataSource.findIndex(item => item.id === row.id), 1, row)
       this.refresh('update')
-      this.$message.success('编辑成功')
     },
     /**
      * 删除
      */
-    delete (record) {
-      this.SearchDataSource.splice(this.SearchDataSource.findIndex(item => item.id === record.id), 1)
+    delete (row) {
+      this.SearchDataSource.splice(this.SearchDataSource.findIndex(item => item.id === row.id), 1)
       this.refresh('delete')
-      this.$message.success('删除成功')
     }
   },
 

@@ -13,6 +13,11 @@ const types = {
     img: 'https://gw.alipayobjects.com/zos/rmsportal/RVRUAYdCGeYNBWoKiIwB.svg',
     title: '500',
     desc: 'Sorry, something went wrong on the server'
+  },
+  999: {
+    img: '/developing.svg',
+    title: 'Developing',
+    desc: '当前页面正在开发中'
   }
 }
 

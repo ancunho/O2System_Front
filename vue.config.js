@@ -1,5 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
+const productionGzipExtensions = ['js', 'css']
 const createThemeColorReplacerPlugin = require('./config/plugin.config')
 
 function resolve (dir) {
@@ -32,7 +34,14 @@ const vueConfig = {
     // webpack plugins
     plugins: [
       // Ignore all locale files of moment.js
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+      // 配置compression-webpack-plugin压缩
+      new CompressionWebpackPlugin({
+        algorithm: 'gzip',
+        test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
+        threshold: 10240,
+        minRatio: 0.8
+      })
     ],
     // if prod, add externals
     externals: isProd ? assetsCDN.externals : {}
@@ -85,14 +94,14 @@ const vueConfig = {
   },
 
   devServer: {
-    // development server port 3000
     port: 3000
     // If you want to turn on the proxy, please remove the mockjs /src/main.jsL11
     // proxy: {
     //   '/api': {
-    //     target: 'https://mock.ihx.me/mock/5baf3052f7da7e07e04a5116/antd-pro',
-    //     ws: false,
-    //     changeOrigin: true
+    //     // ws: true,
+    //     // changeOrigin: true,
+    //     // target: 'http://114.55.169.130:9000'
+    //     target: 'http://192.168.1.4:9000'
     //   }
     // }
   },

@@ -55,11 +55,11 @@
 
 </template>
 <script>
+
 export default {
   data () {
     return {
       visible: false,
-      id: null,
       confirmLoading: false,
       fileList: [],
       uploading: false,
@@ -74,13 +74,10 @@ export default {
     }
   },
   methods: {
-    edit (id) {
+    edit () {
       this.visible = true
-      this.id = id
-      /* 获取原始头像 */
     },
     close () {
-      this.id = null
       this.visible = false
     },
     cancelHandel () {
@@ -120,21 +117,11 @@ export default {
           this.model = true
           this.modelSrc = img
           formData.append('file', data, this.fileName)
-          this.$http.post('http://www.mocky.io/v2/5e7b6e482d0000664911a0a1', formData, { contentType: false, processData: false, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+          this.$http.post('/common/file/single/upload', formData, { contentType: false, processData: false, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
             .then((response) => {
-              console.log('upload response:', response)
-              // var res = response.data
-              // if (response.status === 'done') {
-              //   _this.imgFile = ''
-              //   _this.headImg = res.realPathList[0] // 完整路径
-              //   _this.uploadImgRelaPath = res.relaPathList[0] // 非完整路径
-              //   _this.$message.success('上传成功')
-              //   this.visible = false
-              // }
-              _this.$message.success('上传成功')
-              _this.$emit('ok', response.url)
+              _this.$emit('ok', response.data)
               _this.visible = false
-            })
+            }).catch()
         })
       } else {
         this.$refs.cropper.getCropData((data) => {
@@ -156,8 +143,8 @@ export default {
     position: absolute;
     top: 50%;
     transform: translate(50%, -50%);
-    width: 180px;
-    height: 180px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     box-shadow: 0 0 4px #ccc;
     overflow: hidden;

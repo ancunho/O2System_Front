@@ -23,7 +23,7 @@
           </a-menu-item>
         </a-menu>
       </a-dropdown>
-      <lang-select />
+      <!--<lang-select />-->
     </div>
   </div>
 </template>
@@ -32,6 +32,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import LangSelect from '@/components/tools/LangSelect'
 import HeaderSearch from '@/components/tools/HeaderSearch'
+import i18n from '@/locales'
 
 export default {
   name: 'UserMenu',
@@ -45,13 +46,13 @@ export default {
   methods: {
     ...mapActions(['Logout']),
     handleLogout () {
-      return this.Logout({}).then(() => {
+      return this.Logout().then(() => {
         setTimeout(() => {
           window.location.reload()
         }, 16)
       }).catch(err => {
         this.$message.error({
-          title: 'Error',
+          title: i18n.t('message.error'),
           description: err.msg
         })
       })

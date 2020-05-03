@@ -8,7 +8,7 @@
       <h1>{{ config[type].title }}</h1>
       <div class="desc">{{ config[type].desc }}</div>
       <div class="actions">
-        <a-button type="primary" @click="handleToHome">go home</a-button>
+        <a-button type="primary" @click="handleToHome">{{ $t('option.goHome') }}</a-button>
       </div>
     </div>
   </div>

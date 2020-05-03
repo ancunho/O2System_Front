@@ -528,7 +528,7 @@ body {
   position: relative;
   margin: 0 auto;
   width: 100%;
-  max-width: 180px;
+  max-width: 150px;
   border-radius: 10px;
   box-shadow: 0 0 4px #ccc;
 
@@ -570,7 +570,7 @@ body {
 
   img, .mask {
     width: 100%;
-    max-width: 180px;
+    max-width: 150px;
     height: 100%;
     border-radius: 10px;
     overflow: hidden;
@@ -580,15 +580,31 @@ body {
 //model popup
 .table-page-popup-wrapper {
   .ant-form-inline {
+
+    .twoLine:after {
+      content: "";
+      display: block;
+      clear: both;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .twoLine .ant-form-item {
+      float: left;
+      width: calc(50% - 15px);
+      margin-right: 15px;
+    }
+
     .ant-form-item {
       display: flex;
-      margin-bottom: 20px;
+      margin-bottom: 20px !important;
       margin-right: 0;
 
       .ant-form-item-control-wrapper {
         flex: 1 1;
         display: inline-block;
         vertical-align: middle;
+        height: 32px;
       }
 
       > .ant-form-item-label {
@@ -600,6 +616,81 @@ body {
       .ant-form-item-control {
         height: 32px;
         line-height: 32px;
+      }
+    }
+  }
+}
+
+.select-loading {
+  padding: 7px 0;
+  text-align: center;
+}
+
+.project-box {
+  .button-box {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    padding: 15px 25px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
+    text-align: right;
+    z-index: 9;
+
+    button+button {
+      margin-left: 15px;
+    }
+  }
+
+  .ant-card {
+    margin-top: 24px;
+  }
+}
+
+.tablet,
+.mobile {
+  .project-box .ant-card {
+    margin-top: 15px;
+  }
+}
+
+.input-table {
+  border: 1px solid #e8e8e8;
+  border-bottom: 0;
+  border-radius: 4px;
+
+  table {
+    width: 100%;
+
+    &+table { border-top: 5px solid #e8e8e8; }
+
+    tr {
+      border-bottom: 1px solid #e8e8e8;
+
+      th,
+      td {
+        border-left: 1px solid #e8e8e8;
+        &:first-child { border-left: 0; }
+      }
+
+      th {
+        padding: 12px 20px;
+        background: #fafafa;
+        text-align: center;
+      }
+
+      td {
+        padding: 3px 5px;
+      }
+
+      .txtL { text-align: left }
+      .txtC { text-align: center }
+      .txtR { text-align: right }
+
+      .btns {
+        text-align: right;
+        padding: 15px;
       }
     }
   }
