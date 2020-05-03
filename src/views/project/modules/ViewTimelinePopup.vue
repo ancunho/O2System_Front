@@ -5,6 +5,7 @@
       :width="550"
       :maskClosable="false"
       :visible="visible"
+      v-if="visible"
       @cancel="handleCancel"
     >
       <a-timeline class="meeting-box">
@@ -12,17 +13,26 @@
           <p class="title">
             <b>
               {{ item.meetingDate }} - {{ item.timelineAuthor }}
-              <a-divider type="vertical" />
-              <a class="edit" @click="$refs.timelineFormModal.edit(item)">{{ $t('option.edit') }}</a>
-              <a-divider type="vertical" />
-              <a class="delete" @click="handleDelete(item.id)">{{ $t('option.delete') }}</a>
+              <span v-permission:b="projectSalesMan">
+                <a-divider type="vertical" />
+                <a class="edit" @click="$refs.timelineFormModal.edit(item)">{{ $t('option.edit') }}</a>
+                <a-divider type="vertical" />
+                <a class="delete" @click="handleDelete(item.id)">{{ $t('option.delete') }}</a>
+              </span>
             </b>
             <span>会议时间: {{ item.meetingTime }}分钟</span>
           </p>
           <p>{{ item.timelineContent }}</p>
         </a-timeline-item>
       </a-timeline>
-      <a-button type="dashed" block @click="$refs.timelineFormModal.add()">{{ $t('option.add') }}</a-button>
+      <a-button
+        v-permission:b="projectSalesMan"
+        type="dashed"
+        block
+        @click="$refs.timelineFormModal.add()"
+      >
+        {{ $t('option.add') }}
+      </a-button>
       <template slot="footer">
         <a-button @click="handleCancel">{{ $t('option.cancel') }}</a-button>
       </template>
@@ -51,13 +61,15 @@ export default {
       title: i18n.t('option.timeline'),
       visible: false,
       projectId: null,
+      projectSalesMan: null,
       timeline: []
     }
   },
   methods: {
-    view (id) {
+    view (id, projectSalesMan) {
       this.visible = true
       this.projectId = id
+      this.projectSalesMan = projectSalesMan
 
       getProjectTimelineList({
         projectId: this.projectId
@@ -84,7 +96,7 @@ export default {
     },
     handleDelete (id) {
       this.$confirm({
-        title: i18n.t('member.handleResetInfo'),
+        title: i18n.t('message.handleResetInfo'),
         okType: 'danger',
         onOk: () => {
           projectTimelineDelete({

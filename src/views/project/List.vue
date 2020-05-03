@@ -80,10 +80,10 @@
         </span>
         <span slot="action" slot-scope="text, row" class="table-option">
           <template>
-            <a @click="$refs.timelineViewModal.view(row.id)">{{ $t('option.timeline') }}</a>
+            <a @click="$refs.timelineViewModal.view(row.id, row.projectSalesMan)">{{ $t('option.timeline') }}</a>
             <a-divider type="vertical" />
             <a @click="handleView(row)">{{ $t('option.view') }}</a>
-            <span v-permission:view="['ROLE_ADMIN']">
+            <span v-permission:b="[]">
               <a-divider type="vertical" />
               <a @click="handleDelete(row)">{{ $t('option.delete') }}</a>
             </span>
@@ -246,7 +246,13 @@ export default {
       })
     },
     handleDelete (row) {
-      this.$refs.table.delete(row)
+      this.$confirm({
+        title: i18n.t('message.handleDeleteInfo'),
+        okType: 'danger',
+        onOk: () => {
+          this.$refs.table.delete(row)
+        }
+      })
     },
     toggleAdvanced () {
       this.advanced = !this.advanced

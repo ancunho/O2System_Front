@@ -7,13 +7,18 @@ export default {
     'dashboard': '仪表盘',
     'dashboard-workplace': '工作台',
     'member': '会员管理',
-    'member-list': '会员管理列表',
+    'member-list': '会员列表',
     'customer': '客户管理',
-    'customer-list': '客户管理列表',
+    'customer-list': '客户列表',
     'project': '项目管理',
-    'project-list': '项目管理列表',
+    'project-list': '项目列表',
     'project-view': '查看项目',
     'project-edit': '编辑项目',
+    'project-record': '项目记录',
+    'material': '材料管理',
+    'material-list': '材料列表',
+    'law': '法律管理',
+    'law-list': '法律列表',
     'account': '个人页',
     'account-settings': '个人设置',
     'account-settings-base': '基础设置',
@@ -79,10 +84,7 @@ export default {
     'imagePhoto': '会员照片',
     'createtime': '注册时间',
     'resetPassword': '初始化密码',
-    'projectList': '负责项目列表',
-    'handleResetInfo': '确定要初始化密码吗？',
-    'handleUpdateInfo': '确定要修改吗？',
-    'handleDeleteInfo': '确定要删除吗？'
+    'projectList': '负责项目列表'
   },
   customer: {
     'customerCd': '客户编号',
@@ -143,6 +145,7 @@ export default {
     'specialComment': '*特技事项'
   },
   option: {
+    'goHome': '返回首页',
     'getInfo': '获取信息',
     'action': '操作',
     'search': '查询',
@@ -174,6 +177,9 @@ export default {
     'request-error': '请求错误，请稍后再试',
     'required': '必填(选)项',
     'format': '请正确输入',
-    'used': '已被使用'
+    'used': '已被使用',
+    'handleResetInfo': '确定要初始化密码吗？',
+    'handleUpdateInfo': '确定要修改吗？',
+    'handleDeleteInfo': '确定要删除吗？'
   }
 }

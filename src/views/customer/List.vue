@@ -51,7 +51,6 @@
 
     <div class="table-operator">
       <a-button
-        v-permission:view="['ROLE_ADMIN']"
         type="primary"
         icon="plus"
         @click="$refs.formModal.add()"
@@ -74,9 +73,11 @@
           <a>{{ $t('option.project') }}</a>
           <a-divider type="vertical" />
           <a @click="$refs.viewModal.view(row)">{{ $t('option.view') }}</a>
-          <span v-permission:view="['ROLE_ADMIN']">
+          <span v-permission:b="row.salesMan">
             <a-divider type="vertical" />
             <a @click="$refs.formModal.edit(row)">{{ $t('option.edit') }}</a>
+          </span>
+          <span v-permission:b="[]">
             <a-divider type="vertical" />
             <a @click="handleDelete(row)">{{ $t('option.delete') }}</a>
           </span>
@@ -192,7 +193,7 @@ export default {
     },
     handleDelete (row) {
       this.$confirm({
-        title: i18n.t('member.handleDeleteInfo'),
+        title: i18n.t('message.handleDeleteInfo'),
         okType: 'danger',
         onOk: () => {
           customerDelete({

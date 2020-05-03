@@ -21,6 +21,7 @@ const logout = () => {
 
 const info = (options) => {
   const userInfo = {
+    'id': 1,
     'username': 'admin',
     'password': '',
     'realname': '某某',
@@ -40,6 +41,7 @@ const info = (options) => {
     'birthday': '2000-01-01',
     'sex': '1',
     'role': 'ROLE_ADMIN'
+    // 'role': 'ROLE_USER'
   }
   return builder(userInfo)
 }

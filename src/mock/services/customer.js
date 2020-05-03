@@ -21,7 +21,7 @@ const customerList = (options) => {
       'target': Mock.mock('@word(10)'),
       'productList': Mock.mock('@word(10)'),
       'distribution': Mock.mock('@word(10)'),
-      'salesMan': '[1,2,3]',
+      'salesMan': '[' + Mock.mock('@integer(0, 10)') + ',' + Mock.mock('@integer(0, 10)') + ']',
       // 'status': Mock.mock('@pick(["0", "1"])'),
       'customerImage': Mock.mock('@dataImage("150x150")')
     })

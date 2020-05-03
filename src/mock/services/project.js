@@ -11,7 +11,7 @@ const projectList = (options) => {
       'projectCustomer': Mock.mock('@cname'),
       'productName': Mock.mock('@cname'),
       'projectStatus': Mock.mock('@pick(["1", "2", "3", "4", "5"])'),
-      'projectSalesMan': '[1,2,3]',
+      'projectSalesMan': '[' + Mock.mock('@integer(0, 10)') + ',' + Mock.mock('@integer(0, 10)') + ']',
       'projectPriceTotal': Mock.mock(/\d{7}/) + '元',
       'projectStarttime': Mock.mock('@date'),
       'projectEndtime': Mock.mock('@date'),

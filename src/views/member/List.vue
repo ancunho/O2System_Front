@@ -187,7 +187,7 @@ export default {
     },
     handleReset (row) {
       this.$confirm({
-        title: i18n.t('member.handleResetInfo'),
+        title: i18n.t('message.handleResetInfo'),
         okType: 'danger',
         onOk: () => {
           memberResetPassword({
@@ -215,7 +215,7 @@ export default {
     },
     handleDelete (row) {
       this.$confirm({
-        title: i18n.t('member.handleDeleteInfo'),
+        title: i18n.t('message.handleDeleteInfo'),
         okType: 'danger',
         onOk: () => {
           memberDelete({
