@@ -186,7 +186,7 @@ const projectTimelineDelete = () => {
 }
 
 Mock.mock('/api/project/list', 'get', projectList)
-Mock.mock('/api/project/view', 'get', getProjectBaseinfo)
+Mock.mock('/api/project/view', 'post', getProjectBaseinfo)
 Mock.mock('/api/project/detail', 'get', getProjectDetail)
 Mock.mock('/api/project/baseinfo/create', 'post', projectBaseInfoAdd)
 Mock.mock('/api/project/baseinfo/update', 'post', projectBaseInfoUpdate)
