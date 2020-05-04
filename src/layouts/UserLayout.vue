@@ -7,7 +7,7 @@
       <div class="top">
         <div class="header">
           <a href="/">
-            <span class="title">O2System</span>
+            <span class="title">Kolmar</span>
           </a>
         </div>
         <div class="desc">
@@ -19,7 +19,7 @@
 
       <div class="footer">
         <div class="copyright">
-          Copyright &copy; 2020 O2System
+          Copyright &copy; 2020 Kolmar
         </div>
       </div>
     </div>

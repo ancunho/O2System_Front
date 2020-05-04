@@ -77,7 +77,7 @@ import { PageView } from '@/layouts'
 import { mapGetters } from 'vuex'
 import { Radar } from '@/components'
 
-const DataSet = require('@antv/data-set')
+// const DataSet = require('@antv/data-set')
 
 export default {
   name: 'Workplace',
@@ -99,39 +99,39 @@ export default {
     }
   },
   mounted () {
-    this.getProjects()
-    this.getActivity()
-    this.initRadar()
+    // this.getProjects()
+    // this.getActivity()
+    // this.initRadar()
   },
   methods: {
-    getProjects () {
-      this.$http.get('/workplace/projects')
-        .then(res => {
-          this.projects = res.data && res.data.data
-          this.loading = false
-        })
-    },
-    getActivity () {
-      this.$http.get('/workplace/activity')
-        .then(res => {
-          this.activities = res.data
-        })
-    },
-    initRadar () {
-      this.radarLoading = true
-      this.$http.get('/workplace/radar')
-        .then(res => {
-          const dv = new DataSet.View().source(res.data)
-          dv.transform({
-            type: 'fold',
-            fields: ['个人', '团队', '部门'],
-            key: 'user',
-            value: 'score'
-          })
-          this.radarData = dv.rows
-          this.radarLoading = false
-        })
-    }
+    // getProjects () {
+    //   this.$http.get('/workplace/projects')
+    //     .then(res => {
+    //       this.projects = res.data && res.data.data
+    //       this.loading = false
+    //     })
+    // },
+    // getActivity () {
+    //   this.$http.get('/workplace/activity')
+    //     .then(res => {
+    //       this.activities = res.data
+    //     })
+    // },
+    // initRadar () {
+    //   this.radarLoading = true
+    //   this.$http.get('/workplace/radar')
+    //     .then(res => {
+    //       const dv = new DataSet.View().source(res.data)
+    //       dv.transform({
+    //         type: 'fold',
+    //         fields: ['个人', '团队', '部门'],
+    //         key: 'user',
+    //         value: 'score'
+    //       })
+    //       this.radarData = dv.rows
+    //       this.radarLoading = false
+    //     })
+    // }
   }
 }
 </script>
