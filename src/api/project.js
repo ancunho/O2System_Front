@@ -10,7 +10,7 @@ export function getProjectList () {
 
 export function getProjectBaseinfo (parameter) {
   return axios({
-    url: '/project/baseinfo',
+    url: '/project/view',
     method: 'get',
     data: QS.stringify(parameter)
   })
