@@ -1,7 +1,10 @@
 <template>
   <div class="logo">
     <router-link :to="{name:'dashboard'}">
-      <img src="/logo.png" />
+      <h1>
+        <span class="open">{{ title }}</span>
+        <span class="close">{{ title2 }}</span>
+      </h1>
     </router-link>
   </div>
 </template>
@@ -12,7 +15,12 @@ export default {
   props: {
     title: {
       type: String,
-      default: '콜마',
+      default: '江苏科玛销售日志管理系统',
+      required: false
+    },
+    title2: {
+      type: String,
+      default: '江苏科玛',
       required: false
     },
     showTitle: {
