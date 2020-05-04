@@ -11,7 +11,7 @@ export function getProjectList () {
 export function getProjectBaseinfo (parameter) {
   return axios({
     url: '/project/view',
-    method: 'get',
+    method: 'post',
     data: QS.stringify(parameter)
   })
 }
