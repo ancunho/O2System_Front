@@ -13,7 +13,7 @@
           <p class="title">
             <b>
               {{ item.meetingDate }} - {{ item.timelineAuthor }}
-              <span v-permission:b="projectSalesMan">
+              <span v-permission:b="permissionList">
                 <a-divider type="vertical" />
                 <a class="edit" @click="$refs.timelineFormModal.edit(item)">{{ $t('option.edit') }}</a>
                 <a-divider type="vertical" />
@@ -26,7 +26,7 @@
         </a-timeline-item>
       </a-timeline>
       <a-button
-        v-permission:b="projectSalesMan"
+        v-permission:b="permissionList"
         type="dashed"
         block
         @click="$refs.timelineFormModal.add()"
@@ -62,15 +62,16 @@ export default {
       title: i18n.t('option.timeline'),
       visible: false,
       projectId: null,
-      projectSalesMan: null,
-      timeline: []
+      timeline: [],
+      permissionList: []
     }
   },
   methods: {
-    view (id, projectSalesMan) {
+    view (row) {
       this.visible = true
-      this.projectId = id
-      this.projectSalesMan = projectSalesMan
+      this.projectId = row.id
+      this.permissionList = JSON.parse(row.projectSalesMan)
+      this.permissionList.push(Number(row.projectCreater))
 
       getProjectTimelineList({
         projectId: this.projectId
