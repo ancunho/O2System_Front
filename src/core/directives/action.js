@@ -30,9 +30,11 @@ const action = Vue.directive('permission', {
 
     // 有权限跳出
     if (root.includes(userInfo.role) ||
-      val instanceof Array && val.includes(userInfo.id)) return
-
-    el.remove()
+      val instanceof Array && val.includes(userInfo.id)) {
+      el.style.display = 'inline-block'
+    } else {
+      el.style.display = 'none'
+    }
   }
 })
 

@@ -50,6 +50,7 @@
 import FormTimelinePopup from './FormTimelinePopup'
 import i18n from '@/locales'
 import { getProjectTimelineList, projectTimelineAdd, projectTimelineUpdate, projectTimelineDelete } from '@/api/project'
+import store from '@/store'
 
 export default {
   name: 'TimelineView',
@@ -79,6 +80,7 @@ export default {
     },
     handleAdd (row) {
       row.projectId = this.projectId
+      row.timelineAuthor = store.getters.userInfo.username
       projectTimelineAdd(row).then(res => {
         this.$refs.timelineFormModal.setConfirmLoading()
         this.$refs.timelineFormModal.setVisible()
@@ -87,6 +89,7 @@ export default {
       })
     },
     handleUpdate (row) {
+      row.timelineAuthor = store.getters.userInfo.username
       projectTimelineUpdate(row).then(res => {
         this.$refs.timelineFormModal.setConfirmLoading()
         this.$refs.timelineFormModal.setVisible()
