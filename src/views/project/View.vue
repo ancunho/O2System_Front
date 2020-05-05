@@ -11,7 +11,7 @@
       </a-descriptions>
 
       <template slot="action">
-        <a-button v-permission:u="baseInfo.projectSalesMan" type="primary" @click="handleEdit">编辑</a-button>
+        <a-button v-permission:u="permissionList" type="primary" @click="handleEdit">编辑</a-button>
       </template>
 
       <!-- 流程进度 -->
@@ -219,7 +219,7 @@
       >
         <template slot="title">
           历史信息
-          <a-button style="float: right" type="primary" size="small" @click="$refs.timelineViewModal.view(projectId, baseInfo.projectSalesMan)" >{{ $t('option.timeline') }}</a-button>
+          <a-button style="float: right" type="primary" size="small" @click="$refs.timelineViewModal.view(baseInfo)" >{{ $t('option.timeline') }}</a-button>
         </template>
         <div
           v-if="activeTabKey === item.key"
@@ -354,7 +354,8 @@ export default {
           tab: '出口/AS'
         }
       ],
-      activeTabKey: '1'
+      activeTabKey: '1',
+      permissionList: []
     }
   },
   created () {
@@ -369,6 +370,9 @@ export default {
         return getProjectView({
           projectId: this.projectId
         }).then(res => {
+          this.permissionList = JSON.parse(res.data.projectBaseinfo.projectSalesMan)
+          this.permissionList.push(Number(res.data.projectBaseinfo.projectCreater))
+
           this.baseInfo = res.data.projectBaseinfo
           this.baseInfo.customer = res.data.customer
 

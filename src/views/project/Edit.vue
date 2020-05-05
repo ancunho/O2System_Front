@@ -308,7 +308,7 @@
       >
         <template slot="title">
           历史信息
-          <a-button style="float: right" type="primary" @click="$refs.timelineViewModal.view(baseInfo.projectId)" >{{ $t('option.timeline') }}</a-button>
+          <a-button style="float: right" type="primary" @click="$refs.timelineViewModal.view(baseInfo)" >{{ $t('option.timeline') }}</a-button>
         </template>
         <div
           v-if="activeTabKey === item.key"

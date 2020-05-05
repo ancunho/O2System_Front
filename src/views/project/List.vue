@@ -80,7 +80,7 @@
         </span>
         <span slot="action" slot-scope="text, row" class="table-option">
           <template>
-            <a @click="$refs.timelineViewModal.view(row.id, row.projectSalesMan)">{{ $t('option.timeline') }}</a>
+            <a @click="$refs.timelineViewModal.view(row)">{{ $t('option.timeline') }}</a>
             <a-divider type="vertical" />
             <a @click="handleView(row)">{{ $t('option.view') }}</a>
             <span v-permission:b="[]">
