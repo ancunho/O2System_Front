@@ -8,18 +8,10 @@ export function getProjectList () {
   })
 }
 
-export function getProjectBaseinfo (parameter) {
+export function getProjectView (parameter) {
   return axios({
     url: '/project/view',
     method: 'post',
-    data: QS.stringify(parameter)
-  })
-}
-
-export function getProjectDetail (parameter) {
-  return axios({
-    url: '/project/detail',
-    method: 'get',
     data: QS.stringify(parameter)
   })
 }
@@ -59,7 +51,7 @@ export function projectDetailUpdate (parameter) {
 export function getProjectTimelineList (parameter) {
   return axios({
     url: '/project/timeline/list',
-    method: 'get',
+    method: 'post',
     data: QS.stringify(parameter)
   })
 }

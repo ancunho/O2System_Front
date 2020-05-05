@@ -218,17 +218,17 @@
                 </td>
                 <td>
                   <a-form-model-item>
-                    <a-input v-model="item.price" />
+                    <a-input type="number" v-model="item.price" />
                   </a-form-model-item>
                 </td>
                 <td>
                   <a-form-model-item>
-                    <a-input v-model="item.setPrice" />
+                    <a-input type="number" v-model="item.setPrice" />
                   </a-form-model-item>
                 </td>
                 <td>
                   <a-form-model-item>
-                    <a-input v-model="item.percent" />
+                    <a-input type="number" v-model="item.percent" />
                   </a-form-model-item>
                 </td>
               </tr>
@@ -240,9 +240,9 @@
               <tr>
                 <td></td>
                 <th>合计</th>
-                <td class="txtC">999</td>
-                <td class="txtC">99</td>
-                <td class="txtC">100%</td>
+                <td class="txtC">{{ total.price }}</td>
+                <td class="txtC">{{ total.setPrice }}</td>
+                <td class="txtC">{{ total.percent }}%</td>
               </tr>
               <tr>
                 <th colspan="2">{{ $t('project.valueNoVat') }}</th>
@@ -388,9 +388,14 @@
     </a-form-model>
 
     <div class="button-box">
-      <!--<a-button type="primary">编辑基本信息</a-button>-->
+      <a-button type="primary" @click="handleEdit">编辑基本信息</a-button>
       <a-button type="primary" @click="handleSubmit">保存</a-button>
     </div>
+
+    <form-popup
+      ref="formModal"
+      @update="handleUpdate($event)"
+    />
 
     <!--时间轴-->
     <view-timeline-popup
@@ -403,13 +408,15 @@
 import { PageView } from '@/layouts'
 import ViewTimelinePopup from './modules/ViewTimelinePopup'
 import { getMemberNameList } from '@/api/member'
-import { projectDetailAdd, projectDetailUpdate } from '@/api/project'
+import { projectBaseInfoUpdate, projectDetailAdd, projectDetailUpdate } from '@/api/project'
 import { mapGetters } from 'vuex'
+import FormPopup from '@/views/project/modules/FormPopup'
 
 export default {
   name: 'ProjectEdit',
   components: {
     PageView,
+    FormPopup,
     ViewTimelinePopup
   },
   computed: {
@@ -485,7 +492,30 @@ export default {
           tab: '出口/AS'
         }
       ],
-      activeTabKey: '1'
+      activeTabKey: '1',
+      total: {
+        price: 0,
+        setPrice: 0,
+        percent: 0
+      }
+    }
+  },
+  watch: {
+    'form.projectPrice.priceList': function (val) {
+      let price = 0
+      let setPrice = 0
+      let percent = 0
+      val.forEach(item => {
+        price += Number(item['price'])
+        setPrice += Number(item['setPrice'])
+        percent += Number(item['percent'])
+      })
+
+      this.total = {
+        price: price,
+        setPrice: setPrice,
+        percent: percent
+      }
     }
   },
   created () {
@@ -576,6 +606,20 @@ export default {
       }
     },
 
+    // 编辑
+    handleEdit () {
+      this.$refs.formModal.edit(this.baseInfo)
+    },
+
+    // 编辑保存
+    handleUpdate (values) {
+      projectBaseInfoUpdate(values).then(res => {
+        this.$refs.formModal.setConfirmLoading()
+        this.$refs.formModal.setVisible()
+        this.$message.success(res.msg)
+      })
+    },
+
     // 提交
     handleSubmit (info) {
       if (!this.form.projectProduct.productName) {
@@ -586,6 +630,7 @@ export default {
       // 修改参数
       const param = JSON.parse(JSON.stringify(this.form))
 
+      param.projectId = this.baseInfo.id
       param.projectStatus = this.form.projectRecordList.length
       param.projectProduct.projectId = this.baseInfo.id
       param.projectProduct.productMainMaterial = JSON.stringify(param.projectProduct.productMainMaterial)

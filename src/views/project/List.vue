@@ -90,6 +90,7 @@
           </template>
         </span>
       </s-table>
+
       <form-popup
         ref="formModal"
         @add="handleAdd($event)"
@@ -110,7 +111,6 @@ import FormPopup from './modules/FormPopup'
 import ViewTimelinePopup from './modules/ViewTimelinePopup'
 import { getProjectList, projectBaseInfoAdd } from '@/api/project'
 import { getMemberNameList } from '@/api/member'
-import { getCustomerNameList } from '@/api/customer'
 import i18n from '@/locales'
 
 const statusMap = [
@@ -211,17 +211,13 @@ export default {
             return res.data
           })
       },
-      userList: [],
-      customerList: []
+      userList: []
     }
   },
   created () {
     this.$nextTick(() => {
       getMemberNameList().then(res => {
         this.userList = res.data
-      })
-      getCustomerNameList().then(res => {
-        this.customerList = res.data
       })
     })
   },

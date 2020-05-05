@@ -16,7 +16,7 @@
 
       <!-- 流程进度 -->
       <a-card :bordered="false" title="流程进度">
-        <a-steps :direction="isMobile() && 'vertical' || 'horizontal'" :current="Number(baseInfo.projectStatus)" progressDot>
+        <a-steps :direction="isMobile() && 'vertical' || 'horizontal'" :current="Number(baseInfo.projectStatus) - 1" progressDot>
           <a-step v-for="item in tabList" :title="item.tab" :key="item.key" />
         </a-steps>
       </a-card>
@@ -284,7 +284,7 @@
 <script>
 import { mixinDevice } from '@/utils/mixin'
 import { PageView } from '@/layouts'
-import { getProjectBaseinfo, getProjectDetail } from '@/api/project'
+import { getProjectView } from '@/api/project'
 import { getMemberNameList } from '@/api/member'
 import ViewTimelinePopup from '@/views/project/modules/ViewTimelinePopup'
 import store from '@/store'
@@ -358,7 +358,7 @@ export default {
     }
   },
   created () {
-    this.projectId = this.$route.params.projectId
+    this.projectId = this.$route.params.id
     this.$nextTick(() => {
       new Promise(resolve => {
         return getMemberNameList().then(res => {
@@ -366,24 +366,30 @@ export default {
           resolve()
         })
       }).then(() => {
-        return getProjectBaseinfo({
+        return getProjectView({
           projectId: this.projectId
         }).then(res => {
-          this.baseInfo = res.data
-        })
-      }).then(() => {
-        return getProjectDetail({
-          projectId: this.projectId
-        }).then(res => {
-          this.form = res.data
-          this.form.projectProduct.productMainMaterial = JSON.parse(this.form.projectProduct.productMainMaterial)
-          this.form.projectProduct.productSubMaterial = JSON.parse(this.form.projectProduct.productSubMaterial)
-          this.form.projectPrice.priceList = JSON.parse(this.form.projectPrice.priceList)
-          this.form.projectPrice.descriptionList = JSON.parse(this.form.projectPrice.descriptionList)
+          this.baseInfo = res.data.projectBaseinfo
+          this.baseInfo.customer = res.data.customer
 
-          this.form.projectRecordList.forEach((item, index) => {
-            item.recordContent = JSON.parse(item.recordContent)
-          })
+          if (res.data.projectProduct) {
+            this.form.projectProduct = res.data.projectProduct
+            this.form.projectProduct.productMainMaterial = JSON.parse(this.form.projectProduct.productMainMaterial)
+            this.form.projectProduct.productSubMaterial = JSON.parse(this.form.projectProduct.productSubMaterial)
+          }
+
+          if (res.data.projectPrice) {
+            this.form.projectPrice = res.data.projectPrice
+            this.form.projectPrice.priceList = JSON.parse(this.form.projectPrice.priceList)
+            this.form.projectPrice.descriptionList = JSON.parse(this.form.projectPrice.descriptionList)
+          }
+
+          if (res.data.projectRecordList) {
+            this.form.projectRecordList = res.data.projectRecordList
+            this.form.projectRecordList.forEach((item, index) => {
+              item.recordContent = JSON.parse(item.recordContent)
+            })
+          }
 
           this.loading = false
         })

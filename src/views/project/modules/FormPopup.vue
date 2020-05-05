@@ -6,7 +6,7 @@
       :maskClosable="false"
       :visible="visible"
       :confirmLoading="confirmLoading"
-      :okText="$t('option.createProject')"
+      :okText="actionType === 'add' ? $t('option.createProject') : $t('option.save')"
       @ok="handleSubmit"
       @cancel="handleCancel"
     >
@@ -33,7 +33,7 @@
               <a-col :md="12" :sm="24">
                 <a-form-item :label="$t('project.projectSalesMan')">
                   <a-select mode="multiple" optionFilterProp="children" v-decorator="['projectSalesMan', {rules: [{required: true, message: $t('message.required')}]}]">
-                    <a-select-option v-for="item in this.$parent.$parent.$parent.userList" :key="item.id">{{ item.realname }}</a-select-option>
+                    <a-select-option v-for="item in userList" :key="item.id">{{ item.realname }}</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -157,7 +157,7 @@
         placeholder="请搜索"
         style="width: 100%"
       >
-        <a-select-option v-for="item in this.$parent.$parent.$parent.customerList" :key="item.id">{{ item.customerName }}</a-select-option>
+        <a-select-option v-for="item in customerList" :key="item.id">{{ item.customerName }}</a-select-option>
       </a-select>
     </a-modal>
   </div>
@@ -166,7 +166,8 @@
 <script>
 import i18n from '@/locales'
 import pca from 'china-division/dist/pca-code.json'
-import { getCustomerById } from '@/api/customer'
+import { getCustomerById, getCustomerNameList } from '@/api/customer'
+import { getMemberNameList } from '@/api/member'
 
 export default {
   name: 'ProjectForm',
@@ -179,6 +180,7 @@ export default {
       visibleCustomer: false,
       confirmLoading: false,
       form: this.$form.createForm(this),
+      formData: {},
       address: {
         fieldName: {
           label: 'name',
@@ -187,8 +189,20 @@ export default {
         },
         data: [...pca]
       },
-      customerId: ''
+      customerId: '',
+      userList: [],
+      customerList: []
     }
+  },
+  created () {
+    this.$nextTick(() => {
+      getMemberNameList().then(res => {
+        this.userList = res.data
+      })
+      getCustomerNameList().then(res => {
+        this.customerList = res.data
+      })
+    })
   },
   methods: {
     add () {
@@ -197,14 +211,34 @@ export default {
       this.form.resetFields()
       this.visible = true
     },
-    edit (val) {
+    edit (row) {
       this.title = i18n.t('option.edit')
       this.actionType = 'update'
       this.visible = true
-      // this.$nextTick(() => {
-      //   this.form.setFieldsValue({
-      //   })
-      // })
+      this.$nextTick(() => {
+        this.form.setFieldsValue({
+          projectCd: row.projectCd,
+          projectStarttime: this.$options.filters.filterS2D(row.projectStarttime),
+          projectEndtime: this.$options.filters.filterS2D(row.projectEndtime),
+          projectName: row.projectName,
+          projectPriceTotal: row.projectPriceTotal,
+          projectSalesMan: JSON.parse(row.projectSalesMan),
+          customerCd: row.customer.customerCd,
+          customerName: row.customer.customerName,
+          director: row.customer.director,
+          phone: row.customer.phone,
+          wechat: row.customer.wechat,
+          description: row.customer.description,
+          salesVolumn: row.customer.salesVolumn,
+          developmentSkill: row.customer.developmentSkill,
+          target: row.customer.target,
+          productList: row.customer.productList,
+          distribution: row.customer.distribution,
+          addressSelect: row.customer.province ? [row.customer.province, row.customer.city, row.customer.area] : null,
+          address: row.customer.address
+        })
+      })
+      this.formData = Object.assign({}, this.formData, row)
     },
     handleSubmit () {
       const { form: { validateFields } } = this

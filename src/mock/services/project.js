@@ -15,6 +15,7 @@ const projectList = (options) => {
       'projectPriceTotal': Mock.mock(/\d{7}/) + '元',
       'projectStarttime': Mock.mock('@date'),
       'projectEndtime': Mock.mock('@date'),
+      'projectCreater': '1',
       'createtime': Mock.mock('@date')
     })
   }
@@ -22,7 +23,7 @@ const projectList = (options) => {
   return builder(data)
 }
 
-const getProjectBaseinfo = (options) => {
+const getProjectView = (options) => {
   return builder({
     'customer': {
       'address': '阿斯顿看风使舵 XXXX号',
@@ -35,7 +36,7 @@ const getProjectBaseinfo = (options) => {
       'director': 'direcotr',
       'distribution': 'distribution',
       'phone': '18521095572',
-      'productList': '["牛奶","水果","冰淇淋","可乐"]',
+      'productList': '12312313',
       'projectId': '[2,23]',
       'province': '31',
       'city': '3101',
@@ -46,18 +47,16 @@ const getProjectBaseinfo = (options) => {
       'target': 'target',
       'wechat': 'cunho910'
     },
-    'projectCd': '2020041800002',
-    'projectEndtime': '2022-09-01',
-    'projectName': 'project name2222',
-    'projectPriceTotal': '90000元',
-    'projectSalesMan': '[1,2,3]',
-    'projectStarttime': '2020-03-01',
-    'projectStatus': '1'
-  })
-}
-
-const getProjectDetail = (options) => {
-  return builder({
+    'projectBaseinfo': {
+      'projectCd': '2020041800002',
+      'projectEndtime': '2022-09-01',
+      'projectName': 'project name2222',
+      'projectPriceTotal': '90000元',
+      'projectSalesMan': '[1,2,3]',
+      'projectStarttime': '2020-03-01',
+      'projectStatus': '1',
+      'projectCreater': '1'
+    },
     'projectPrice': {
       'actualInput': '11111',
       'actualProduction': '9999',
@@ -66,7 +65,7 @@ const getProjectDetail = (options) => {
       'orderQuantity': '111',
       'packageSpec': '22222',
       'personInCharge': 'text',
-      'priceList': '[{"project":"project","price":"price","setPrice":"setPrice","percent":"percent"}]',
+      'priceList': '[{"project":"project","price":11,"setPrice":22,"percent":5}]',
       'productName': '제품명',
       'projectId': 1,
       'projectProductId': 2,
@@ -186,13 +185,12 @@ const projectTimelineDelete = () => {
 }
 
 Mock.mock('/api/project/list', 'get', projectList)
-Mock.mock('/api/project/view', 'post', getProjectBaseinfo)
-Mock.mock('/api/project/detail', 'get', getProjectDetail)
+Mock.mock('/api/project/view', 'post', getProjectView)
 Mock.mock('/api/project/baseinfo/create', 'post', projectBaseInfoAdd)
 Mock.mock('/api/project/baseinfo/update', 'post', projectBaseInfoUpdate)
 Mock.mock('/api/project/detail/create', 'post', projectDetailAdd)
 Mock.mock('/api/project/detail/update', 'post', projectDetailUpdate)
-Mock.mock('/api/project/timeline/list', 'get', getProjectTimelineList)
+Mock.mock('/api/project/timeline/list', 'post', getProjectTimelineList)
 Mock.mock('/api/project/timeline/create', 'post', projectTimelineAdd)
 Mock.mock('/api/project/timeline/update', 'post', projectTimelineUpdate)
 Mock.mock('/api/project/timeline/delete', 'post', projectTimelineDelete)
