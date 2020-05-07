@@ -96,7 +96,7 @@ export const asyncRouterMap = [
           {
             path: '/project/record',
             name: 'projectRecord',
-            component: () => import('@/views/exception/999'),
+            component: () => import('@/views/project/Record'),
             meta: { title: 'menu.project-record', permission: [ 'ROLE_ADMIN', 'ROLE_USER' ] }
           }
         ]

@@ -1,7 +1,7 @@
 import Mock from 'mockjs2'
-import { builder } from '../util'
+import { builder, getBodyByQs } from '../util'
 
-const projectList = (options) => {
+const getProjectList = (options) => {
   const data = []
   for (let i = 1; i < 15; i++) {
     data.push({
@@ -184,7 +184,21 @@ const projectTimelineDelete = () => {
   return builder({}, '删除成功')
 }
 
-Mock.mock('/api/project/list', 'get', projectList)
+const getProjectRecordList = (options) => {
+  const body = getBodyByQs(options)
+  const data = []
+  for (let i = 1; i < 7; i++) {
+    data.push({
+      'projectId': body.projectId,
+      'recordId': i,
+      'recordContent': '[{"title":"title","date":"2020-05-05","content":"content","principal":"principal","check":"check"}]'
+    })
+  }
+
+  return builder(data)
+}
+
+Mock.mock('/api/project/list', 'get', getProjectList)
 Mock.mock('/api/project/view', 'post', getProjectView)
 Mock.mock('/api/project/baseinfo/create', 'post', projectBaseInfoAdd)
 Mock.mock('/api/project/baseinfo/update', 'post', projectBaseInfoUpdate)
@@ -194,3 +208,4 @@ Mock.mock('/api/project/timeline/list', 'post', getProjectTimelineList)
 Mock.mock('/api/project/timeline/create', 'post', projectTimelineAdd)
 Mock.mock('/api/project/timeline/update', 'post', projectTimelineUpdate)
 Mock.mock('/api/project/timeline/delete', 'post', projectTimelineDelete)
+Mock.mock('/api/project/record/list', 'post', getProjectRecordList)
