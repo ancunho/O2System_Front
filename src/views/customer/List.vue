@@ -73,11 +73,11 @@
           <a>{{ $t('option.project') }}</a>
           <a-divider type="vertical" />
           <a @click="$refs.viewModal.view(row)">{{ $t('option.view') }}</a>
-          <span v-permission:b="row.salesMan">
+          <span v-permission:i="row.salesMan">
             <a-divider type="vertical" />
             <a @click="$refs.formModal.edit(row)">{{ $t('option.edit') }}</a>
           </span>
-          <span v-permission:b="[]">
+          <span v-permission:i="[]">
             <a-divider type="vertical" />
             <a @click="handleDelete(row)">{{ $t('option.delete') }}</a>
           </span>

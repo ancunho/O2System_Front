@@ -83,7 +83,7 @@
             <a @click="$refs.timelineViewModal.view(row)">{{ $t('option.timeline') }}</a>
             <a-divider type="vertical" />
             <a @click="handleView(row)">{{ $t('option.view') }}</a>
-            <span v-permission:b="[]">
+            <span v-permission:i="[]">
               <a-divider type="vertical" />
               <a @click="handleDelete(row)">{{ $t('option.delete') }}</a>
             </span>

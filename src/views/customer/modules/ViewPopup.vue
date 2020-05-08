@@ -40,8 +40,8 @@
 
     <template slot="footer">
       <a-button @click="handleCancel">{{ $t('option.cancel') }}</a-button>
-      <a-button v-permission:b="customer.salesMan" type="primary" @click="handleEdit">{{ $t('option.edit') }}</a-button>
-      <a-button v-permission:b="[]" type="danger" @click="handleDelete">{{ $t('option.delete') }}</a-button>
+      <a-button v-permission:i="customer.salesMan" type="primary" @click="handleEdit">{{ $t('option.edit') }}</a-button>
+      <a-button v-permission:i="[]" type="danger" @click="handleDelete">{{ $t('option.delete') }}</a-button>
     </template>
   </a-modal>
 </template>

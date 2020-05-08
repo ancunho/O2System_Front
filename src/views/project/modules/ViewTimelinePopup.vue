@@ -13,7 +13,7 @@
           <p class="title">
             <b>
               {{ item.meetingDate }} - {{ item.timelineAuthor }}
-              <span v-permission:b="permissionList">
+              <span v-permission:i="permissionList">
                 <a-divider type="vertical" />
                 <a class="edit" @click="$refs.timelineFormModal.edit(item)">{{ $t('option.edit') }}</a>
                 <a-divider type="vertical" />
@@ -26,7 +26,7 @@
         </a-timeline-item>
       </a-timeline>
       <a-button
-        v-permission:b="permissionList"
+        v-permission:i="permissionList"
         type="dashed"
         block
         @click="$refs.timelineFormModal.add()"

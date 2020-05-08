@@ -12,7 +12,7 @@ const action = Vue.directive('permission', {
     const arg = binding.arg
     const val = typeof binding.value === 'string' ? JSON.parse(binding.value) : binding.value
 
-    if (arg !== 'b') return
+    if (arg !== 'i') return
 
     // 有权限跳出
     if (root.includes(userInfo.role) ||

@@ -15,12 +15,12 @@ export default {
   props: {
     title: {
       type: String,
-      default: '江苏科玛销售日志管理系统',
+      default: 'BnH OSS',
       required: false
     },
     title2: {
       type: String,
-      default: '江苏科玛',
+      default: 'BnH OSS',
       required: false
     },
     showTitle: {
