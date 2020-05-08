@@ -7,11 +7,11 @@
       <div class="top">
         <div class="header">
           <a href="/">
-            <span class="title">Kolmar</span>
+            <span class="title">KBH ODM/OEM Sales System</span>
           </a>
         </div>
         <div class="desc">
-          销售日志管理系统
+          Kolmar
         </div>
       </div>
 
@@ -19,7 +19,7 @@
 
       <div class="footer">
         <div class="copyright">
-          Copyright &copy; 2020 Kolmar
+          Copyright &copy; 2020 BnH OSS
         </div>
       </div>
     </div>

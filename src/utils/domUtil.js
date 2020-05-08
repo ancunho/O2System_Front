@@ -16,4 +16,4 @@ export const setDocumentTitle = function (title) {
   }
 }
 
-export const domTitle = 'Kolmar'
+export const domTitle = 'BnH OSS'

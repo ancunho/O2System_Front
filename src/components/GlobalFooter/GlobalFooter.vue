@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
     <div class="copyright">
-      Copyright &copy; 2020 Kolmar
+      Copyright &copy; 2020 BnH OSS
     </div>
   </div>
 </template>

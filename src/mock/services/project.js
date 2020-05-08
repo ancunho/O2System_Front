@@ -15,7 +15,7 @@ const getProjectList = (options) => {
       'projectPriceTotal': Mock.mock(/\d{7}/) + '元',
       'projectStarttime': Mock.mock('@date'),
       'projectEndtime': Mock.mock('@date'),
-      'projectCreater': '1',
+      'projectCreater': '2',
       'createtime': Mock.mock('@date')
     })
   }

@@ -38,48 +38,54 @@
                   v-for="(content, index) in projectRecordList[item.id].recordContent"
                   :key="index"
                 >
-                  <td>
-                    <a-input v-model="content.title" />
-                  </td>
-                  <td>
-                    <a-date-picker style="width:100%" v-model="content.date" />
-                  </td>
-                  <td>
-                    <a-input v-model="content.content" />
-                  </td>
-                  <td>
-                    <a-input v-model="content.principal" />
-                  </td>
-                  <td>
-                    <a-input v-model="content.check" />
-                  </td>
+                  <td>{{ content.title }}</td>
+                  <td>{{ content.date }}</td>
+                  <td>{{ content.content }}</td>
+                  <td>{{ content.principal }}</td>
+                  <td>{{ content.check }}</td>
                 </tr>
               </template>
-              <tr>
-                <td colspan="5" class="btns">
-                  <a-button type="primary" size="small" icon="plus" @click="handleRecordPush(item.id)" >添加一行</a-button>
-                </td>
-              </tr>
             </tbody>
           </table>
         </div>
       </a-card>
+
+      <div
+        v-show="!loading"
+        style="margin-top: 20px; text-align: right;"
+      >
+        <a-button
+          v-permission:u="permissionList"
+          type="primary"
+          @click="handleEdit"
+        >
+          编辑
+        </a-button>
+      </div>
     </a-card>
+
+    <form-record-popup
+      ref="recordFormModal"
+      @update="handleUpdate($event)"
+    />
   </page-view>
 </template>
 
 <script>
 import { PageView } from '@/layouts'
-import { getProjectList, getProjectRecordList } from '@/api/project'
+import { getProjectList, getProjectRecordList, projectTimelineUpdate } from '@/api/project'
+import FormRecordPopup from './modules/FormRecordPopup'
+import store from '@/store'
 
 export default {
   name: 'ProjectRecord',
   components: {
-    PageView
+    PageView,
+    FormRecordPopup
   },
   data () {
     return {
-      loading: false,
+      loading: true,
       projectList: [],
       tabList: [
         {
@@ -109,7 +115,8 @@ export default {
         }
       ],
       activeTabKey: '1',
-      projectRecordList: []
+      projectRecordList: [],
+      permissionList: []
     }
   },
   created () {
@@ -122,45 +129,33 @@ export default {
       getProjectRecordList({
         projectId: value
       }).then(res => {
-        console.log(res.data)
+        const temp = this.projectList.find((x) => x['id'] === value)
+        if (temp) {
+          this.permissionList = JSON.parse(temp.projectSalesMan)
+          this.permissionList.push(Number(temp.projectCreater))
+        }
+
         this.projectRecordList = res.data
         if (res.data) {
           this.projectRecordList = res.data
           this.projectRecordList.forEach((item, index) => {
             item.recordContent = JSON.parse(item.recordContent)
-            item.recordContent.forEach((item, index) => {
-              item.date = this.$options.filters.filterS2D(item.date)
-            })
           })
         }
+        this.loading = false
       })
     },
-
-    // 添加历史信息
-    handleRecordPush (id) {
-      if (this.projectRecordList[id]) {
-        this.projectRecordList[id].recordContent.push({
-          title: '',
-          date: null,
-          content: '',
-          principal: '',
-          check: ''
-        })
-      } else {
-        this.projectRecordList.push({
-          projectId: 0, // id
-          recordId: this.projectRecordList.length + 1,
-          recordContent: [
-            {
-              title: '',
-              date: null,
-              content: '',
-              principal: '',
-              check: ''
-            }
-          ] // 内容list
-        })
-      }
+    handleEdit () {
+      this.$refs.recordFormModal.edit(Object.assign([], this.projectRecordList))
+    },
+    handleUpdate (row) {
+      row.timelineAuthor = store.getters.userInfo.username
+      projectTimelineUpdate(row).then(res => {
+        this.$refs.timelineFormModal.setConfirmLoading()
+        this.$refs.timelineFormModal.setVisible()
+        this.$message.success(res.msg)
+        this.view(this.projectId)
+      })
     }
   }
 }
