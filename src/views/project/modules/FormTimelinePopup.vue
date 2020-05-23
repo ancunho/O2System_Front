@@ -74,7 +74,7 @@ export default {
       this.time = row.meetingTime + '分钟'
       this.$nextTick(() => {
         this.form.setFieldsValue({
-          meetingTime: row.meetingTime,
+          meetingTime: Number(row.meetingTime),
           meetingDate: this.$options.filters.filterS2D(row.meetingDate),
           timelineContent: row.timelineContent
         })

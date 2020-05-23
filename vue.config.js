@@ -97,11 +97,11 @@ const vueConfig = {
     port: 3000,
     // If you want to turn on the proxy, please remove the mockjs /src/main.jsL11
     proxy: {
-      '/api': {
+      '/api|/file': {
         ws: true,
         changeOrigin: true,
-        // target: 'http://101.133.219.148:9000/'
-        target: 'http://172.44.214.234:9000'
+        // target: 'http://172.44.214.234:9000'
+        target: 'http://101.133.219.148:9000/'
       }
     }
   },

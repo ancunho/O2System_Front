@@ -1,15 +1,17 @@
 <template>
   <page-view>
     <a-card :bordered="false">
-      <a-select
-        show-search
-        placeholder="请选择项目"
-        option-filter-prop="children"
-        style="width: 100%"
-        @change="handleChange"
-      >
-        <a-select-option v-for="item in projectList" :key="item.id">{{ item.projectName }}</a-select-option>
-      </a-select>
+      <div class="select-box">
+        <span class="label">请选择项目:</span>
+        <a-select
+          show-search
+          placeholder="请选择项目"
+          option-filter-prop="children"
+          @change="handleChange"
+        >
+          <a-select-option v-for="item in projectList" :key="item.id">{{ item.projectName }}</a-select-option>
+        </a-select>
+      </div>
 
       <a-card
         style="margin-top: 25px"
@@ -51,9 +53,16 @@
       </a-card>
 
       <div
+        class="button-box"
         v-show="!loading"
-        style="margin-top: 20px; text-align: right;"
       >
+        <a-button
+          type="primary"
+          @click="handleTimeline"
+        >
+          进度
+        </a-button>
+
         <a-button
           v-permission:u="permissionList"
           type="primary"
@@ -68,6 +77,11 @@
       ref="recordFormModal"
       @update="handleUpdate($event)"
     />
+
+    <!--时间轴-->
+    <view-timeline-popup
+      ref="timelineViewModal"
+    />
   </page-view>
 </template>
 
@@ -75,17 +89,20 @@
 import { PageView } from '@/layouts'
 import { getProjectList, getProjectRecordList, getProjectRecordUpdate } from '@/api/project'
 import FormRecordPopup from './modules/FormRecordPopup'
+import ViewTimelinePopup from '@/views/project/modules/ViewTimelinePopup'
 
 export default {
   name: 'ProjectRecord',
   components: {
     PageView,
-    FormRecordPopup
+    FormRecordPopup,
+    ViewTimelinePopup
   },
   data () {
     return {
       loading: true,
       projectId: null,
+      projectBaseInfo: {},
       projectList: [],
       tabList: [
         {
@@ -131,6 +148,7 @@ export default {
         projectId: value
       }).then(res => {
         const temp = this.projectList.find((x) => x['id'] === value)
+        this.projectBaseInfo = temp
         if (temp) {
           this.permissionList = JSON.parse(temp.projectSalesMan)
           this.permissionList.push(Number(temp.projectCreater))
@@ -145,6 +163,9 @@ export default {
         }
         this.loading = false
       })
+    },
+    handleTimeline () {
+      this.$refs.timelineViewModal.view(this.projectBaseInfo)
     },
     handleEdit () {
       const data = JSON.parse(JSON.stringify(this.projectRecordList))
@@ -166,3 +187,28 @@ export default {
   }
 }
 </script>
+<style lang="less" scoped>
+  .select-box {
+    position: relative;
+    padding-left: 90px;
+
+    .label {
+      position: absolute;
+      left: 0;
+      line-height: 32px;
+    }
+
+    .ant-select {
+      width: 100%;
+    }
+  }
+
+  .button-box {
+    margin-top: 20px;
+    text-align: right;
+
+    button {
+      margin-left: 10px;
+    }
+  }
+</style>

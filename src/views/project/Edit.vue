@@ -552,7 +552,7 @@ export default {
     }
 
     this.$nextTick(() => {
-      this.uploadAction = `${process.env.VUE_APP_API_BASE_URL + uploadFileUrl}?type=pfile&projectId=${this.baseInfo.id}`
+      this.uploadAction = `${process.env.VUE_APP_API_BASE_URL + uploadFileUrl}?type=pfile&id=${this.baseInfo.id}`
       getMemberNameList().then(res => {
         this.userList = res.data
       })

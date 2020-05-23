@@ -93,7 +93,7 @@
         </a-col>
 
         <a-col :md="24" :lg="8" :style="{ minHeight: '180px' }">
-          <div class="ant-upload-preview" @click="$refs.modal.edit()" >
+          <div class="ant-upload-preview" @click="$refs.modal.edit('avatar', formData.id)" >
             <a-icon type="cloud-upload-o" class="upload-icon"/>
             <div class="mask">
               <a-icon type="plus" />
@@ -141,6 +141,7 @@ export default {
   },
   created () {
     this.formData = {
+      id: this.userInfo.id,
       imagePhoto: this.userInfo.imagePhoto,
       email: this.userInfo.email
     }
