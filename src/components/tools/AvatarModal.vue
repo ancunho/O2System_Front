@@ -77,8 +77,7 @@ export default {
   },
   methods: {
     edit (type, id) {
-      this.action = `?type=${type}&id=${id}`
-      console.log(this.action)
+      this.action = `${uploadFileUrl}?type=${type}&id=${id}`
       this.visible = true
     },
     close () {
@@ -112,7 +111,7 @@ export default {
       const formData = new FormData()
       this.$refs.cropper.getCropBlob((data) => {
         formData.append('singleImageUpload', data, this.fileName)
-        this.$http.post(uploadFileUrl + this.action, formData)
+        this.$http.post(this.action, formData)
           .then((response) => {
             _this.$emit('ok', response.data)
             _this.visible = false
