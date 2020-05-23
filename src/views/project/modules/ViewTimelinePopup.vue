@@ -86,7 +86,12 @@ export default {
         this.$refs.timelineFormModal.setConfirmLoading()
         this.$refs.timelineFormModal.setVisible()
         this.$message.success(res.msg)
-        this.view(this.projectId)
+
+        getProjectTimelineList({
+          projectId: this.projectId
+        }).then(res => {
+          this.timeline = res.data
+        })
       })
     },
     handleUpdate (row) {
@@ -95,7 +100,12 @@ export default {
         this.$refs.timelineFormModal.setConfirmLoading()
         this.$refs.timelineFormModal.setVisible()
         this.$message.success(res.msg)
-        this.view(this.projectId)
+
+        getProjectTimelineList({
+          projectId: this.projectId
+        }).then(res => {
+          this.timeline = res.data
+        })
       })
     },
     handleDelete (id) {
@@ -107,7 +117,12 @@ export default {
             id: id
           }).then(res => {
             this.$message.success(res.msg)
-            this.view(this.projectId)
+
+            getProjectTimelineList({
+              projectId: this.projectId
+            }).then(res => {
+              this.timeline = res.data
+            })
           })
         }
       })

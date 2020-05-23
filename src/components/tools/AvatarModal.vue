@@ -64,6 +64,7 @@ export default {
       confirmLoading: false,
       fileList: [],
       uploading: false,
+      action: '',
       options: {
         img: '',
         autoCrop: true,
@@ -75,7 +76,9 @@ export default {
     }
   },
   methods: {
-    edit () {
+    edit (type, id) {
+      this.action = `?type=${type}&id=${id}`
+      console.log(this.action)
       this.visible = true
     },
     close () {
@@ -109,7 +112,7 @@ export default {
       const formData = new FormData()
       this.$refs.cropper.getCropBlob((data) => {
         formData.append('singleImageUpload', data, this.fileName)
-        this.$http.post(`${uploadFileUrl}?type=avatar`, formData)
+        this.$http.post(uploadFileUrl + this.action, formData)
           .then((response) => {
             _this.$emit('ok', response.data)
             _this.visible = false

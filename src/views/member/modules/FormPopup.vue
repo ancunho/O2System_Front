@@ -129,7 +129,7 @@
             </a-col>
 
             <a-col :md="6" :sm="24">
-              <div class="ant-upload-preview photo" @click="$refs.modal.edit(1)" >
+              <div class="ant-upload-preview photo" @click="$refs.modal.edit('avatar', formData.id)" >
                 <a-icon type="cloud-upload-o" class="upload-icon"/>
                 <div class="mask">
                   <a-icon type="plus" />
