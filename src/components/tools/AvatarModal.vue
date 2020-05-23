@@ -48,13 +48,14 @@
         <a-button icon="redo" @click="rotateRight"/>
       </a-col>
       <a-col :lg="{span: 2, offset: 6}" :md="2">
-        <a-button type="primary" @click="finish('blob')">保存</a-button>
+        <a-button type="primary" @click="finish()">保存</a-button>
       </a-col>
     </a-row>
   </a-modal>
 
 </template>
 <script>
+import { uploadFileUrl } from '@/api/common'
 
 export default {
   data () {
@@ -95,14 +96,10 @@ export default {
     },
     beforeUpload (file) {
       const reader = new FileReader()
-      // 把Array Buffer转化为blob 如果是base64不需要
-      // 转化为base64
       reader.readAsDataURL(file)
       reader.onload = () => {
         this.options.img = reader.result
       }
-      // 转化为blob
-      // reader.readAsArrayBuffer(file)
 
       return false
     },
@@ -110,25 +107,14 @@ export default {
     finish (type) {
       const _this = this
       const formData = new FormData()
-      // 输出
-      if (type === 'blob') {
-        this.$refs.cropper.getCropBlob((data) => {
-          const img = window.URL.createObjectURL(data)
-          this.model = true
-          this.modelSrc = img
-          formData.append('file', data, this.fileName)
-          this.$http.post('/common/file/single/upload', formData, { contentType: false, processData: false, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
-            .then((response) => {
-              _this.$emit('ok', response.data)
-              _this.visible = false
-            }).catch()
-        })
-      } else {
-        this.$refs.cropper.getCropData((data) => {
-          this.model = true
-          this.modelSrc = data
-        })
-      }
+      this.$refs.cropper.getCropBlob((data) => {
+        formData.append('singleImageUpload', data, this.fileName)
+        this.$http.post(`${uploadFileUrl}?type=avatar`, formData)
+          .then((response) => {
+            _this.$emit('ok', response.data)
+            _this.visible = false
+          }).catch()
+      })
     },
     realTime (data) {
       this.previews = data

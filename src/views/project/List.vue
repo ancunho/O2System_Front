@@ -115,6 +115,11 @@ import i18n from '@/locales'
 
 const statusMap = [
   {
+    k: '0',
+    c: '',
+    v: '准备中'
+  },
+  {
     k: '1',
     c: 'orange',
     v: '产品咨询/确认'
@@ -151,10 +156,10 @@ export default {
   },
   filters: {
     filterStep (val) {
-      return statusMap.find(x => x['k'] === val)['v']
+      return val ? statusMap.find(x => x['k'] === val)['v'] : ''
     },
     filterStepColor (val) {
-      return statusMap.find(x => x['k'] === val)['c']
+      return val ? statusMap.find(x => x['k'] === val)['c'] : ''
     }
   },
   data () {
