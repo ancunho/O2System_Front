@@ -103,12 +103,14 @@ export default {
         }
       ],
       activeTabKey: '1',
+      projectId: null,
       projectRecordList: []
     }
   },
   methods: {
-    edit (data) {
+    edit (data, id) {
       this.visible = true
+      this.projectId = id
 
       if (data) {
         this.projectRecordList = data
@@ -131,7 +133,7 @@ export default {
         })
       } else {
         this.projectRecordList.push({
-          projectId: 0, // id
+          projectId: this.projectId, // id
           recordId: this.projectRecordList.length + 1,
           recordContent: [
             {
@@ -146,14 +148,17 @@ export default {
       }
     },
     handleSubmit () {
-      const { form: { validateFields } } = this
-      validateFields((err, values) => {
-        if (err) return
-        this.confirmLoading = true
-
-        values.meetingDate = this.$options.filters.filterD2S(values.meetingDate)
-        this.$emit(this.actionType, Object.assign({}, this.formData, values))
+      this.confirmLoading = true
+      // 修改参数
+      const param = JSON.parse(JSON.stringify(this.projectRecordList))
+      param.forEach((item, index) => {
+        item.recordContent.forEach((item, index) => {
+          item.date = this.$options.filters.filterD2S(item.date)
+        })
+        item.recordContent = JSON.stringify(item.recordContent)
       })
+
+      this.$emit('update', param)
     },
     handleCancel () {
       this.visible = false

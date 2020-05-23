@@ -73,9 +73,8 @@
 
 <script>
 import { PageView } from '@/layouts'
-import { getProjectList, getProjectRecordList, projectTimelineUpdate } from '@/api/project'
+import { getProjectList, getProjectRecordList, getProjectRecordUpdate } from '@/api/project'
 import FormRecordPopup from './modules/FormRecordPopup'
-import store from '@/store'
 
 export default {
   name: 'ProjectRecord',
@@ -86,6 +85,7 @@ export default {
   data () {
     return {
       loading: true,
+      projectId: null,
       projectList: [],
       tabList: [
         {
@@ -126,6 +126,7 @@ export default {
   },
   methods: {
     handleChange (value) {
+      this.projectId = value
       getProjectRecordList({
         projectId: value
       }).then(res => {
@@ -146,15 +147,20 @@ export default {
       })
     },
     handleEdit () {
-      this.$refs.recordFormModal.edit(Object.assign([], this.projectRecordList))
+      const data = JSON.parse(JSON.stringify(this.projectRecordList))
+      this.$refs.recordFormModal.edit(data, this.projectId)
     },
     handleUpdate (row) {
-      row.timelineAuthor = store.getters.userInfo.username
-      projectTimelineUpdate(row).then(res => {
-        this.$refs.timelineFormModal.setConfirmLoading()
-        this.$refs.timelineFormModal.setVisible()
+      getProjectRecordUpdate(row).then(res => {
+        if (row) {
+          this.projectRecordList = row
+          this.projectRecordList.forEach((item, index) => {
+            item.recordContent = JSON.parse(item.recordContent)
+          })
+        }
+        this.$refs.recordFormModal.setConfirmLoading()
+        this.$refs.recordFormModal.setVisible()
         this.$message.success(res.msg)
-        this.view(this.projectId)
       })
     }
   }

@@ -8,3 +8,5 @@ export function getCommonConfig (parameter) {
     data: QS.stringify(parameter)
   })
 }
+
+export const uploadFileUrl = '/common/file/single/upload'

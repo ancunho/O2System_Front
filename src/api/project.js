@@ -82,8 +82,16 @@ export function projectTimelineDelete (parameter) {
 
 export function getProjectRecordList (parameter) {
   return axios({
-    url: '/project/record/list',
+    url: '/project/record/by_id',
     method: 'post',
     data: QS.stringify(parameter)
+  })
+}
+
+export function getProjectRecordUpdate (parameter) {
+  return axios({
+    url: '/project/record/update',
+    method: 'post',
+    data: parameter
   })
 }

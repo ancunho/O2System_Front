@@ -268,9 +268,24 @@
         <template slot="title">
           附件
         </template>
-        <a-button type="link">Link</a-button>
-        <a-button type="link">Link</a-button>
-        <a-button type="link">Link</a-button>
+        <div
+          v-for="file in form.projectFileinfoList"
+          :key="file.id"
+        >
+          <a-icon
+            theme="twoTone"
+            :type="file.fileExtension | filterIcon"
+            style="display: inline; font-size: 20px"
+          />
+          <a-button
+            :href="file.filePath"
+            :download="file.fileName"
+            target="_blank"
+            type="link"
+          >
+            {{ file.fileName }}
+          </a-button>
+        </div>
       </a-card>
 
       <!--时间轴-->
@@ -312,6 +327,23 @@ export default {
     fProductType (val) {
       if (!val) return ''
       return store.getters.productType.find((x) => x['cnfValue'] === val)['cnfNote']
+    },
+    filterIcon (val) {
+      let icon = 'file'
+
+      if (['xls', 'xlsx'].includes(val)) {
+        icon = 'file-excel'
+      } else if (['ppt', 'pptx'].includes(val)) {
+        icon = 'file-ppt'
+      } else if (['doc', 'docx'].includes(val)) {
+        icon = 'file-word'
+      } else if (['pdf'].includes(val)) {
+        icon = 'file-pdf'
+      } else if (['jpg', 'jpeg', 'png', 'gif'].includes(val)) {
+        icon = 'file-image'
+      }
+
+      return icon
     }
   },
   data () {
@@ -324,7 +356,8 @@ export default {
       form: {
         projectProduct: {},
         projectPrice: {},
-        projectRecordList: []
+        projectRecordList: [],
+        projectFileinfoList: []
       },
       userList: [],
       tabList: [
@@ -394,6 +427,8 @@ export default {
               item.recordContent = JSON.parse(item.recordContent)
             })
           }
+
+          this.form.projectFileinfoList = res.data.projectFileinfoList
 
           this.loading = false
         })

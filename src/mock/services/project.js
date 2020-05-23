@@ -198,6 +198,10 @@ const getProjectRecordList = (options) => {
   return builder(data)
 }
 
+const getProjectRecordUpdate = () => {
+  return builder({}, '更新成功')
+}
+
 Mock.mock('/api/project/list', 'get', getProjectList)
 Mock.mock('/api/project/view', 'post', getProjectView)
 Mock.mock('/api/project/baseinfo/create', 'post', projectBaseInfoAdd)
@@ -209,3 +213,4 @@ Mock.mock('/api/project/timeline/create', 'post', projectTimelineAdd)
 Mock.mock('/api/project/timeline/update', 'post', projectTimelineUpdate)
 Mock.mock('/api/project/timeline/delete', 'post', projectTimelineDelete)
 Mock.mock('/api/project/record/list', 'post', getProjectRecordList)
+Mock.mock('/api/project/record/update', 'post', getProjectRecordUpdate)

@@ -82,22 +82,22 @@
               <a-input v-model="form.projectProduct.productTargetContent" type="textarea" />
             </a-form-model-item>
           </a-col>
-          <a-col :lg="6" :md="8" :sm="24">
-            <a-form-model-item :label="$t('project.productImage')">
-              <a-upload
-                class="image-uploader"
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                listType="picture-card"
-                :showUploadList="false"
-              >
-                <img width="125" v-if="form.projectProduct.productImage" :src="form.projectProduct.productImage" />
-                <div v-else>
-                  <a-icon :type="'plus'" />
-                  <div class="ant-upload-text">Upload</div>
-                </div>
-              </a-upload>
-            </a-form-model-item>
-          </a-col>
+          <!--          <a-col :lg="6" :md="8" :sm="24">-->
+          <!--            <a-form-model-item :label="$t('project.productImage')">-->
+          <!--              <a-upload-->
+          <!--                class="image-uploader"-->
+          <!--                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"-->
+          <!--                listType="picture-card"-->
+          <!--                :showUploadList="false"-->
+          <!--              >-->
+          <!--                <img width="125" v-if="form.projectProduct.productImage" :src="form.projectProduct.productImage" />-->
+          <!--                <div v-else>-->
+          <!--                  <a-icon :type="'plus'" />-->
+          <!--                  <div class="ant-upload-text">Upload</div>-->
+          <!--                </div>-->
+          <!--              </a-upload>-->
+          <!--            </a-form-model-item>-->
+          <!--          </a-col>-->
         </a-row>
       </a-card>
 
@@ -372,18 +372,15 @@
         <template slot="title">
           附件
         </template>
-        <a-upload-dragger
-          name="file"
-          :multiple="true"
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+        <a-upload
+          style="max-width: 500px"
+          name="singleImageUpload"
+          :action="uploadAction"
+          :file-list="fileList"
           @change="handleChange"
         >
-          <p class="ant-upload-drag-icon">
-            <a-icon type="inbox" />
-          </p>
-          <p class="ant-upload-text">单击或拖动文件到此区域以上载</p>
-          <p class="ant-upload-hint">支持单次或批量上传。 严格禁止上传公司数据文件</p>
-        </a-upload-dragger>
+          <a-button><a-icon type="upload" /> 选择上传</a-button>
+        </a-upload>
       </a-card>
     </a-form-model>
 
@@ -409,6 +406,7 @@ import { PageView } from '@/layouts'
 import ViewTimelinePopup from './modules/ViewTimelinePopup'
 import { getMemberNameList } from '@/api/member'
 import { projectBaseInfoUpdate, projectDetailAdd, projectDetailUpdate } from '@/api/project'
+import { uploadFileUrl } from '@/api/common'
 import { mapGetters } from 'vuex'
 import FormPopup from '@/views/project/modules/FormPopup'
 
@@ -497,7 +495,9 @@ export default {
         price: 0,
         setPrice: 0,
         percent: 0
-      }
+      },
+      uploadAction: '',
+      fileList: []
     }
   },
   watch: {
@@ -539,9 +539,20 @@ export default {
           item.date = this.$options.filters.filterS2D(item.date)
         })
       })
+
+      this.fileList = this.form.projectFileinfoList.map(file => {
+        return {
+          id: file.id,
+          uid: file.id,
+          name: file.fileName,
+          status: 'done',
+          url: file.filePath
+        }
+      })
     }
 
     this.$nextTick(() => {
+      this.uploadAction = `${process.env.VUE_APP_API_BASE_URL + uploadFileUrl}?type=pfile&projectId=${this.baseInfo.id}`
       getMemberNameList().then(res => {
         this.userList = res.data
       })
@@ -595,15 +606,17 @@ export default {
 
     // 文件上传
     handleChange (info) {
-      const status = info.file.status
-      if (status !== 'uploading') {
-        console.log(info.file, info.fileList)
-      }
-      if (status === 'done') {
-        this.$message.success(`${info.file.name} file uploaded successfully.`)
-      } else if (status === 'error') {
-        this.$message.error(`${info.file.name} file upload failed.`)
-      }
+      let fileList = [...info.fileList]
+
+      fileList = fileList.map(file => {
+        if (file.response) {
+          file.id = file.response.data.id
+          file.url = file.response.data.filePath
+        }
+        return file
+      })
+
+      this.fileList = fileList
     },
 
     // 编辑
