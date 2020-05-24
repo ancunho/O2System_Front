@@ -24,7 +24,7 @@ export const asyncRouterMap = [
             path: '/dashboard/workplace',
             name: 'Workplace',
             component: () => import('@/views/dashboard/Workplace'),
-            meta: { title: 'menu.dashboard-workplace', keepAlive: true, hideHeader: true }
+            meta: { title: 'menu.dashboard-workplace', keepAlive: true, hideHeader: true, hiddenHeaderContent: true }
           }
         ]
       },

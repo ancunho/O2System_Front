@@ -154,14 +154,6 @@ export default {
     FormPopup,
     ViewTimelinePopup
   },
-  filters: {
-    filterStep (val) {
-      return val ? statusMap.find(x => x['k'] === val)['v'] : ''
-    },
-    filterStepColor (val) {
-      return val ? statusMap.find(x => x['k'] === val)['c'] : ''
-    }
-  },
   data () {
     return {
       // 高级搜索 展开/关闭

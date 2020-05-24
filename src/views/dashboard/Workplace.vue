@@ -1,10 +1,69 @@
 <template>
-  <page-view :avatar="userInfo.imagePhoto" :title="false">
-    <div slot="headerContent">
-      <div class="title">{{ timeFix }}，{{ userInfo.realname }}</div>
-      <div>产品经理</div>
-    </div>
+  <page-view>
     <div>
+      <a-row :gutter="24">
+        <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
+          <chart-card :loading="loading" title="总销售额" total="￥126,560">
+            <a-tooltip title="指标说明" slot="action">
+              <a-icon type="info-circle-o" />
+            </a-tooltip>
+            <div>
+              <trend flag="up" style="margin-right: 16px;">
+                <span slot="term">周同比</span>
+                12%
+              </trend>
+              <trend flag="down">
+                <span slot="term">日同比</span>
+                11%
+              </trend>
+            </div>
+            <template slot="footer">日均销售额<span>￥ 234.56</span></template>
+          </chart-card>
+        </a-col>
+        <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
+          <chart-card :loading="loading" title="访问量" :total="8846 | NumberFormat">
+            <a-tooltip title="指标说明" slot="action">
+              <a-icon type="info-circle-o" />
+            </a-tooltip>
+            <div>
+              <mini-area />
+            </div>
+            <template slot="footer">日访问量<span> {{ '1234' | NumberFormat }}</span></template>
+          </chart-card>
+        </a-col>
+        <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
+          <chart-card :loading="loading" title="支付笔数" :total="6560 | NumberFormat">
+            <a-tooltip title="指标说明" slot="action">
+              <a-icon type="info-circle-o" />
+            </a-tooltip>
+            <div>
+              <mini-bar />
+            </div>
+            <template slot="footer">转化率 <span>60%</span></template>
+          </chart-card>
+        </a-col>
+        <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
+          <chart-card :loading="loading" title="运营活动效果" total="78%">
+            <a-tooltip title="指标说明" slot="action">
+              <a-icon type="info-circle-o" />
+            </a-tooltip>
+            <div>
+              <mini-progress color="rgb(19, 194, 194)" :target="80" :percentage="78" height="8px" />
+            </div>
+            <template slot="footer">
+              <trend flag="down" style="margin-right: 16px;">
+                <span slot="term">同周比</span>
+                12%
+              </trend>
+              <trend flag="up">
+                <span slot="term">日环比</span>
+                80%
+              </trend>
+            </template>
+          </chart-card>
+        </a-col>
+      </a-row>
+
       <a-row :gutter="24">
         <a-col :xl="16" :lg="24" :md="24" :sm="24" :xs="24">
           <a-card
@@ -14,22 +73,23 @@
             :bordered="false"
             title="进行中的项目"
             :body-style="{ padding: 0 }">
-            <a slot="extra">全部项目</a>
+            <a slot="extra"><router-link to='/project'>全部项目</router-link></a>
             <div>
               <a-card-grid class="project-card-grid" :key="i" v-for="(item, i) in projects">
                 <a-card :bordered="false" :body-style="{ padding: 0 }">
                   <a-card-meta>
                     <div slot="title" class="card-title">
-                      <a-avatar size="small" :src="item.cover"/>
-                      <a>{{ item.title }}</a>
+                      <a @click="handleProjectView(item)">{{ item.projectName }}</a>
+                      <a-tag :color="item.projectStatus | filterStepColor">{{ item.projectStatus | filterStep }}</a-tag>
                     </div>
                     <div slot="description" class="card-description">
-                      {{ item.description }}
+                      开始时间：{{ item.projectStarttime }}<br>
+                      结束时间：{{ item.projectEndtime }}
                     </div>
                   </a-card-meta>
                   <div class="project-item">
-                    <a href="/#/">科学搬砖组</a>
-                    <span class="datetime">9小时前</span>
+                    <span>{{ item.projectCustomer }}</span>
+                    <span class="datetime">{{ item.createtime }}</span>
                   </div>
                 </a-card>
               </a-card-grid>
@@ -72,10 +132,9 @@
 </template>
 
 <script>
-import { timeFix } from '@/utils/util'
 import { PageView } from '@/layouts'
-import { mapGetters } from 'vuex'
-import { Radar } from '@/components'
+import { ChartCard, MiniArea, MiniBar, MiniProgress, Trend, Radar } from '@/components'
+import { getProjectList } from '@/api/project'
 
 const DataSet = require('@antv/data-set')
 
@@ -83,64 +142,18 @@ export default {
   name: 'Workplace',
   components: {
     PageView,
+    ChartCard,
+    MiniArea,
+    MiniBar,
+    MiniProgress,
+    Trend,
     Radar
-  },
-  computed: {
-    ...mapGetters(['userInfo'])
   },
   data () {
     return {
-      timeFix: timeFix(),
-      projects: [{
-        id: 1,
-        cover: 'https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png',
-        title: 'Alipay',
-        description: '那是一种内在的东西， 他们到达不了，也无法触及的',
-        status: 1,
-        updatedAt: '2018-07-26 00:00:00'
-      },
-      {
-        id: 2,
-        cover: 'https://gw.alipayobjects.com/zos/rmsportal/zOsKZmFRdUtvpqCImOVY.png',
-        title: 'Angular',
-        description: '希望是一个好东西，也许是最好的，好东西是不会消亡的',
-        status: 1,
-        updatedAt: '2018-07-26 00:00:00'
-      },
-      {
-        id: 3,
-        cover: 'https://gw.alipayobjects.com/zos/rmsportal/dURIMkkrRFpPgTuzkwnB.png',
-        title: 'Ant Design',
-        description: '城镇中有那么多的酒馆，她却偏偏走进了我的酒馆',
-        status: 1,
-        updatedAt: '2018-07-26 00:00:00'
-      },
-      {
-        id: 4,
-        cover: 'https://gw.alipayobjects.com/zos/rmsportal/sfjbOqnsXXJgNCjCzDBL.png',
-        title: 'Ant Design Pro',
-        description: '那时候我只会想自己想要什么，从不想自己拥有什么',
-        status: 1,
-        updatedAt: '2018-07-26 00:00:00'
-      },
-      {
-        id: 5,
-        cover: 'https://gw.alipayobjects.com/zos/rmsportal/siCrBXXhmvTQGWPNLBow.png',
-        title: 'Bootstrap',
-        description: '凛冬将至',
-        status: 1,
-        updatedAt: '2018-07-26 00:00:00'
-      },
-      {
-        id: 6,
-        cover: 'https://gw.alipayobjects.com/zos/rmsportal/ComBAopevLwENQdKWiIn.png',
-        title: 'Vue',
-        description: '生命就像一盒巧克力，结果往往出人意料',
-        status: 1,
-        updatedAt: '2018-07-26 00:00:00'
-      }],
       loading: true,
       radarLoading: true,
+      projects: [],
       activities: [{
         id: 1,
         user: {
@@ -258,11 +271,11 @@ export default {
     }
   },
   mounted () {
-    // this.getProjects()
+    this.getProjects()
     // this.getActivity()
     // this.initRadar()
 
-    this.loading = false
+    this.loading = true
     const dv = new DataSet.View().source(this.radarData)
     dv.transform({
       type: 'fold',
@@ -274,13 +287,12 @@ export default {
     this.radarLoading = false
   },
   methods: {
-    // getProjects () {
-    //   this.$http.get('/workplace/projects')
-    //     .then(res => {
-    //       this.projects = res.data && res.data.data
-    //       this.loading = false
-    //     })
-    // },
+    getProjects () {
+      getProjectList().then(res => {
+        this.projects = res.data
+        this.loading = false
+      })
+    },
     // getActivity () {
     //   this.$http.get('/workplace/activity')
     //     .then(res => {
@@ -302,6 +314,12 @@ export default {
     //       this.radarLoading = false
     //     })
     // }
+    handleProjectView (row) {
+      this.$router.push({
+        name: 'projectView',
+        params: row
+      })
+    }
   }
 }
 </script>
@@ -312,7 +330,7 @@ export default {
       font-size: 0;
       a {
         color: rgba(0, 0, 0, 0.85);
-        margin-left: 12px;
+        margin-right: 12px;
         line-height: 24px;
         height: 24px;
         display: inline-block;
@@ -336,13 +354,10 @@ export default {
       font-size: 12px;
       height: 20px;
       line-height: 20px;
-      a {
+      span {
         color: rgba(0, 0, 0, 0.45);
         display: inline-block;
         flex: 1 1 0;
-        &:hover {
-          color: #1890ff;
-        }
       }
       .datetime {
         color: rgba(0, 0, 0, 0.25);
