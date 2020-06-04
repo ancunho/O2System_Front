@@ -561,20 +561,36 @@ export default {
   methods: {
     // 添加价格
     handlePricePush () {
-      this.form.projectPrice.priceList.push({
-        project: '',
-        price: '',
-        setPrice: '',
-        percent: ''
-      })
+      if (this.form.projectPrice.priceList) {
+        this.form.projectPrice.priceList.push({
+          project: '',
+          price: '',
+          setPrice: '',
+          percent: ''
+        })
+      } else {
+        this.form.projectPrice.priceList = [{
+          project: '',
+          price: '',
+          setPrice: '',
+          percent: ''
+        }]
+      }
     },
 
     // 添加备注
     handleDescriptionPush () {
-      this.form.projectPrice.descriptionList.push({
-        key: '',
-        value: ''
-      })
+      if (this.form.projectPrice.descriptionList) {
+        this.form.projectPrice.descriptionList.push({
+          key: '',
+          value: ''
+        })
+      } else {
+        this.form.projectPrice.descriptionList = [{
+          key: '',
+          value: ''
+        }]
+      }
     },
 
     // 添加历史信息
