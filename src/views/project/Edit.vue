@@ -533,6 +533,7 @@ export default {
       this.type = 'edit'
       this.baseInfo = this.$route.params.data.baseInfo
       this.form = this.$route.params.data.form
+      console.log(this.form)
       this.form.projectPrice.releaseDate = this.$options.filters.filterS2D(this.form.projectPrice.releaseDate)
       this.form.projectRecordList.forEach((item, index) => {
         item.recordContent.forEach((item, index) => {
@@ -561,36 +562,20 @@ export default {
   methods: {
     // 添加价格
     handlePricePush () {
-      if (this.form.projectPrice.priceList) {
-        this.form.projectPrice.priceList.push({
-          project: '',
-          price: '',
-          setPrice: '',
-          percent: ''
-        })
-      } else {
-        this.form.projectPrice.priceList = [{
-          project: '',
-          price: '',
-          setPrice: '',
-          percent: ''
-        }]
-      }
+      this.form.projectPrice.priceList.push({
+        project: '',
+        price: '',
+        setPrice: '',
+        percent: ''
+      })
     },
 
     // 添加备注
     handleDescriptionPush () {
-      if (this.form.projectPrice.descriptionList) {
-        this.form.projectPrice.descriptionList.push({
-          key: '',
-          value: ''
-        })
-      } else {
-        this.form.projectPrice.descriptionList = [{
-          key: '',
-          value: ''
-        }]
-      }
+      this.form.projectPrice.descriptionList.push({
+        key: '',
+        value: ''
+      })
     },
 
     // 添加历史信息

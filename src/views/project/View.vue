@@ -417,8 +417,13 @@ export default {
 
           if (res.data.projectPrice) {
             this.form.projectPrice = res.data.projectPrice
-            this.form.projectPrice.priceList = JSON.parse(this.form.projectPrice.priceList)
-            this.form.projectPrice.descriptionList = JSON.parse(this.form.projectPrice.descriptionList)
+            this.form.projectPrice.priceList = this.form.projectPrice.priceList ? JSON.parse(this.form.projectPrice.priceList) : []
+            this.form.projectPrice.descriptionList = this.form.projectPrice.descriptionList ? JSON.parse(this.form.projectPrice.descriptionList) : []
+          } else {
+            this.form.projectPrice = {
+              priceList: [],
+              descriptionList: []
+            }
           }
 
           if (res.data.projectRecordList) {
