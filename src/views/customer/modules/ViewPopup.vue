@@ -13,7 +13,7 @@
         <a-descriptions :column="{ md: 2, sm: 1, xs: 1}">
           <a-descriptions-item :label="$t('customer.customerCd')">{{ customer.customerCd }}</a-descriptions-item>
           <a-descriptions-item :label="$t('customer.customerName')">{{ customer.customerName }}</a-descriptions-item>
-          <a-descriptions-item :label="$t('customer.address')">{{ customer.city }}</a-descriptions-item>
+          <a-descriptions-item :label="$t('customer.address')">{{ customer.province | filterAddress(customer.city, customer.area) }}</a-descriptions-item>
           <a-descriptions-item :label="$t('customer.address-detail')">{{ customer.address }}</a-descriptions-item>
           <a-descriptions-item :label="$t('customer.director')">{{ customer.director }}</a-descriptions-item>
           <a-descriptions-item :label="$t('customer.salesVolumn')">{{ customer.salesVolumn }}</a-descriptions-item>

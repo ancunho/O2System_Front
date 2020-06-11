@@ -218,17 +218,17 @@
                 </td>
                 <td>
                   <a-form-model-item>
-                    <a-input type="number" v-model="item.price" />
+                    <a-input type="number" v-model="item.price" @keyup="handleCalc" />
                   </a-form-model-item>
                 </td>
                 <td>
                   <a-form-model-item>
-                    <a-input type="number" v-model="item.setPrice" />
+                    <a-input type="number" v-model="item.setPrice" @keyup="handleCalc" />
                   </a-form-model-item>
                 </td>
                 <td>
                   <a-form-model-item>
-                    <a-input type="number" v-model="item.percent" />
+                    <a-input type="number" v-model="item.percent" @keyup="handleCalc" />
                   </a-form-model-item>
                 </td>
               </tr>
@@ -500,24 +500,6 @@ export default {
       fileList: []
     }
   },
-  watch: {
-    'form.projectPrice.priceList': function (val) {
-      let price = 0
-      let setPrice = 0
-      let percent = 0
-      val.forEach(item => {
-        price += Number(item['price'])
-        setPrice += Number(item['setPrice'])
-        percent += Number(item['percent'])
-      })
-
-      this.total = {
-        price: price,
-        setPrice: setPrice,
-        percent: percent
-      }
-    }
-  },
   created () {
     if (!this.$route.params.data) {
       this.$router.push({
@@ -602,6 +584,24 @@ export default {
             }
           ] // 内容list
         })
+      }
+    },
+
+    // 合计
+    handleCalc () {
+      let price = 0
+      let setPrice = 0
+      let percent = 0
+      this.form.projectPrice.priceList.forEach(item => {
+        price += Number(item['price'])
+        setPrice += Number(item['setPrice'])
+        percent += Number(item['percent'])
+      })
+
+      this.total = {
+        price: price,
+        setPrice: setPrice,
+        percent: percent
       }
     },
 

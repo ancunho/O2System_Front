@@ -105,15 +105,25 @@ Vue.filter('filterQuestion', function (val) {
 
 // 地址
 Vue.filter('filterAddress', function (v1, v2, v3, v4 = '') {
-  if (!v1 || !v2 || !v2) return ' '
-  const n1 = [...provinces].find((x) => x['code'] === v1)['name']
-  const n2 = [...cities].find((x) => x['code'] === v2)['name']
-  const n3 = [...areas].find((x) => x['code'] === v3)['name']
-  return n1 + '-' + n2 + '-' + n3 + (v4 ? '-' + v4 : '')
+  if (v1 === '99') {
+    return '国外' + (v4 ? '/' + v4 : '')
+  } else if (!v1 || !v2 || !v2) {
+    return ''
+  } else {
+    const n1 = [...provinces].find((x) => x['code'] === v1)['name']
+    const n2 = [...cities].find((x) => x['code'] === v2)['name']
+    const n3 = [...areas].find((x) => x['code'] === v3)['name']
+    return n1 + '/' + n2 + '/' + n3 + (v4 ? '/' + v4 : '')
+  }
 })
 Vue.filter('filterCity', function (v1, v2) {
-  if (!v1 || !v2) return ' '
-  const n1 = [...provinces].find((x) => x['code'] === v1)['name']
-  const n2 = [...cities].find((x) => x['code'] === v2)['name']
-  return n1 + '-' + n2
+  if (v1 === '99') {
+    return '国外'
+  } else if (!v1 || !v2) {
+    return ' '
+  } else {
+    const n1 = [...provinces].find((x) => x['code'] === v1)['name']
+    const n2 = [...cities].find((x) => x['code'] === v2)['name']
+    return n1 + '/' + n2
+  }
 })

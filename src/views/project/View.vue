@@ -34,7 +34,7 @@
           <a-descriptions-item label="营业额">{{ baseInfo.customer.salesVolumn }}</a-descriptions-item>
           <a-descriptions-item label="主要市场">{{ baseInfo.customer.target }}</a-descriptions-item>
           <a-descriptions-item label="有无开发能力">{{ baseInfo.customer.developmentSkill }}</a-descriptions-item>
-          <a-descriptions-item label="城市">{{ baseInfo.customer.province | filterCity(baseInfo.customer.city, baseInfo.customer.area) }}</a-descriptions-item>
+          <a-descriptions-item label="城市">{{ baseInfo.customer.province | filterAddress(baseInfo.customer.city, baseInfo.customer.area) }}</a-descriptions-item>
           <a-descriptions-item label="详细地址" :span="isMobile() ? 1 : 2">{{ baseInfo.customer.customerName }}</a-descriptions-item>
           <a-descriptions-item label="公司介绍" :span="isMobile() ? 1 : 3">{{ baseInfo.customer.customerName }}</a-descriptions-item>
         </a-descriptions>

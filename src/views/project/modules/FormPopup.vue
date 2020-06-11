@@ -11,7 +11,7 @@
       @cancel="handleCancel"
     >
       <a-spin :spinning="confirmLoading">
-        <div class="table-page-popup-wrapper">
+        <div class="table-page-popup-wrapper noPhoto">
           <a-form :form="form" layout="inline">
             <a-divider>{{ $t('project.projectBaseInfo') }}</a-divider>
             <a-row :gutter="24">
@@ -53,14 +53,14 @@
             <a-row :gutter="24">
               <a-col :md="12" :sm="24">
                 <a-form-item :label="$t('customer.customerCd')">
-                  <a-input v-decorator="['customerCd', {rules: [{required: true, message: $t('message.required')}]}]" />
+                  <a-input :disabled="customerDisable" v-decorator="['customerCd', {rules: [{required: true, message: $t('message.required')}]}]" />
                 </a-form-item>
               </a-col>
               <a-col :md="12" :sm="24">
                 <a-form-item :label="$t('customer.customerName')">
                   <a-row :gutter="8">
                     <a-col :span="14">
-                      <a-input v-decorator="['customerName', {rules: [{required: true, message: $t('message.required')}]}]" />
+                      <a-input :disabled="customerDisable" v-decorator="['customerName', {rules: [{required: true, message: $t('message.required')}]}]" />
                     </a-col>
                     <a-col :span="10">
                       <a-button @click="() => this.handleGetCustomer()">{{ $t('option.getInfo') }}</a-button>
@@ -72,6 +72,7 @@
                 <a-form-item :label="$t('customer.address')">
                   <a-cascader
                     placeholder=""
+                    :disabled="customerDisable"
                     :fieldNames="address.fieldName"
                     :options="address.data"
                     v-decorator="['addressSelect', {rules: [{required: true, message: $t('message.required')}]}]"
@@ -80,53 +81,53 @@
               </a-col>
               <a-col :md="12" :sm="24">
                 <a-form-item :label="$t('customer.address-detail')">
-                  <a-input v-decorator="['address', {rules: [{required: true, message: $t('message.required')}]}]" />
+                  <a-input :disabled="customerDisable" v-decorator="['address', {rules: [{required: true, message: $t('message.required')}]}]" />
                 </a-form-item>
               </a-col>
               <a-col :md="12" :sm="24">
                 <a-form-item :label="$t('customer.director')">
-                  <a-input v-decorator="['director', {rules: [{required: true, message: $t('message.required')}]}]" />
+                  <a-input :disabled="customerDisable" v-decorator="['director', {rules: [{required: true, message: $t('message.required')}]}]" />
                 </a-form-item>
               </a-col>
               <a-col :md="12" :sm="24">
                 <a-form-item :label="$t('customer.salesVolumn')">
-                  <a-input v-decorator="['salesVolumn', {rules: [{required: true, message: $t('message.required')}]}]" />
+                  <a-input :disabled="customerDisable" v-decorator="['salesVolumn', {rules: [{required: true, message: $t('message.required')}]}]" />
                 </a-form-item>
               </a-col>
               <a-col :md="12" :sm="24">
                 <a-form-item :label="$t('customer.developmentSkill')">
-                  <a-input v-decorator="['developmentSkill', {rules: [{required: true, message: $t('message.required')}]}]" />
+                  <a-input :disabled="customerDisable" v-decorator="['developmentSkill', {rules: [{required: true, message: $t('message.required')}]}]" />
                 </a-form-item>
               </a-col>
               <a-col :md="12" :sm="24">
                 <a-form-item :label="$t('customer.target')">
-                  <a-input v-decorator="['target']" />
+                  <a-input :disabled="customerDisable" v-decorator="['target']" />
                 </a-form-item>
               </a-col>
               <div v-show="advanced">
                 <a-col :md="12" :sm="24">
                   <a-form-item :label="$t('customer.wechat')">
-                    <a-input v-decorator="['wechat']" />
+                    <a-input :disabled="customerDisable" v-decorator="['wechat']" />
                   </a-form-item>
                 </a-col>
                 <a-col :md="12" :sm="24">
                   <a-form-item :label="$t('customer.phone')">
-                    <a-input v-decorator="['phone']" />
+                    <a-input :disabled="customerDisable" v-decorator="['phone']" />
                   </a-form-item>
                 </a-col>
                 <a-col :md="24" :sm="24">
                   <a-form-item :label="$t('customer.distribution')">
-                    <a-input v-decorator="['distribution']" />
+                    <a-input :disabled="customerDisable" v-decorator="['distribution']" />
                   </a-form-item>
                 </a-col>
                 <a-col :md="24" :sm="24">
                   <a-form-item :label="$t('customer.productList')">
-                    <a-input v-decorator="['productList']" />
+                    <a-input :disabled="customerDisable" v-decorator="['productList']" />
                   </a-form-item>
                 </a-col>
                 <a-col :md="24" :sm="24">
                   <a-form-item :label="$t('customer.description')">
-                    <a-input v-decorator="['description']" />
+                    <a-input :disabled="customerDisable" v-decorator="['description']" />
                   </a-form-item>
                 </a-col>
               </div>
@@ -187,11 +188,16 @@ export default {
           value: 'code',
           children: 'children'
         },
-        data: [...pca]
+        data: [{
+          name: '国外',
+          code: '99',
+          children: []
+        }, ...pca]
       },
       customerId: '',
       userList: [],
-      customerList: []
+      customerList: [],
+      customerDisable: false
     }
   },
   created () {
@@ -274,6 +280,7 @@ export default {
     },
     handleCancel () {
       this.visible = false
+      this.customerDisable = false
     },
     toggleAdvanced () {
       this.advanced = !this.advanced
@@ -283,6 +290,7 @@ export default {
     },
     setVisible (val = false) {
       this.visible = val
+      this.customerDisable = false
     },
     handleGetCustomer () {
       this.visibleCustomer = true
@@ -294,6 +302,7 @@ export default {
         customerId: this.customerId
       }).then(res => {
         this.visibleCustomer = false
+        this.customerDisable = true
         this.form.setFieldsValue({
           customerCd: res.data.customerCd,
           customerName: res.data.customerName,

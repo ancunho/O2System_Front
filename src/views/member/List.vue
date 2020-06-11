@@ -17,7 +17,7 @@
             <a-form-item :label="$t('member.department')">
               <a-select v-model="queryParam.department">
                 <a-select-option value="">All</a-select-option>
-                <a-select-option v-for="list in department" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
+                <a-select-option v-for="list in department" :key="list['cnfNote']">{{ list['cnfNote'] }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -136,10 +136,7 @@ export default {
         },
         {
           title: i18n.t('member.department'),
-          dataIndex: 'department',
-          customRender: (text) => {
-            return this.$options.filters.filterDepartment(text)
-          }
+          dataIndex: 'department'
         },
         {
           title: i18n.t('member.createtime'),

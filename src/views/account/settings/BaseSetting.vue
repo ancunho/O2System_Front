@@ -1,108 +1,114 @@
 <template>
-  <div class="account-settings-info-view table-page-popup-wrapper">
-    <a-form :form="form" layout="inline">
-      <a-row :gutter="16">
-        <a-col :md="24" :lg="16">
-          <a-form-item :label="$t('user.empno')">
-            <a-input
-              type="text"
-              v-decorator="['empno', {rules: [{required: true, message: $t('message.required')}], validateTrigger: 'change'}]"
-            />
-          </a-form-item>
-          <a-form-item :label="$t('user.realname')">
-            <a-input
-              type="text"
-              v-decorator="['realname', {rules: [{required: true, message: $t('message.required')}], validateTrigger: 'change'}]"
-            />
-          </a-form-item>
-          <a-form-item :label="$t('user.phone')">
-            <a-input
-              type="text"
-              v-decorator="['phone', {rules: [{required: true, validator: this.handleCheckPhone }], validateTrigger: 'change'}]"
-            />
-          </a-form-item>
-          <a-form-item :label="$t('user.email')">
-            <a-input
-              type="text"
-              v-decorator="['email', {rules: [{required: true, validator: this.handleCheckEmail }], validateTrigger: 'change'}]"
-            />
-          </a-form-item>
-          <a-form-item :label="$t('user.department')">
-            <a-select
-              v-decorator="['department', {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}]">
-              <a-select-option v-for="list in department" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
-            </a-select>
-          </a-form-item>
-          <a-form-item :label="$t('user.sex')">
-            <a-select v-decorator="['sex']">
-              <a-select-option key="1">{{ $t('user.man') }}</a-select-option>
-              <a-select-option key="2">{{ $t('user.woman') }}</a-select-option>
-            </a-select>
-          </a-form-item>
-          <a-form-item :label="$t('user.birthday')">
-            <a-date-picker style="width:100%" v-decorator="['birthday']" />
-          </a-form-item>
-          <a-form-item :label="$t('user.wechat')">
-            <a-input
-              type="text"
-              v-decorator="['wechat', {rules: [{required: true, message: $t('message.required')}], validateTrigger: 'change'}]"
-            />
-          </a-form-item>
-          <a-form-item :label="$t('user.qq')">
-            <a-input
-              type="text"
-              v-decorator="['qq']"
-            />
-          </a-form-item>
-          <a-form-item :label="$t('user.address')">
-            <a-cascader
-              placeholder=""
-              :fieldNames="address.fieldName"
-              :options="address.data"
-              v-decorator="['addressSelect']"
-            />
-          </a-form-item>
-          <a-form-item :label="$t('user.address-detail')">
-            <a-input
-              type="text"
-              v-decorator="['address']"
-            />
-          </a-form-item>
-          <a-form-item :label="$t('user.question')">
-            <a-select
-              v-decorator="['question', {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}]">
-              <a-select-option v-for="list in question" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
-            </a-select>
-          </a-form-item>
-          <a-form-item :label="$t('user.answer')">
-            <a-input
-              type="text"
-              v-decorator="['answer', {rules: [{required: true, message: $t('message.required')}], validateTrigger: 'change'}]"
-            />
-          </a-form-item>
-
-          <a-form-item>
-            <a-button
-              type="primary"
-              :loading="confirmLoading"
-              :disabled="confirmLoading"
-              @click="handleSubmit">
-              {{ $t('option.save') }}
-            </a-button>
-          </a-form-item>
-        </a-col>
-
-        <a-col :md="24" :lg="8" :style="{ minHeight: '180px' }">
-          <div class="ant-upload-preview" @click="$refs.modal.edit('avatar', formData.id)" >
-            <a-icon type="cloud-upload-o" class="upload-icon"/>
-            <div class="mask">
-              <a-icon type="plus" />
-            </div>
-            <img :src="formData.imagePhoto"/>
-          </div>
-        </a-col>
-      </a-row>
-    </a-form>
+  <div class="account-settings-info-view">
+    <div :class="`table-page-popup-wrapper ${!isMobile() || 'mobile'}`">
+      <div class="ant-upload-preview" @click="$refs.modal.edit('avatar', formData.id)" >
+        <a-icon type="cloud-upload-o" class="upload-icon"/>
+        <div class="mask">
+          <a-icon type="plus" />
+        </div>
+        <img :src="formData.imagePhoto"/>
+      </div>
+      <a-form :form="form" layout="inline">
+        <a-row :gutter="5">
+          <a-col :lg="12" :md="24" :sm="24">
+            <a-form-item :label="$t('user.empno')">
+              <a-input
+                type="text"
+                v-decorator="['empno', {rules: [{required: true, message: $t('message.required')}], validateTrigger: 'change'}]"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :lg="12" :md="24" :sm="24">
+            <a-form-item :label="$t('user.realname')">
+              <a-input
+                type="text"
+                v-decorator="['realname', {rules: [{required: true, message: $t('message.required')}], validateTrigger: 'change'}]"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :lg="12" :md="24" :sm="24">
+            <a-form-item :label="$t('user.phone')">
+              <a-input
+                type="text"
+                v-decorator="['phone', {rules: [{required: true, validator: this.handleCheckPhone }], validateTrigger: 'change'}]"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :lg="12" :md="24" :sm="24">
+            <a-form-item :label="$t('user.email')">
+              <a-input
+                type="text"
+                v-decorator="['email', {rules: [{required: true, validator: this.handleCheckEmail }], validateTrigger: 'change'}]"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :lg="12" :md="24" :sm="24">
+            <a-form-item :label="$t('user.department')">
+              <a-select
+                v-decorator="['department', {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}]">
+                <a-select-option v-for="list in department" :key="list['cnfNote']">{{ list['cnfNote'] }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :lg="12" :md="24" :sm="24">
+            <a-form-item :label="$t('user.sex')">
+              <a-select v-decorator="['sex']">
+                <a-select-option key="1">{{ $t('user.man') }}</a-select-option>
+                <a-select-option key="2">{{ $t('user.woman') }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :lg="12" :md="24" :sm="24">
+            <a-form-item :label="$t('user.birthday')">
+              <a-date-picker style="width:100%" v-decorator="['birthday']" />
+            </a-form-item>
+            <a-form-item :label="$t('user.wechat')">
+              <a-input
+                type="text"
+                v-decorator="['wechat', {rules: [{required: true, message: $t('message.required')}], validateTrigger: 'change'}]"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :lg="12" :md="24" :sm="24">
+            <a-form-item :label="$t('user.qq')">
+              <a-input
+                type="text"
+                v-decorator="['qq']"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :lg="12" :md="24" :sm="24">
+            <a-form-item :label="$t('user.address')">
+              <a-cascader
+                placeholder=""
+                :fieldNames="address.fieldName"
+                :options="address.data"
+                v-decorator="['addressSelect']"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :lg="12" :md="24" :sm="24">
+            <a-form-item :label="$t('user.address-detail')">
+              <a-input
+                type="text"
+                v-decorator="['address']"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :lg="24" :md="24" :sm="24">
+            <a-form-item>
+              <a-button
+                type="primary"
+                :loading="confirmLoading"
+                :disabled="confirmLoading"
+                @click="handleSubmit">
+                {{ $t('option.save') }}
+              </a-button>
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
+    </div>
 
     <avatar-modal ref="modal" @ok="setAvatar"/>
   </div>
@@ -116,6 +122,7 @@ import { checkEmail, userInfoUpdate } from '@/api/user'
 import i18n from '@/locales'
 import store from '@/store'
 import { isEmail, isPhone } from '@/utils/util'
+import { mixinDevice } from '@/utils/mixin'
 
 export default {
   components: {
@@ -124,6 +131,7 @@ export default {
   computed: {
     ...mapGetters(['userInfo', 'department', 'question'])
   },
+  mixins: [mixinDevice],
   data () {
     return {
       confirmLoading: false,
@@ -153,8 +161,6 @@ export default {
         phone: this.userInfo.phone,
         email: this.userInfo.email,
         department: this.userInfo.department,
-        question: this.userInfo.question,
-        answer: this.userInfo.answer,
         addressSelect: this.userInfo.province ? [this.userInfo.province, this.userInfo.city, this.userInfo.area] : null,
         address: this.userInfo.address,
         wechat: this.userInfo.wechat,

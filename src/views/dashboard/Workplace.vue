@@ -289,7 +289,7 @@ export default {
   methods: {
     getProjects () {
       getProjectList().then(res => {
-        this.projects = res.data
+        this.projects = res.data.length > 6 ? res.data.slice(0, 6) : res.data
         this.loading = false
       })
     },

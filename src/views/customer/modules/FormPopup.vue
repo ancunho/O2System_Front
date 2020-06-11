@@ -9,16 +9,27 @@
     @cancel="handleCancel"
   >
     <a-spin :spinning="confirmLoading">
-      <div class="table-page-popup-wrapper">
+      <div :class="`table-page-popup-wrapper ${!isMobile() || 'mobile'}`">
+        <div class="ant-upload-preview" @click="$refs.modal.edit('customerAvatar', formData.id)" >
+          <a-icon type="cloud-upload-o" class="upload-icon"/>
+          <div class="mask">
+            <a-icon type="plus" />
+          </div>
+          <a-avatar shape="square" :size="150" icon="user" :src="formData.customerImage" />
+        </div>
         <a-form :form="form" layout="inline">
-          <a-row :gutter="19">
-            <a-col :md="18" :sm="24" :class="isMobile() || 'twoLine'">
+          <a-row :gutter="5">
+            <a-col :md="12" :sm="24">
               <a-form-item :label="$t('customer.customerCd')">
                 <a-input v-decorator="['customerCd', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
+            </a-col>
+            <a-col :md="12" :sm="24">
               <a-form-item :label="$t('customer.customerName')">
                 <a-input v-decorator="['customerName', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
+            </a-col>
+            <a-col :md="12" :sm="24">
               <a-form-item :label="$t('customer.address')">
                 <a-cascader
                   placeholder=""
@@ -27,51 +38,63 @@
                   v-decorator="['addressSelect', {rules: [{required: true, message: $t('message.required')}]}]"
                 />
               </a-form-item>
+            </a-col>
+            <a-col :md="12" :sm="24">
               <a-form-item :label="$t('customer.address-detail')">
                 <a-input v-decorator="['address', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
+            </a-col>
+            <a-col :md="12" :sm="24">
               <a-form-item :label="$t('customer.director')">
                 <a-input v-decorator="['director', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
+            </a-col>
+            <a-col :md="12" :sm="24">
               <a-form-item :label="$t('customer.salesVolumn')">
                 <a-input v-decorator="['salesVolumn', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
+            </a-col>
+            <a-col :md="12" :sm="24">
               <a-form-item :label="$t('customer.developmentSkill')">
                 <a-input v-decorator="['developmentSkill', {rules: [{required: true, message: $t('message.required')}]}]" />
               </a-form-item>
+            </a-col>
+            <a-col :md="12" :sm="24">
               <a-form-item :label="$t('customer.target')">
                 <a-input v-decorator="['target']" />
               </a-form-item>
+            </a-col>
+            <a-col :md="12" :sm="24">
               <a-form-item :label="$t('customer.wechat')">
                 <a-input v-decorator="['wechat']" />
               </a-form-item>
+            </a-col>
+            <a-col :md="12" :sm="24">
               <a-form-item :label="$t('customer.phone')">
                 <a-input v-decorator="['phone']" />
               </a-form-item>
-              <a-form-item :label="$t('customer.distribution')" style="width: 100%">
+            </a-col>
+            <a-col :md="24" :sm="24">
+              <a-form-item :label="$t('customer.distribution')">
                 <a-input v-decorator="['distribution']" />
               </a-form-item>
-              <a-form-item :label="$t('customer.productList')" style="width: 100%">
+            </a-col>
+            <a-col :md="24" :sm="24">
+              <a-form-item :label="$t('customer.productList')">
                 <a-input v-decorator="['productList']" />
               </a-form-item>
-              <a-form-item :label="$t('customer.salesMan')" style="width: 100%">
+            </a-col>
+            <a-col :md="24" :sm="24">
+              <a-form-item :label="$t('customer.salesMan')">
                 <a-select mode="multiple" optionFilterProp="children" v-decorator="['salesMan']">
                   <a-select-option v-for="item in this.$parent.$parent.userList" :key="item.id">{{ item.realname }}</a-select-option>
                 </a-select>
               </a-form-item>
-              <a-form-item :label="$t('customer.description')" style="width: 100%">
+            </a-col>
+            <a-col :md="24" :sm="24">
+              <a-form-item :label="$t('customer.description')">
                 <a-input type="textarea" v-decorator="['description']" />
               </a-form-item>
-            </a-col>
-
-            <a-col :md="6" :sm="24">
-              <div class="ant-upload-preview" @click="$refs.modal.edit('customerAvatar', formData.id)" >
-                <a-icon type="cloud-upload-o" class="upload-icon"/>
-                <div class="mask">
-                  <a-icon type="plus" />
-                </div>
-                <a-avatar shape="square" :size="150" icon="user" :src="formData.customerImage" />
-              </div>
             </a-col>
           </a-row>
         </a-form>
@@ -108,7 +131,11 @@ export default {
           value: 'code',
           children: 'children'
         },
-        data: [...pca]
+        data: [{
+          name: '国外',
+          code: '99',
+          children: []
+        }, ...pca]
       }
     }
   },

@@ -71,7 +71,7 @@
           size="large"
           :placeholder="$t('user.department')"
           v-decorator="['department', {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}]">
-          <a-select-option v-for="list in department" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
+          <a-select-option v-for="list in department" :key="list['cnfNote']">{{ list['cnfNote'] }}</a-select-option>
         </a-select>
       </a-form-item>
 
