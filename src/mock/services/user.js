@@ -29,8 +29,8 @@ const info = (options) => {
     'empno': '123456789',
     'phone': '17712341234',
     'email': 'admin@admin.com',
-    'department': '1002',
-    'question': '2003',
+    'department': '部门1',
+    'question': '问题1',
     'province': '31',
     'city': '3101',
     'area': '310112',
@@ -39,7 +39,7 @@ const info = (options) => {
     'wechat': 'wechatId',
     'qq': 'qq123',
     'birthday': '2000-01-01',
-    'sex': '1',
+    'sex': '男',
     'role': 'ROLE_ADMIN'
     // 'role': 'ROLE_USER'
   }

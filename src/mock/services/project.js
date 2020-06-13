@@ -26,31 +26,30 @@ const getProjectList = (options) => {
 const getProjectView = (options) => {
   return builder({
     'customer': {
-      'address': '阿斯顿看风使舵 XXXX号',
-      'author': 'cunho',
-      'customerCd': 'customer002',
-      'customerName': 'customer name2222',
-      'customerNameKr': 'customer kr name2222',
-      'description': 'text text texttext text texttext text texttext text text',
-      'developmentSkill': 'developementskill',
-      'director': 'direcotr',
-      'distribution': 'distribution',
-      'phone': '18521095572',
-      'productList': '12312313',
-      'projectId': '[2,23]',
+      'customerCd': Mock.mock('@name'),
+      'customerName': Mock.mock('@cname'),
+      'customerType': '客户类型1',
+      'director': Mock.mock('@cname'),
       'province': '31',
       'city': '3101',
       'area': '310112',
-      'salesMan': '[1,2,3]',
-      'salesVolumn': '1,000,000',
-      'status': '1',
-      'target': 'target',
-      'wechat': 'cunho910'
+      'address': Mock.mock('@word(15)'),
+      'salesVolumn': Mock.mock('@integer(0, 10000)'),
+      'developmentSkill': '["开发能力1", "开发能力2"]',
+      'phone': Mock.mock('@natural'),
+      'description': Mock.mock('@cparagraph(5)'),
+      'channel': '["主要渠道1", "主要渠道2"]',
+      'target': '主要市场1,具体内容',
+      'productList': Mock.mock('@word(10)'),
+      'salesMan': '[' + Mock.mock('@integer(0, 10)') + ',' + Mock.mock('@integer(0, 10)') + ']',
+      'customerImage': Mock.mock('@dataImage("150x150")')
     },
     'projectBaseinfo': {
       'projectCd': '2020041800002',
       'projectEndtime': '2022-09-01',
       'projectName': 'project name2222',
+      'projectLocation': '生产地点',
+      'distribution': '流通方式',
       'projectPriceTotal': '90000元',
       'projectSalesMan': '[1,2,3]',
       'projectStarttime': '2020-03-01',
@@ -79,7 +78,6 @@ const getProjectView = (options) => {
       'yieldPercent': '8'
     },
     'projectProduct': {
-      'productCategory': '3002',
       'productConcept': '5001',
       'productDetail': 'text text text text',
       'productImage': '',
@@ -116,6 +114,8 @@ const projectBaseInfoAdd = () => {
     'productName': Mock.mock('@cname'),
     'projectStatus': Mock.mock('@pick(["1", "2", "3", "4", "5"])'),
     'projectSalesMan': '[1,2,3]',
+    'projectLocation': '生产地点',
+    'distribution': '流通方式',
     'projectPriceTotal': Mock.mock(/\d{7}/) + '元',
     'projectStarttime': Mock.mock('@date'),
     'projectEndtime': Mock.mock('@date'),
@@ -124,20 +124,20 @@ const projectBaseInfoAdd = () => {
       'id': 999,
       'customerCd': Mock.mock('@name'),
       'customerName': Mock.mock('@cname'),
+      'customerType': '客户类型1',
       'director': Mock.mock('@cname'),
       'province': '31',
       'city': '3101',
       'area': '310112',
       'address': Mock.mock('@word(15)'),
       'salesVolumn': Mock.mock('@integer(0, 10000)'),
-      'developmentSkill': Mock.mock('@word(5)'),
+      'developmentSkill': '["开发能力1", "开发能力2"]',
       'phone': Mock.mock('@natural'),
-      'wechat': Mock.mock('@word(7)'),
-      'description': Mock.mock('@word(50)'),
-      'target': Mock.mock('@word(10)'),
+      'description': Mock.mock('@cparagraph(5)'),
+      'channel': '["主要渠道1", "主要渠道2"]',
+      'target': '主要市场1,具体内容',
       'productList': Mock.mock('@word(10)'),
-      'distribution': Mock.mock('@word(10)'),
-      'salesMan': '[1,2,3]',
+      'salesMan': '[' + Mock.mock('@integer(0, 10)') + ',' + Mock.mock('@integer(0, 10)') + ']',
       // 'status': Mock.mock('@pick(["0", "1"])'),
       'customerImage': Mock.mock('@dataImage("150x150")')
     }
@@ -184,7 +184,7 @@ const projectTimelineDelete = () => {
   return builder({}, '删除成功')
 }
 
-const getProjectRecordList = (options) => {
+const getProjectRecordById = (options) => {
   const body = getBodyByQs(options)
   const data = []
   for (let i = 1; i < 7; i++) {
@@ -212,5 +212,5 @@ Mock.mock('/api/project/timeline/list', 'post', getProjectTimelineList)
 Mock.mock('/api/project/timeline/create', 'post', projectTimelineAdd)
 Mock.mock('/api/project/timeline/update', 'post', projectTimelineUpdate)
 Mock.mock('/api/project/timeline/delete', 'post', projectTimelineDelete)
-Mock.mock('/api/project/record/list', 'post', getProjectRecordList)
+Mock.mock('/api/project/record/by_id', 'post', getProjectRecordById)
 Mock.mock('/api/project/record/update', 'post', getProjectRecordUpdate)

@@ -24,7 +24,7 @@
           v-if="activeTabKey === item.key"
           v-for="item in tabList"
           :key="item.key"
-          class="input-table"
+          class="input-table view"
         >
           <table>
             <tbody>

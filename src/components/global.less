@@ -666,27 +666,27 @@ body {
 }
 
 .input-table {
-  border: 1px solid #e8e8e8;
+  border: 1px solid #d2d2d2;
   border-bottom: 0;
   border-radius: 4px;
 
   table {
     width: 100%;
 
-    &+table { border-top: 5px solid #e8e8e8; }
+    &+table { border-top: 5px solid #d2d2d2; }
 
     tr {
-      border-bottom: 1px solid #e8e8e8;
+      border-bottom: 1px solid #d2d2d2;
 
       th,
       td {
-        border-left: 1px solid #e8e8e8;
+        border-left: 1px solid #d2d2d2;
         &:first-child { border-left: 0; }
       }
 
       th {
         padding: 12px 20px;
-        background: #fafafa;
+        background: #e8e8e8;
         text-align: center;
       }
 
@@ -703,6 +703,11 @@ body {
         padding: 15px;
       }
     }
+  }
+
+  &.view table td {
+    height: 36px;
+    padding: 7px 15px;
   }
 }
 

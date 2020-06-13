@@ -9,8 +9,10 @@
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
-            <a-form-item :label="$t('customer.wechat')">
-              <a-input v-model="queryParam.wechat"/>
+            <a-form-item :label="$t('customer.customerType')">
+              <a-select v-model="queryParam.customerType">
+                <a-select-option v-for="list in customerType" :key="list['cnfNote']">{{ list['cnfNote'] }}</a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
@@ -20,22 +22,12 @@
           </a-col>
           <template v-if="advanced">
             <a-col :md="6" :sm="24">
-              <a-form-item :label="$t('customer.productList')">
-                <a-input v-model="queryParam.productList"/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="6" :sm="24">
-              <a-form-item :label="$t('customer.developmentSkill')">
-                <a-input v-model="queryParam.developmentSkill"/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="6" :sm="24">
-              <a-form-item :label="$t('customer.target')">
-                <a-input v-model="queryParam.target"/>
+              <a-form-item :label="$t('customer.phone')">
+                <a-input v-model="queryParam.phone"/>
               </a-form-item>
             </a-col>
           </template>
-          <a-col :md="!advanced && 6 || 12" :sm="24" style="text-align: right">
+          <a-col :md="!advanced && 6 || 24" :sm="24" style="text-align: right">
             <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
               <a-button type="primary" @click="$refs.table.refresh('search')">{{ $t('option.search') }}</a-button>
               <a-button style="margin-left: 8px" @click="() => queryParam = {}">{{ $t('option.reset') }}</a-button>
@@ -104,6 +96,7 @@ import ViewPopup from './modules/ViewPopup'
 import { getMemberNameList } from '@/api/member'
 import { getCustomerList, customerAdd, customerUpdate, customerDelete } from '@/api/customer'
 import i18n from '@/locales'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'CustomerList',
@@ -111,6 +104,9 @@ export default {
     STable,
     FormPopup,
     ViewPopup
+  },
+  computed: {
+    ...mapGetters(['customerType'])
   },
   data () {
     return {
@@ -127,16 +123,16 @@ export default {
           dataIndex: 'customerName'
         },
         {
+          title: i18n.t('customer.customerType'),
+          dataIndex: 'customerType'
+        },
+        {
           title: i18n.t('customer.director'),
           dataIndex: 'director'
         },
         {
           title: i18n.t('customer.salesVolumn'),
           dataIndex: 'salesVolumn'
-        },
-        {
-          title: i18n.t('customer.developmentSkill'),
-          dataIndex: 'developmentSkill'
         },
         {
           title: i18n.t('customer.address'),

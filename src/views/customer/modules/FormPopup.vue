@@ -30,6 +30,29 @@
               </a-form-item>
             </a-col>
             <a-col :md="12" :sm="24">
+              <a-form-item :label="$t('customer.customerType')">
+                <a-select
+                  v-decorator="['customerType', {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}]">
+                  <a-select-option v-for="list in customerType" :key="list['cnfNote']">{{ list['cnfNote'] }}</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :md="12" :sm="24">
+              <a-form-item :label="$t('customer.salesVolumn')">
+                <a-input v-decorator="['salesVolumn']" />
+              </a-form-item>
+            </a-col>
+            <a-col :md="12" :sm="24">
+              <a-form-item :label="$t('customer.director')">
+                <a-input v-decorator="['director', {rules: [{required: true, message: $t('message.required')}]}]" />
+              </a-form-item>
+            </a-col>
+            <a-col :md="12" :sm="24">
+              <a-form-item :label="$t('customer.phone')">
+                <a-input v-decorator="['phone']" />
+              </a-form-item>
+            </a-col>
+            <a-col :md="12" :sm="24">
               <a-form-item :label="$t('customer.address')">
                 <a-cascader
                   placeholder=""
@@ -41,42 +64,46 @@
             </a-col>
             <a-col :md="12" :sm="24">
               <a-form-item :label="$t('customer.address-detail')">
-                <a-input v-decorator="['address', {rules: [{required: true, message: $t('message.required')}]}]" />
-              </a-form-item>
-            </a-col>
-            <a-col :md="12" :sm="24">
-              <a-form-item :label="$t('customer.director')">
-                <a-input v-decorator="['director', {rules: [{required: true, message: $t('message.required')}]}]" />
-              </a-form-item>
-            </a-col>
-            <a-col :md="12" :sm="24">
-              <a-form-item :label="$t('customer.salesVolumn')">
-                <a-input v-decorator="['salesVolumn', {rules: [{required: true, message: $t('message.required')}]}]" />
+                <a-input v-decorator="['address']" />
               </a-form-item>
             </a-col>
             <a-col :md="12" :sm="24">
               <a-form-item :label="$t('customer.developmentSkill')">
-                <a-input v-decorator="['developmentSkill', {rules: [{required: true, message: $t('message.required')}]}]" />
+                <a-select
+                  mode="multiple"
+                  optionFilterProp="children"
+                  v-decorator="['developmentSkill']"
+                >
+                  <a-select-option v-for="list in customerDevelopmentSkill" :key="list['cnfNote']">{{ list['cnfNote'] }}</a-select-option>
+                </a-select>
               </a-form-item>
             </a-col>
             <a-col :md="12" :sm="24">
-              <a-form-item :label="$t('customer.target')">
-                <a-input v-decorator="['target']" />
-              </a-form-item>
-            </a-col>
-            <a-col :md="12" :sm="24">
-              <a-form-item :label="$t('customer.wechat')">
-                <a-input v-decorator="['wechat']" />
-              </a-form-item>
-            </a-col>
-            <a-col :md="12" :sm="24">
-              <a-form-item :label="$t('customer.phone')">
-                <a-input v-decorator="['phone']" />
+              <a-form-item :label="$t('customer.channel')">
+                <a-select
+                  mode="multiple"
+                  optionFilterProp="children"
+                  v-decorator="['channel']"
+                >
+                  <a-select-option v-for="list in customerChannel" :key="list['cnfNote']">{{ list['cnfNote'] }}</a-select-option>
+                </a-select>
               </a-form-item>
             </a-col>
             <a-col :md="24" :sm="24">
-              <a-form-item :label="$t('customer.distribution')">
-                <a-input v-decorator="['distribution']" />
+              <a-form-item :label="$t('customer.target')">
+                <a-input
+                  v-decorator="['targetDetail']"
+                  placeholder="具体"
+                >
+                  <a-select
+                    slot="addonBefore"
+                    v-decorator="['targetType']"
+                    placeholder="选项"
+                    style="width: 100px"
+                  >
+                    <a-select-option v-for="list in customerTarget" :key="list['cnfNote']">{{ list['cnfNote'] }}</a-select-option>
+                  </a-select>
+                </a-input>
               </a-form-item>
             </a-col>
             <a-col :md="24" :sm="24">
@@ -86,7 +113,7 @@
             </a-col>
             <a-col :md="24" :sm="24">
               <a-form-item :label="$t('customer.salesMan')">
-                <a-select mode="multiple" optionFilterProp="children" v-decorator="['salesMan']">
+                <a-select mode="multiple" optionFilterProp="children" v-decorator="['salesMan', {rules: [{required: true, message: $t('message.required')}]}]">
                   <a-select-option v-for="item in this.$parent.$parent.userList" :key="item.id">{{ item.realname }}</a-select-option>
                 </a-select>
               </a-form-item>
@@ -110,11 +137,15 @@ import i18n from '@/locales'
 import AvatarModal from '@/components/tools/AvatarModal'
 import pca from 'china-division/dist/pca-code.json'
 import { mixinDevice } from '@/utils/mixin'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'CustomerForm',
   components: {
     AvatarModal
+  },
+  computed: {
+    ...mapGetters(['customerType', 'customerChannel', 'customerDevelopmentSkill', 'customerTarget'])
   },
   mixins: [mixinDevice],
   data () {
@@ -158,15 +189,16 @@ export default {
         this.form.setFieldsValue({
           customerCd: row.customerCd,
           customerName: row.customerName,
+          customerType: row.customerType,
           director: row.director,
           phone: row.phone,
-          wechat: row.wechat,
           description: row.description,
           salesVolumn: row.salesVolumn,
-          developmentSkill: row.developmentSkill,
-          target: row.target,
+          developmentSkill: row.developmentSkill ? JSON.parse(row.developmentSkill) : [],
+          channel: row.channel ? JSON.parse(row.channel) : [],
+          targetType: row.target.substr(0, row.target.indexOf(',')),
+          targetDetail: row.target.substr(row.target.indexOf(',') + 1),
           productList: row.productList,
-          distribution: row.distribution,
           addressSelect: row.province ? [row.province, row.city, row.area] : null,
           address: row.address,
           salesMan: row.salesMan ? JSON.parse(row.salesMan) : []
@@ -186,10 +218,18 @@ export default {
           values.city = values.addressSelect[1]
           values.area = values.addressSelect[2]
         }
+        if (values.developmentSkill) {
+          values.developmentSkill = JSON.stringify(values.developmentSkill)
+        }
+        if (values.channel) {
+          values.channel = JSON.stringify(values.channel)
+        }
         if (values.salesMan) {
           values.salesMan = JSON.stringify(values.salesMan)
         }
-
+        if (values.targetType || values.targetDetail) {
+          values.target = values.targetType + ',' + values.targetDetail
+        }
         this.$emit(this.actionType, Object.assign({}, this.formData, values))
       })
     },

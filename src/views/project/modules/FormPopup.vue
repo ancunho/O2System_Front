@@ -26,8 +26,25 @@
                 </a-form-item>
               </a-col>
               <a-col :md="12" :sm="24">
+                <a-form-item :label="$t('project.projectLocation')">
+                  <a-select v-decorator="['projectLocation']">
+                    <a-select-option value="进口（一般）">进口（一般）</a-select-option>
+                    <a-select-option value="进口（跨境）">进口（跨境）</a-select-option>
+                    <a-select-option value="国产">国产</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col :md="12" :sm="24">
+                <a-form-item :label="$t('project.distribution')">
+                  <a-select v-decorator="['distribution']">
+                    <a-select-option value="内销">内销</a-select-option>
+                    <a-select-option value="出口">出口</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col :md="12" :sm="24">
                 <a-form-item :label="$t('project.projectPriceTotal')">
-                  <a-input v-decorator="['projectPriceTotal', {rules: [{required: true, message: $t('message.required')}]}]" />
+                  <a-input v-decorator="['projectPriceTotal']" />
                 </a-form-item>
               </a-col>
               <a-col :md="12" :sm="24">
@@ -69,6 +86,31 @@
                 </a-form-item>
               </a-col>
               <a-col :md="12" :sm="24">
+                <a-form-item :label="$t('customer.customerType')">
+                  <a-select
+                    :disabled="customerDisable"
+                    v-decorator="['customerType', {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}]"
+                  >
+                    <a-select-option v-for="list in customerType" :key="list['cnfNote']">{{ list['cnfNote'] }}</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col :md="12" :sm="24">
+                <a-form-item :label="$t('customer.salesVolumn')">
+                  <a-input :disabled="customerDisable" v-decorator="['salesVolumn']" />
+                </a-form-item>
+              </a-col>
+              <a-col :md="12" :sm="24">
+                <a-form-item :label="$t('customer.director')">
+                  <a-input :disabled="customerDisable" v-decorator="['director', {rules: [{required: true, message: $t('message.required')}]}]" />
+                </a-form-item>
+              </a-col>
+              <a-col :md="12" :sm="24">
+                <a-form-item :label="$t('customer.phone')">
+                  <a-input :disabled="customerDisable" v-decorator="['phone']" />
+                </a-form-item>
+              </a-col>
+              <a-col :md="12" :sm="24">
                 <a-form-item :label="$t('customer.address')">
                   <a-cascader
                     placeholder=""
@@ -81,43 +123,63 @@
               </a-col>
               <a-col :md="12" :sm="24">
                 <a-form-item :label="$t('customer.address-detail')">
-                  <a-input :disabled="customerDisable" v-decorator="['address', {rules: [{required: true, message: $t('message.required')}]}]" />
+                  <a-input :disabled="customerDisable" v-decorator="['address']" />
                 </a-form-item>
               </a-col>
-              <a-col :md="12" :sm="24">
-                <a-form-item :label="$t('customer.director')">
-                  <a-input :disabled="customerDisable" v-decorator="['director', {rules: [{required: true, message: $t('message.required')}]}]" />
-                </a-form-item>
-              </a-col>
-              <a-col :md="12" :sm="24">
-                <a-form-item :label="$t('customer.salesVolumn')">
-                  <a-input :disabled="customerDisable" v-decorator="['salesVolumn', {rules: [{required: true, message: $t('message.required')}]}]" />
-                </a-form-item>
-              </a-col>
-              <a-col :md="12" :sm="24">
-                <a-form-item :label="$t('customer.developmentSkill')">
-                  <a-input :disabled="customerDisable" v-decorator="['developmentSkill', {rules: [{required: true, message: $t('message.required')}]}]" />
-                </a-form-item>
-              </a-col>
-              <a-col :md="12" :sm="24">
-                <a-form-item :label="$t('customer.target')">
-                  <a-input :disabled="customerDisable" v-decorator="['target']" />
+              <a-col :md="24" :sm="24">
+                <a-form-item :label="$t('customer.salesMan')">
+                  <a-select
+                    :disabled="customerDisable"
+                    mode="multiple"
+                    optionFilterProp="children"
+                    v-decorator="['salesMan', {rules: [{required: true, message: $t('message.required')}]}]"
+                  >
+                    <a-select-option v-for="item in userList" :key="item.id">{{ item.realname }}</a-select-option>
+                  </a-select>
                 </a-form-item>
               </a-col>
               <div v-show="advanced">
                 <a-col :md="12" :sm="24">
-                  <a-form-item :label="$t('customer.wechat')">
-                    <a-input :disabled="customerDisable" v-decorator="['wechat']" />
+                  <a-form-item :label="$t('customer.developmentSkill')">
+                    <a-select
+                      :disabled="customerDisable"
+                      mode="multiple"
+                      optionFilterProp="children"
+                      v-decorator="['developmentSkill']"
+                    >
+                      <a-select-option v-for="list in customerDevelopmentSkill" :key="list['cnfNote']">{{ list['cnfNote'] }}</a-select-option>
+                    </a-select>
                   </a-form-item>
                 </a-col>
                 <a-col :md="12" :sm="24">
-                  <a-form-item :label="$t('customer.phone')">
-                    <a-input :disabled="customerDisable" v-decorator="['phone']" />
+                  <a-form-item :label="$t('customer.channel')">
+                    <a-select
+                      :disabled="customerDisable"
+                      mode="multiple"
+                      optionFilterProp="children"
+                      v-decorator="['channel']"
+                    >
+                      <a-select-option v-for="list in customerChannel" :key="list['cnfNote']">{{ list['cnfNote'] }}</a-select-option>
+                    </a-select>
                   </a-form-item>
                 </a-col>
                 <a-col :md="24" :sm="24">
-                  <a-form-item :label="$t('customer.distribution')">
-                    <a-input :disabled="customerDisable" v-decorator="['distribution']" />
+                  <a-form-item :label="$t('customer.target')">
+                    <a-input
+                      :disabled="customerDisable"
+                      v-decorator="['targetDetail']"
+                      placeholder="具体"
+                    >
+                      <a-select
+                        :disabled="customerDisable"
+                        slot="addonBefore"
+                        v-decorator="['targetType']"
+                        placeholder="选项"
+                        style="width: 100px"
+                      >
+                        <a-select-option v-for="list in customerTarget" :key="list['cnfNote']">{{ list['cnfNote'] }}</a-select-option>
+                      </a-select>
+                    </a-input>
                   </a-form-item>
                 </a-col>
                 <a-col :md="24" :sm="24">
@@ -127,7 +189,7 @@
                 </a-col>
                 <a-col :md="24" :sm="24">
                   <a-form-item :label="$t('customer.description')">
-                    <a-input :disabled="customerDisable" v-decorator="['description']" />
+                    <a-input :disabled="customerDisable" type="textarea" v-decorator="['description']" />
                   </a-form-item>
                 </a-col>
               </div>
@@ -169,6 +231,7 @@ import i18n from '@/locales'
 import pca from 'china-division/dist/pca-code.json'
 import { getCustomerById, getCustomerNameList } from '@/api/customer'
 import { getMemberNameList } from '@/api/member'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ProjectForm',
@@ -200,6 +263,9 @@ export default {
       customerDisable: false
     }
   },
+  computed: {
+    ...mapGetters(['customerType', 'customerChannel', 'customerDevelopmentSkill', 'customerTarget'])
+  },
   created () {
     this.$nextTick(() => {
       getMemberNameList().then(res => {
@@ -227,21 +293,25 @@ export default {
           projectStarttime: this.$options.filters.filterS2D(row.projectStarttime),
           projectEndtime: this.$options.filters.filterS2D(row.projectEndtime),
           projectName: row.projectName,
+          projectLocation: row.projectLocation,
+          distribution: row.distribution,
           projectPriceTotal: row.projectPriceTotal,
           projectSalesMan: JSON.parse(row.projectSalesMan),
           customerCd: row.customer.customerCd,
           customerName: row.customer.customerName,
+          customerType: row.customer.customerType,
           director: row.customer.director,
           phone: row.customer.phone,
-          wechat: row.customer.wechat,
           description: row.customer.description,
           salesVolumn: row.customer.salesVolumn,
-          developmentSkill: row.customer.developmentSkill,
-          target: row.customer.target,
+          developmentSkill: row.customer.developmentSkill ? JSON.parse(row.customer.developmentSkill) : [],
+          channel: row.customer.channel ? JSON.parse(row.customer.channel) : [],
+          targetType: row.customer.target.substr(0, row.customer.target.indexOf(',')),
+          targetDetail: row.customer.target.substr(row.customer.target.indexOf(',') + 1),
           productList: row.customer.productList,
-          distribution: row.customer.distribution,
           addressSelect: row.customer.province ? [row.customer.province, row.customer.city, row.customer.area] : null,
-          address: row.customer.address
+          address: row.customer.address,
+          salesMan: row.customer.salesMan ? JSON.parse(row.customer.salesMan) : []
         })
       })
       this.formData = Object.assign({}, this.formData, row)
@@ -273,6 +343,18 @@ export default {
           values.customer.province = values.addressSelect[0]
           values.customer.city = values.addressSelect[1]
           values.customer.area = values.addressSelect[2]
+        }
+        if (values.customer.developmentSkill) {
+          values.customer.developmentSkill = JSON.stringify(values.customer.developmentSkill)
+        }
+        if (values.customer.channel) {
+          values.customer.channel = JSON.stringify(values.customer.channel)
+        }
+        if (values.customer.salesMan) {
+          values.customer.salesMan = JSON.stringify(values.customer.salesMan)
+        }
+        if (values.customer.targetType || values.customer.targetDetail) {
+          values.customer.target = values.customer.targetType + ',' + values.customer.targetDetail
         }
 
         this.$emit(this.actionType, Object.assign({}, this.formData, values))
@@ -306,17 +388,19 @@ export default {
         this.form.setFieldsValue({
           customerCd: res.data.customerCd,
           customerName: res.data.customerName,
+          customerType: res.data.customerType,
           director: res.data.director,
           phone: res.data.phone,
-          wechat: res.data.wechat,
           description: res.data.description,
           salesVolumn: res.data.salesVolumn,
-          developmentSkill: res.data.developmentSkill,
-          target: res.data.target,
+          developmentSkill: res.data.developmentSkill ? JSON.parse(res.data.developmentSkill) : [],
+          channel: res.data.channel ? JSON.parse(res.data.channel) : [],
+          targetType: res.data.target.substr(0, res.data.target.indexOf(',')),
+          targetDetail: res.data.target.substr(res.data.target.indexOf(',') + 1),
           productList: res.data.productList,
-          distribution: res.data.distribution,
           addressSelect: res.data.province ? [res.data.province, res.data.city, res.data.area] : null,
-          address: res.data.address
+          address: res.data.address,
+          salesMan: res.data.salesMan ? JSON.parse(res.data.salesMan) : []
         })
       })
     },

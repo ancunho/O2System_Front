@@ -1,10 +1,14 @@
-import { getCommonConfig } from '@/api/common'
+import { getCommonConfigList } from '@/api/common'
+import { groupBy } from '@/utils/util'
 
 const common = {
   state: {
     department: null,
     question: null,
-    productCategory: null,
+    customerType: null,
+    customerDevelopmentSkill: null,
+    customerChannel: null,
+    customerTarget: null,
     productPackage: null,
     productConcept: null,
     productType: null
@@ -17,8 +21,17 @@ const common = {
     SET_QUESTION: (state, question) => {
       state.question = question
     },
-    SET_PRODUCTCATEGORY: (state, productCategory) => {
-      state.productCategory = productCategory
+    SET_CUSTOMERTYPE: (state, customerType) => {
+      state.customerType = customerType
+    },
+    SET_CUSTOMERDEVELOPMENTSKILL: (state, customerDevelopmentSkill) => {
+      state.customerDevelopmentSkill = customerDevelopmentSkill
+    },
+    SET_CUSTOMERCHANNEL: (state, customerChannel) => {
+      state.customerChannel = customerChannel
+    },
+    SET_CUSTOMERTARGET: (state, customerTarget) => {
+      state.customerTarget = customerTarget
     },
     SET_PRODUCTPACKAGE: (state, productPackage) => {
       state.productPackage = productPackage
@@ -35,13 +48,18 @@ const common = {
     // 获取common config
     GetCommon ({ commit }) {
       return new Promise((resolve, reject) => {
-        const keyList = Object.keys(this.state.common)
-        for (const key of keyList) {
-          getCommonConfig({ CNF_CODE: key }).then((response) => {
-            commit('SET_' + key.toUpperCase(), response.data)
-            if ([...keyList].pop() === key) resolve()
+        getCommonConfigList().then((res) => {
+          const orderData = groupBy(res.data, function (item) {
+            return item.cnfCode
           })
-        }
+
+          const keyList = Object.keys(this.state.common)
+          for (const key of keyList) {
+            if (orderData.hasOwnProperty(key)) {
+              commit('SET_' + key.toUpperCase(), orderData[key])
+            }
+          }
+        })
       })
     }
   }

@@ -89,8 +89,8 @@
             <a-col :md="12" :sm="24">
               <a-form-item :label="$t('member.sex')">
                 <a-select v-decorator="['sex']">
-                  <a-select-option key="1">{{ $t('member.man') }}</a-select-option>
-                  <a-select-option key="2">{{ $t('member.woman') }}</a-select-option>
+                  <a-select-option key="男">{{ $t('member.man') }}</a-select-option>
+                  <a-select-option key="女">{{ $t('member.woman') }}</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>

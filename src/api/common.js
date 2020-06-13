@@ -9,4 +9,11 @@ export function getCommonConfig (parameter) {
   })
 }
 
+export function getCommonConfigList (parameter) {
+  return axios({
+    url: '/common/config/list',
+    method: 'post'
+  })
+}
+
 export const uploadFileUrl = '/common/file/single/upload'

@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import moment from 'moment'
-import i18n from '@/locales'
-import store from '@/store'
 import provinces from 'china-division/dist/provinces.json'
 import cities from 'china-division/dist/cities.json'
 import areas from 'china-division/dist/areas.json'
@@ -65,14 +63,14 @@ Vue.filter('filterS2D', function (val, pattern = 'YYYY-MM-DD') {
   return val ? moment(val, pattern) : null
 })
 
+// json to string
+Vue.filter('filterJson2Str', function (val) {
+  return val ? (JSON.parse(val)).toString() : ''
+})
+
 // 启用
 Vue.filter('filterStatus', function (val) {
   return val === '1'
-})
-
-// 性别
-Vue.filter('filterSex', function (val) {
-  return val === '1' ? i18n.t('member.man') : i18n.t('member.woman')
 })
 
 // 获取姓名
@@ -89,18 +87,6 @@ Vue.filter('filterMemberName', function (val, obj) {
   })
 
   return names
-})
-
-// 部门
-Vue.filter('filterDepartment', function (val) {
-  if (!val) return ''
-  return store.getters.department.find((x) => x['cnfValue'] === val)['cnfNote']
-})
-
-// 问题
-Vue.filter('filterQuestion', function (val) {
-  if (!val) return ''
-  return store.getters.question.find((x) => x['cnfValue'] === val)['cnfNote']
 })
 
 // 地址

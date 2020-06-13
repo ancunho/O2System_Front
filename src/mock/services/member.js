@@ -12,8 +12,8 @@ const memberList = () => {
       'empno': Mock.mock(/\d{5,7}/),
       'phone': Mock.mock(/\d{11}/),
       'email': Mock.mock('@email'),
-      'department': Mock.mock('@pick(["1001", "1002", "1003"])'),
-      'question': Mock.mock('@pick(["2001", "2002", "2003"])'),
+      'department': '部门1',
+      'question': '问题1',
       'province': '31',
       'city': '3101',
       'area': '310112',
@@ -22,7 +22,7 @@ const memberList = () => {
       'wechat': Mock.mock(/\d{8}/),
       'qq': Mock.mock(/\d{10}/),
       'birthday': Mock.mock('@date'),
-      'sex': Mock.mock('@pick(["1", "2"])'),
+      'sex': Mock.mock('@pick(["男", "女"])'),
       'status': Mock.mock('@pick(["0", "1"])'),
       'createtime': Mock.mock('@date')
     })
@@ -52,8 +52,8 @@ const memberAdd = () => {
     'empno': Mock.mock(/\d{5,7}/),
     'phone': Mock.mock(/\d{11}/),
     'email': Mock.mock('@email'),
-    'department': Mock.mock('@pick(["1001", "1002", "1003"])'),
-    'question': Mock.mock('@pick(["2001", "2002", "2003"])'),
+    'department': '部门1',
+    'question': '问题1',
     'province': '31',
     'city': '3101',
     'area': '310112',
@@ -62,7 +62,7 @@ const memberAdd = () => {
     'wechat': Mock.mock(/\d{8}/),
     'qq': Mock.mock(/\d{10}/),
     'birthday': Mock.mock('@date'),
-    'sex': Mock.mock('@pick(["1", "2"])'),
+    'sex': Mock.mock('@pick(["男", "女"])'),
     'status': Mock.mock('@pick(["0", "1"])'),
     'createtime': Mock.mock('@date')
   }, '新建成功')

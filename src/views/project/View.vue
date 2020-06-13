@@ -5,6 +5,8 @@
       <a-descriptions :column="{ md: 3, sm: 3, xs: 1}" slot="headerContent" class="detail-layout">
         <a-descriptions-item :label="$t('project.projectName')">{{ baseInfo.projectName }}</a-descriptions-item>
         <a-descriptions-item :label="$t('project.projectSalesMan')">{{ baseInfo.projectSalesMan | filterMemberName(userList) }}</a-descriptions-item>
+        <a-descriptions-item :label="$t('project.projectLocation')">{{ baseInfo.projectLocation }}</a-descriptions-item>
+        <a-descriptions-item :label="$t('project.distribution')">{{ baseInfo.distribution }}</a-descriptions-item>
         <a-descriptions-item :label="$t('project.projectPriceTotal')">{{ baseInfo.projectPriceTotal }}</a-descriptions-item>
         <a-descriptions-item :label="$t('project.projectStarttime')">{{ baseInfo.projectStarttime }}</a-descriptions-item>
         <a-descriptions-item :label="$t('project.projectEndtime')">{{ baseInfo.projectEndtime }}</a-descriptions-item>
@@ -12,6 +14,9 @@
 
       <template slot="action">
         <a-button v-permission:u="permissionList" type="primary" @click="handleEdit">编辑</a-button>
+        <router-link to="/project/list" style="margin-left: 10px">
+          <a-button>返回列表</a-button>
+        </router-link>
       </template>
 
       <!-- 流程进度 -->
@@ -27,16 +32,23 @@
           客户信息
         </template>
 
-        <a-descriptions>
-          <a-descriptions-item label="姓名">{{ baseInfo.customer.customerName }}</a-descriptions-item>
-          <a-descriptions-item label="负责人">{{ baseInfo.customer.salesMan | filterMemberName(userList) }}</a-descriptions-item>
-          <a-descriptions-item label="微信">{{ baseInfo.customer.wechat }}</a-descriptions-item>
-          <a-descriptions-item label="营业额">{{ baseInfo.customer.salesVolumn }}</a-descriptions-item>
-          <a-descriptions-item label="主要市场">{{ baseInfo.customer.target }}</a-descriptions-item>
-          <a-descriptions-item label="有无开发能力">{{ baseInfo.customer.developmentSkill }}</a-descriptions-item>
-          <a-descriptions-item label="城市">{{ baseInfo.customer.province | filterAddress(baseInfo.customer.city, baseInfo.customer.area) }}</a-descriptions-item>
-          <a-descriptions-item label="详细地址" :span="isMobile() ? 1 : 2">{{ baseInfo.customer.customerName }}</a-descriptions-item>
-          <a-descriptions-item label="公司介绍" :span="isMobile() ? 1 : 3">{{ baseInfo.customer.customerName }}</a-descriptions-item>
+        <a-descriptions :column="{ md: 3, sm: 1, xs: 1}">
+          <a-descriptions-item :label="$t('customer.customerCd')">{{ baseInfo.customer.customerCd }}</a-descriptions-item>
+          <a-descriptions-item :label="$t('customer.customerName')">{{ baseInfo.customer.customerName }}</a-descriptions-item>
+          <a-descriptions-item :label="$t('customer.customerType')">{{ baseInfo.customer.customerType }}</a-descriptions-item>
+          <a-descriptions-item :label="$t('customer.salesVolumn')">{{ baseInfo.customer.salesVolumn }}</a-descriptions-item>
+          <a-descriptions-item :label="$t('customer.director')">{{ baseInfo.customer.director }}</a-descriptions-item>
+          <a-descriptions-item :label="$t('customer.phone')">{{ baseInfo.customer.phone }}</a-descriptions-item>
+          <a-descriptions-item :label="$t('customer.address')">{{ baseInfo.customer.province | filterAddress(baseInfo.customer.city, baseInfo.customer.area) }}</a-descriptions-item>
+          <a-descriptions-item :label="$t('customer.address-detail')">{{ baseInfo.customer.address }}</a-descriptions-item>
+          <a-descriptions-item :label="$t('customer.developmentSkill')">{{ baseInfo.customer.developmentSkill | filterJson2Str }}</a-descriptions-item>
+          <a-descriptions-item :label="$t('customer.channel')">{{ baseInfo.customer.channel | filterJson2Str }}</a-descriptions-item>
+          <a-descriptions-item :label="$t('customer.target')">{{ baseInfo.customer.target }}</a-descriptions-item>
+          <a-descriptions-item :label="$t('customer.productList')">{{ baseInfo.customer.productList }}</a-descriptions-item>
+        </a-descriptions>
+        <a-descriptions :column="{ md: 1, sm: 1, xs: 1}">
+          <a-descriptions-item :label="$t('customer.salesMan')">{{ baseInfo.customer.salesMan | filterMemberName(userList) }}</a-descriptions-item>
+          <a-descriptions-item :label="$t('customer.description')">{{ baseInfo.customer.description }}</a-descriptions-item>
         </a-descriptions>
       </a-card>
 
@@ -46,22 +58,50 @@
           产品 - 原料信息
         </template>
 
-        <a-descriptions :column="isMobile() ? 1 : 4">
+        <a-descriptions :column="{ md: 4, sm: 1, xs: 1}">
           <a-descriptions-item label="产品名">{{ form.projectProduct.productName }}</a-descriptions-item>
-          <a-descriptions-item label="分类">{{ form.projectProduct.productCategory | fProductCategory }}</a-descriptions-item>
-          <a-descriptions-item label="包装类型">{{ form.projectProduct.productPackage | fProductPackage }}</a-descriptions-item>
-          <a-descriptions-item label="产品概念">{{ form.projectProduct.productConcept | fProductConcept }}</a-descriptions-item>
-          <a-descriptions-item label="产品类型">{{ form.projectProduct.productType | fProductType }}</a-descriptions-item>
+          <a-descriptions-item label="包装类型">{{ form.projectProduct.productPackage }}</a-descriptions-item>
+          <a-descriptions-item label="产品概念">{{ form.projectProduct.productConcept }}</a-descriptions-item>
+          <a-descriptions-item label="产品剂型">{{ form.projectProduct.productType }}</a-descriptions-item>
           <a-descriptions-item label="数量">{{ form.projectProduct.productQuantity }}</a-descriptions-item>
           <a-descriptions-item label="价格" :span="isMobile() ? 1 : 2">{{ form.projectProduct.productTargetPrice }}</a-descriptions-item>
-          <a-descriptions-item label="核心原料" :span="isMobile() ? 1 : 2">
+        </a-descriptions>
+        <a-descriptions :column="{ md: 2, sm: 1, xs: 1}">
+          <a-descriptions-item label="核心原料">
             <a-tag v-for="item in form.projectProduct.productMainMaterial" :key="item">{{ item }}</a-tag>
           </a-descriptions-item>
-          <a-descriptions-item label="副原料" :span="isMobile() ? 1 : 2">
+          <a-descriptions-item label="副原料">
             <a-tag v-for="item in form.projectProduct.productSubMaterial" :key="item">{{ item }}</a-tag>
           </a-descriptions-item>
-          <a-descriptions-item label="详细说明" :span="isMobile() ? 1 : 4">{{ form.projectProduct.productDetail }}</a-descriptions-item>
         </a-descriptions>
+        <a-descriptions :column="{ md: 1, sm: 1, xs: 1}">
+          <a-descriptions-item label="详细说明">{{ form.projectProduct.productDetail }}</a-descriptions-item>
+        </a-descriptions>
+      </a-card>
+
+      <!-- 附件 -->
+      <a-card :bordered="false">
+        <template slot="title">
+          附件
+        </template>
+        <div
+          v-for="file in form.projectFileinfoList"
+          :key="file.id"
+        >
+          <a-icon
+            theme="twoTone"
+            :type="file.fileExtension | filterIcon"
+            style="display: inline; font-size: 20px"
+          />
+          <a-button
+            :href="file.filePath"
+            :download="file.fileName"
+            target="_blank"
+            type="link"
+          >
+            {{ file.fileName }}
+          </a-button>
+        </div>
       </a-card>
 
       <!-- 价格信息 -->
@@ -69,7 +109,7 @@
         <template slot="title">
           价格信息
         </template>
-        <div class="input-table">
+        <div class="input-table view">
           <table>
             <tbody>
               <tr>
@@ -153,29 +193,27 @@
                 <td>
                   {{ item.project }}
                 </td>
-                <td>
+                <td class="txtR">
                   {{ item.price }}
                 </td>
-                <td>
+                <td class="txtR">
                   {{ item.setPrice }}
                 </td>
-                <td>
+                <td class="txtR">
                   {{ item.percent }}
                 </td>
               </tr>
               <tr>
-                <td></td>
-                <th>合计</th>
-                <td class="txtC">999</td>
-                <td class="txtC">99</td>
-                <td class="txtC">100%</td>
+                <th colspan="2">合计</th>
+                <td class="txtR">{{ total.price }}</td>
+                <td class="txtR">{{ total.setPrice }}</td>
+                <td class="txtR">{{ total.percent }}%</td>
               </tr>
               <tr>
                 <th colspan="2">{{ $t('project.valueNoVat') }}</th>
-                <td colspan="2">
+                <td colspan="3">
                   {{ form.projectPrice.valueNoVat }}
                 </td>
-                <td class="txtC">110.00</td>
               </tr>
             </tbody>
           </table>
@@ -225,7 +263,7 @@
           v-if="activeTabKey === item.key"
           v-for="item in tabList"
           :key="item.key"
-          class="input-table"
+          class="input-table view"
         >
           <table>
             <tbody>
@@ -263,31 +301,6 @@
         </div>
       </a-card>
 
-      <!-- 附件 -->
-      <a-card :bordered="false">
-        <template slot="title">
-          附件
-        </template>
-        <div
-          v-for="file in form.projectFileinfoList"
-          :key="file.id"
-        >
-          <a-icon
-            theme="twoTone"
-            :type="file.fileExtension | filterIcon"
-            style="display: inline; font-size: 20px"
-          />
-          <a-button
-            :href="file.filePath"
-            :download="file.fileName"
-            target="_blank"
-            type="link"
-          >
-            {{ file.fileName }}
-          </a-button>
-        </div>
-      </a-card>
-
       <!--时间轴-->
       <view-timeline-popup
         ref="timelineViewModal"
@@ -302,7 +315,6 @@ import { PageView } from '@/layouts'
 import { getProjectView } from '@/api/project'
 import { getMemberNameList } from '@/api/member'
 import ViewTimelinePopup from '@/views/project/modules/ViewTimelinePopup'
-import store from '@/store'
 
 export default {
   name: 'ProjectView',
@@ -312,22 +324,6 @@ export default {
   },
   mixins: [mixinDevice],
   filters: {
-    fProductCategory (val) {
-      if (!val) return ''
-      return store.getters.productCategory.find((x) => x['cnfValue'] === val)['cnfNote']
-    },
-    fProductPackage (val) {
-      if (!val) return ''
-      return store.getters.productPackage.find((x) => x['cnfValue'] === val)['cnfNote']
-    },
-    fProductConcept (val) {
-      if (!val) return ''
-      return store.getters.productConcept.find((x) => x['cnfValue'] === val)['cnfNote']
-    },
-    fProductType (val) {
-      if (!val) return ''
-      return store.getters.productType.find((x) => x['cnfValue'] === val)['cnfNote']
-    },
     filterIcon (val) {
       let icon = 'file'
 
@@ -388,7 +384,12 @@ export default {
         }
       ],
       activeTabKey: '1',
-      permissionList: []
+      permissionList: [],
+      total: {
+        price: 0,
+        setPrice: 0,
+        percent: 0
+      }
     }
   },
   created () {
@@ -423,6 +424,23 @@ export default {
             this.form.projectPrice = {
               priceList: [],
               descriptionList: []
+            }
+          }
+
+          if (this.form.projectPrice.priceList) {
+            let price = 0
+            let setPrice = 0
+            let percent = 0
+            this.form.projectPrice.priceList.forEach(item => {
+              price += Number(item['price'])
+              setPrice += Number(item['setPrice'])
+              percent += Number(item['percent'])
+            })
+
+            this.total = {
+              price: price,
+              setPrice: setPrice,
+              percent: percent
             }
           }
 

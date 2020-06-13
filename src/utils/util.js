@@ -88,3 +88,16 @@ export function isEmail (email) {
   const regEmail = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
   return regEmail.test(email)
 }
+
+/**
+ * 数组对象分组
+ */
+export function groupBy (array, f) {
+  const groups = {}
+  array.forEach(function (o) {
+    const group = f(o)
+    groups[group] = groups[group] || []
+    groups[group].push(o)
+  })
+  return groups
+}
