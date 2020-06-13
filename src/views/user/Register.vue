@@ -80,7 +80,7 @@
           size="large"
           :placeholder="$t('user.question')"
           v-decorator="['question', {rules: [{ required: true, message: $t('message.required') }], validateTrigger: 'change'}]">
-          <a-select-option v-for="list in question" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
+          <a-select-option v-for="list in question" :key="list['cnfNote']">{{ list['cnfNote'] }}</a-select-option>
         </a-select>
       </a-form-item>
 

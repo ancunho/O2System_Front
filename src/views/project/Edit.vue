@@ -25,28 +25,28 @@
           <a-col :lg="6" :md="8" :sm="24">
             <a-form-model-item :label="$t('project.productCategory')">
               <a-select v-model="form.projectProduct.productCategory">
-                <a-select-option v-for="list in productCategory" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
+                <a-select-option v-for="list in productCategory" :key="list['cnfNote']">{{ list['cnfNote'] }}</a-select-option>
               </a-select>
             </a-form-model-item>
           </a-col>
           <a-col :lg="6" :md="8" :sm="24">
             <a-form-model-item :label="$t('project.productPackage')">
               <a-select v-model="form.projectProduct.productPackage">
-                <a-select-option v-for="list in productPackage" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
+                <a-select-option v-for="list in productPackage" :key="list['cnfNote']">{{ list['cnfNote'] }}</a-select-option>
               </a-select>
             </a-form-model-item>
           </a-col>
           <a-col :lg="6" :md="8" :sm="24">
             <a-form-model-item :label="$t('project.productConcept')">
               <a-select v-model="form.projectProduct.productConcept">
-                <a-select-option v-for="list in productConcept" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
+                <a-select-option v-for="list in productConcept" :key="list['cnfNote']">{{ list['cnfNote'] }}</a-select-option>
               </a-select>
             </a-form-model-item>
           </a-col>
           <a-col :lg="6" :md="8" :sm="24">
             <a-form-model-item :label="$t('project.productType')">
               <a-select v-model="form.projectProduct.productType">
-                <a-select-option v-for="list in productType" :key="list['cnfValue']">{{ list['cnfNote'] }}</a-select-option>
+                <a-select-option v-for="list in productType" :key="list['cnfNote']">{{ list['cnfNote'] }}</a-select-option>
               </a-select>
             </a-form-model-item>
           </a-col>
@@ -664,6 +664,10 @@ export default {
       if (this.type === 'add') {
         projectDetailAdd(param).then(res => {
           this.$message.success(res.msg)
+          this.$router.push({
+            name: 'projectView',
+            params: this.baseInfo
+          })
         })
       } else if (this.type === 'edit') {
         projectDetailUpdate(param).then(res => {
