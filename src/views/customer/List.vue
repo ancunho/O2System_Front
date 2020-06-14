@@ -62,7 +62,7 @@
     >
       <span slot="action" slot-scope="text, row" class="table-option">
         <template>
-          <a>{{ $t('option.project') }}</a>
+          <a @click="$refs.viewProjectModal.view(row.id)">{{ $t('option.project') }}</a>
           <a-divider type="vertical" />
           <a @click="$refs.viewModal.view(row)">{{ $t('option.view') }}</a>
           <span v-permission:i="row.salesMan">
@@ -76,15 +76,24 @@
         </template>
       </span>
     </s-table>
-    <form-popup
-      ref="formModal"
-      @add="handleAdd($event)"
-      @update="handleUpdate($event)"
+
+    <!--项目列表-->
+    <view-project-popup
+      ref="viewProjectModal"
     />
+
+    <!--详细-->
     <view-popup
       ref="viewModal"
       @edit="$refs.formModal.edit($event)"
       @delete="handleDelete($event)"
+    />
+
+    <!--编辑-->
+    <form-popup
+      ref="formModal"
+      @add="handleAdd($event)"
+      @update="handleUpdate($event)"
     />
   </a-card>
 </template>
@@ -93,6 +102,7 @@
 import { STable } from '@/components'
 import FormPopup from './modules/FormPopup'
 import ViewPopup from './modules/ViewPopup'
+import ViewProjectPopup from './modules/ViewProjectPopup'
 import { getMemberNameList } from '@/api/member'
 import { getCustomerList, customerAdd, customerUpdate, customerDelete } from '@/api/customer'
 import i18n from '@/locales'
@@ -103,7 +113,8 @@ export default {
   components: {
     STable,
     FormPopup,
-    ViewPopup
+    ViewPopup,
+    ViewProjectPopup
   },
   computed: {
     ...mapGetters(['customerType'])

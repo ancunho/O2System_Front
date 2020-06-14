@@ -306,8 +306,8 @@ export default {
           salesVolumn: row.customer.salesVolumn,
           developmentSkill: row.customer.developmentSkill ? JSON.parse(row.customer.developmentSkill) : [],
           channel: row.customer.channel ? JSON.parse(row.customer.channel) : [],
-          targetType: row.customer.target.substr(0, row.customer.target.indexOf(',')),
-          targetDetail: row.customer.target.substr(row.customer.target.indexOf(',') + 1),
+          targetType: row.customer.target ? row.customer.target.substr(0, row.customer.target.indexOf(',')) : '',
+          targetDetail: row.customer.target ? row.customer.target.substr(row.customer.target.indexOf(',') + 1) : '',
           productList: row.customer.productList,
           addressSelect: row.customer.province ? [row.customer.province, row.customer.city, row.customer.area] : null,
           address: row.customer.address,
@@ -321,6 +321,7 @@ export default {
       validateFields((err, values) => {
         if (err) return
         this.confirmLoading = true
+        values.projectCustomer = this.customerId
         values.projectSalesMan = JSON.stringify(values.projectSalesMan)
         values.projectStarttime = this.$options.filters.filterD2S(values.projectStarttime)
         values.projectEndtime = this.$options.filters.filterD2S(values.projectEndtime)

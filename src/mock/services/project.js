@@ -8,7 +8,6 @@ const getProjectList = (options) => {
       'id': i,
       'projectCd': Mock.mock(/\d{10}/),
       'projectName': Mock.mock('@cname'),
-      'projectCustomer': Mock.mock('@cname'),
       'productName': Mock.mock('@cname'),
       'projectStatus': Mock.mock('@pick(["1", "2", "3", "4", "5"])'),
       'projectSalesMan': '[' + Mock.mock('@integer(0, 10)') + ',' + Mock.mock('@integer(0, 10)') + ']',
@@ -101,6 +100,17 @@ const getProjectView = (options) => {
       'timelineAuthor': 'XXXXX',
       'timelineContent': 'json',
       'timelineId': '1'
+    }],
+    'projectFileinfoList': [{
+      'id': 1,
+      'filePath': Mock.mock('@dataImage("150x150")'),
+      'fileName': '图片图片图片图片图片',
+      'fileExtension': 'jpeg'
+    }, {
+      'id': 2,
+      'filePath': 'link',
+      'fileName': '附件附件附件附件附件',
+      'fileExtension': 'xml'
     }]
   })
 }

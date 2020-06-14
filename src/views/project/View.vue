@@ -12,15 +12,12 @@
         <a-descriptions-item :label="$t('project.projectEndtime')">{{ baseInfo.projectEndtime }}</a-descriptions-item>
       </a-descriptions>
 
-      <template slot="action">
-        <a-button v-permission:u="permissionList" type="primary" @click="handleEdit">编辑</a-button>
-        <router-link to="/project/list" style="margin-left: 10px">
-          <a-button>返回列表</a-button>
-        </router-link>
-      </template>
-
       <!-- 流程进度 -->
-      <a-card :bordered="false" title="流程进度">
+      <a-card :bordered="false">
+        <template slot="title">
+          <b><a-icon type="clock-circle" /> 流程进度</b>
+        </template>
+
         <a-steps :direction="isMobile() && 'vertical' || 'horizontal'" :current="Number(baseInfo.projectStatus) - 1" progressDot>
           <a-step v-for="item in tabList" :title="item.tab" :key="item.key" />
         </a-steps>
@@ -29,7 +26,7 @@
       <!-- 客户信息 -->
       <a-card :bordered="false">
         <template slot="title">
-          客户信息
+          <b><a-icon type="user" /> 客户信息</b>
         </template>
 
         <a-descriptions :column="{ md: 3, sm: 1, xs: 1}">
@@ -55,7 +52,7 @@
       <!-- 产品 - 原料信息 -->
       <a-card :bordered="false">
         <template slot="title">
-          产品 - 原料信息
+          <b><a-icon type="profile" /> 产品 - 原料信息</b>
         </template>
 
         <a-descriptions :column="{ md: 4, sm: 1, xs: 1}">
@@ -82,32 +79,41 @@
       <!-- 附件 -->
       <a-card :bordered="false">
         <template slot="title">
-          附件
+          <b><a-icon type="folder" /> 附件</b>
         </template>
-        <div
-          v-for="file in form.projectFileinfoList"
-          :key="file.id"
-        >
-          <a-icon
-            theme="twoTone"
-            :type="file.fileExtension | filterIcon"
-            style="display: inline; font-size: 20px"
-          />
-          <a-button
-            :href="file.filePath"
-            :download="file.fileName"
-            target="_blank"
-            type="link"
+        <div class="file-list-box">
+          <div
+            class="item"
+            v-for="file in form.projectFileinfoList"
+            :key="file.id"
           >
-            {{ file.fileName }}
-          </a-button>
+            <a
+              :href="file.filePath"
+              :download="file.fileName"
+              target="_blank"
+            >
+              <span class="view">
+                <a-icon
+                  v-if="!['jpg', 'jpeg', 'png', 'gif'].includes(file.fileExtension)"
+                  :type="file.fileExtension | filterIcon"
+                />
+                <b
+                  v-else
+                  :style="`background: url('${file.filePath}') no-repeat center;background-size:cover;`"
+                />
+              </span>
+              <span class="txt">
+                {{ file.fileName }}
+              </span>
+            </a>
+          </div>
         </div>
       </a-card>
 
       <!-- 价格信息 -->
       <a-card :bordered="false">
         <template slot="title">
-          价格信息
+          <b><a-icon type="pay-circle" /> 价格信息</b>
         </template>
         <div class="input-table view">
           <table>
@@ -256,7 +262,7 @@
         @tabChange="(key) => {this.activeTabKey = key}"
       >
         <template slot="title">
-          历史信息
+          <b><a-icon type="history" /> 历史信息</b>
           <a-button style="float: right" type="primary" size="small" @click="$refs.timelineViewModal.view(baseInfo)" >{{ $t('option.timeline') }}</a-button>
         </template>
         <div
@@ -300,6 +306,14 @@
           </table>
         </div>
       </a-card>
+
+      <!--按钮兰-->
+      <div class="button-box">
+        <router-link to="/project/list" style="margin-right: 15px">
+          <a-button>返回列表</a-button>
+        </router-link>
+        <a-button v-permission:u="permissionList" type="primary" @click="handleEdit">编辑</a-button>
+      </div>
 
       <!--时间轴-->
       <view-timeline-popup

@@ -11,7 +11,7 @@
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item :label="$t('project.projectCustomer')">
-                <a-input v-model="queryParam.projectCustomer"/>
+                <a-input v-model="queryParam.customerName"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
@@ -169,7 +169,7 @@ export default {
         },
         {
           title: i18n.t('project.projectCustomer'),
-          dataIndex: 'projectCustomer'
+          dataIndex: 'customerName'
         },
         {
           title: i18n.t('project.projectSalesMan'),

@@ -718,3 +718,51 @@ body {
 .ant-descriptions-item-label {
   font-weight: bold;
 }
+
+.file-list-box {
+  .item {
+    float: left;
+
+    &.item {
+      margin-left: 15px;
+    }
+
+    a {
+      display: block;
+      width: 90px;
+
+      &:hover,
+      &:active {
+        opacity: 0.9;
+      }
+
+      .view {
+        display: block;
+        height: 90px;
+        line-height: 90px;
+        overflow: hidden;
+        border-radius: 3px;
+        text-align: center;
+        background: #d1f1ff;
+
+        b {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+
+        i {
+          font-size: 30px;
+        }
+      }
+
+      .txt {
+        margin-top: 7px;
+        display: block;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+      }
+    }
+  }
+}

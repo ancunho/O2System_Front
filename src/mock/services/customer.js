@@ -79,9 +79,36 @@ const customerDelete = () => {
   return builder({}, '删除成功')
 }
 
+const checkCustomerName = () => {
+  return builder({}, '可以使用')
+}
+
+const getProjectByCustomer = (options) => {
+  const data = []
+  for (let i = 1; i < 7; i++) {
+    data.push({
+      'id': i,
+      'projectCd': Mock.mock(/\d{10}/),
+      'projectName': Mock.mock('@cname'),
+      'productName': Mock.mock('@cname'),
+      'projectStatus': Mock.mock('@pick(["1", "2", "3", "4", "5"])'),
+      'projectSalesMan': '[' + Mock.mock('@integer(0, 10)') + ',' + Mock.mock('@integer(0, 10)') + ']',
+      'projectPriceTotal': Mock.mock(/\d{7}/) + '元',
+      'projectStarttime': Mock.mock('@date'),
+      'projectEndtime': Mock.mock('@date'),
+      'projectCreater': '2',
+      'createtime': Mock.mock('@date')
+    })
+  }
+
+  return builder(data)
+}
+
 Mock.mock('/api/customer/list', 'get', customerList)
 Mock.mock('/api/customer/list/name', 'get', customerNameList)
 Mock.mock('/api/customer/detail', 'post', getCustomerById)
 Mock.mock('/api/customer/create', 'post', customerAdd)
 Mock.mock('/api/customer/update', 'post', customerUpdate)
 Mock.mock('/api/customer/delete', 'post', customerDelete)
+Mock.mock('/api/customer/check_customer_name', 'post', checkCustomerName)
+Mock.mock('/api/customer/project_list_by_customer_name', 'post', getProjectByCustomer)

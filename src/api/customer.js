@@ -46,3 +46,19 @@ export function customerDelete (parameter) {
     data: QS.stringify(parameter)
   })
 }
+
+export function checkCustomerName (parameter) {
+  return axios({
+    url: '/customer/check_customer_name',
+    method: 'post',
+    data: QS.stringify(parameter)
+  })
+}
+
+export function getProjectByCustomer (parameter) {
+  return axios({
+    url: '/customer/project_list_by_customer_name',
+    method: 'post',
+    data: QS.stringify(parameter)
+  })
+}
