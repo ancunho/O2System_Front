@@ -337,7 +337,7 @@ export default {
           channel: values.channel,
           salesMan: values.salesMan,
           developmentSkill: values.developmentSkill,
-          target: values.customer.targetType + ',' + values.customer.targetDetail,
+          target: values.targetType + ',' + values.targetDetail,
           productList: values.productList,
           address: values.address
         }
