@@ -332,13 +332,13 @@ export default {
           customerName: values.customerName,
           director: values.director,
           phone: values.phone,
-          wechat: values.wechat,
           description: values.description,
           salesVolumn: values.salesVolumn,
+          channel: values.channel,
+          salesMan: values.salesMan,
           developmentSkill: values.developmentSkill,
-          target: values.target,
+          target: values.customer.targetType + ',' + values.customer.targetDetail,
           productList: values.productList,
-          distribution: values.distribution,
           address: values.address
         }
         if (values.addressSelect) {
@@ -354,9 +354,6 @@ export default {
         }
         if (values.customer.salesMan) {
           values.customer.salesMan = JSON.stringify(values.customer.salesMan)
-        }
-        if (values.customer.targetType || values.customer.targetDetail) {
-          values.customer.target = values.customer.targetType + ',' + values.customer.targetDetail
         }
 
         this.$emit(this.actionType, Object.assign({}, this.formData, values))

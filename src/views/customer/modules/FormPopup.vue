@@ -246,9 +246,8 @@ export default {
         if (values.salesMan) {
           values.salesMan = JSON.stringify(values.salesMan)
         }
-        if (values.targetType || values.targetDetail) {
-          values.target = values.targetType + ',' + values.targetDetail
-        }
+        values.target = values.targetType + ',' + values.targetDetail
+
         this.$emit(this.actionType, Object.assign({}, this.formData, values))
       })
     },
