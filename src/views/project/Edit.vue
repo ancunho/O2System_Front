@@ -658,6 +658,10 @@ export default {
       } else if (this.type === 'edit') {
         projectDetailUpdate(param).then(res => {
           this.$message.success(res.msg)
+          this.$router.push({
+            name: 'projectView',
+            params: this.baseInfo
+          })
         })
       }
     }
