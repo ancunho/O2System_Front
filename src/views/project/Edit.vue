@@ -15,7 +15,7 @@
       <!-- 产品 - 原料信息 -->
       <a-card :bordered="false">
         <template slot="title">
-          <b><a-icon type="profile" /> 产品 - 原料信息</b>
+          <b class="color01"><a-icon type="profile" /> 产品 - 原料信息</b>
         </template>
         <a-row :gutter="24">
           <a-col :lg="6" :md="8" :sm="24">
@@ -84,7 +84,7 @@
       <!-- 附件 -->
       <a-card :bordered="false">
         <template slot="title">
-          <b><a-icon type="folder" /> 附件</b>
+          <b class="color01"><a-icon type="folder" /> 附件</b>
         </template>
         <a-upload
           style="max-width: 500px"
@@ -101,7 +101,7 @@
       <!-- 价格信息 -->
       <a-card :bordered="false">
         <template slot="title">
-          <b><a-icon type="pay-circle" /> 价格信息</b>
+          <b class="color01"><a-icon type="pay-circle" /> 价格信息</b>
         </template>
         <div class="input-table">
           <table>
@@ -236,9 +236,9 @@
               </tr>
               <tr>
                 <th colspan="2">合计</th>
-                <td class="txtR">{{ total.price }}</td>
-                <td class="txtR">{{ total.setPrice }}</td>
-                <td class="txtR">{{ total.percent }}%</td>
+                <td class="txtR color02">{{ total.price }}</td>
+                <td class="txtR color02">{{ total.setPrice }}</td>
+                <td class="txtR color02">{{ total.percent }}%</td>
               </tr>
               <tr>
                 <th colspan="2">{{ $t('project.valueNoVat') }}</th>
@@ -302,7 +302,7 @@
         @tabChange="(key) => {this.activeTabKey = key}"
       >
         <template slot="title">
-          <b><a-icon type="history" /> 历史信息</b>
+          <b class="color01"><a-icon type="history" /> 历史信息</b>
           <a-button style="float: right" type="primary" @click="$refs.timelineViewModal.view(baseInfo)" >{{ $t('option.timeline') }}</a-button>
         </template>
         <div
