@@ -315,6 +315,7 @@ export default {
         })
       })
       this.formData = Object.assign({}, this.formData, row)
+      this.customerId = this.formData.customer.id
     },
     handleSubmit () {
       const { form: { validateFields } } = this
