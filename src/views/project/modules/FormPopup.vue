@@ -330,6 +330,7 @@ export default {
           id: this.customerId,
           customerCd: values.customerCd,
           customerName: values.customerName,
+          customerType: values.customerType,
           director: values.director,
           phone: values.phone,
           description: values.description,

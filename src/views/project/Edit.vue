@@ -612,9 +612,10 @@ export default {
 
     // 编辑保存
     handleUpdate (values) {
+      this.$refs.formModal.setConfirmLoading()
+      this.$refs.formModal.setVisible()
       projectBaseInfoUpdate(values).then(res => {
-        this.$refs.formModal.setConfirmLoading()
-        this.$refs.formModal.setVisible()
+        this.baseInfo = res.data
         this.$message.success(res.msg)
       })
     },
