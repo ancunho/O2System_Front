@@ -17,12 +17,12 @@
           <a-descriptions-item :label="$t('customer.salesVolumn')">{{ customer.salesVolumn }}</a-descriptions-item>
           <a-descriptions-item :label="$t('customer.director')">{{ customer.director }}</a-descriptions-item>
           <a-descriptions-item :label="$t('customer.phone')">{{ customer.phone }}</a-descriptions-item>
+        </a-descriptions>
+        <a-descriptions :column="{ md: 1, sm: 1, xs: 1}">
           <a-descriptions-item :label="$t('customer.address')">{{ customer.province | filterAddress(customer.city, customer.area) }}</a-descriptions-item>
           <a-descriptions-item :label="$t('customer.address-detail')">{{ customer.address }}</a-descriptions-item>
           <a-descriptions-item :label="$t('customer.developmentSkill')">{{ customer.developmentSkill | filterJson2Str }}</a-descriptions-item>
           <a-descriptions-item :label="$t('customer.channel')">{{ customer.channel | filterJson2Str }}</a-descriptions-item>
-        </a-descriptions>
-        <a-descriptions :column="{ md: 1, sm: 1, xs: 1}">
           <a-descriptions-item :label="$t('customer.target')">{{ customer.target }}</a-descriptions-item>
           <a-descriptions-item :label="$t('customer.productList')">{{ customer.productList }}</a-descriptions-item>
           <a-descriptions-item :label="$t('customer.salesMan')">{{ customer.salesMan | filterMemberName(this.$parent.$parent.userList) }}</a-descriptions-item>

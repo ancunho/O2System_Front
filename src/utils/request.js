@@ -15,14 +15,14 @@ const service = axios.create({
 const err = (error) => {
   if (error.response) {
     const data = error.response.data
-    const token = Vue.ls.get(ACCESS_TOKEN)
+    // const token = Vue.ls.get(ACCESS_TOKEN)
 
     notification.error({
       message: data.error || i18n.t('message.error'),
       description: data.message || data.msg || i18n.t('message.request-error')
     })
 
-    if (data.status === 99 && token) {
+    if (data.status === 10) {
       store.dispatch('Logout').then(() => {
         setTimeout(() => {
           window.location.reload()

@@ -52,7 +52,7 @@
                 <a-input v-decorator="['phone']" />
               </a-form-item>
             </a-col>
-            <a-col :md="12" :sm="24">
+            <a-col :md="24" :sm="24">
               <a-form-item :label="$t('customer.address')">
                 <a-cascader
                   placeholder=""
@@ -62,12 +62,12 @@
                 />
               </a-form-item>
             </a-col>
-            <a-col :md="12" :sm="24">
+            <a-col :md="24" :sm="24">
               <a-form-item :label="$t('customer.address-detail')">
                 <a-input v-decorator="['address']" />
               </a-form-item>
             </a-col>
-            <a-col :md="12" :sm="24">
+            <a-col :md="24" :sm="24">
               <a-form-item :label="$t('customer.developmentSkill')">
                 <a-select
                   mode="multiple"
@@ -78,7 +78,7 @@
                 </a-select>
               </a-form-item>
             </a-col>
-            <a-col :md="12" :sm="24">
+            <a-col :md="24" :sm="24">
               <a-form-item :label="$t('customer.channel')">
                 <a-select
                   mode="multiple"
@@ -97,7 +97,7 @@
                 >
                   <a-select
                     slot="addonBefore"
-                    v-decorator="['targetType']"
+                    v-decorator="['targetType', { initialValue: '全国' }]"
                     placeholder="选项"
                     style="width: 100px"
                   >
@@ -246,7 +246,7 @@ export default {
         if (values.salesMan) {
           values.salesMan = JSON.stringify(values.salesMan)
         }
-        values.target = values.targetType + ',' + values.targetDetail
+        values.target = (values.targetType ? values.targetType : '') + ',' + (values.targetDetail ? values.targetDetail : '')
 
         this.$emit(this.actionType, Object.assign({}, this.formData, values))
       })

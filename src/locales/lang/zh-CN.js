@@ -88,7 +88,7 @@ export default {
   },
   customer: {
     'customerCd': '客户编号',
-    'customerName': '客户名',
+    'customerName': '客户公司名',
     'customerType': '客户类型',
     'address': '地址',
     'address-detail': '详细地址',

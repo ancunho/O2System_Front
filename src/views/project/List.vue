@@ -68,6 +68,11 @@
         :queryParam="queryParam"
         showPagination="auto"
       >
+        <span slot="projectName" slot-scope="text, row">
+          <template>
+            <a @click="handleView(row)">{{ text }}</a>
+          </template>
+        </span>
         <span slot="projectSalesMan" slot-scope="text">
           <template>
             {{ text | filterMemberName(userList) }}
@@ -165,7 +170,8 @@ export default {
       columns: [
         {
           title: i18n.t('project.projectName'),
-          dataIndex: 'projectName'
+          dataIndex: 'projectName',
+          scopedSlots: { customRender: 'projectName' }
         },
         {
           title: i18n.t('project.projectCustomer'),

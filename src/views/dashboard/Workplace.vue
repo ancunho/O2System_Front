@@ -88,7 +88,7 @@
                     </div>
                   </a-card-meta>
                   <div class="project-item">
-                    <span>{{ item.projectCustomer }}</span>
+                    <span>{{ item.customerName }}</span>
                     <span class="datetime">{{ item.createtime }}</span>
                   </div>
                 </a-card>

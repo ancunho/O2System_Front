@@ -434,6 +434,9 @@ export default {
             this.form.projectProduct = res.data.projectProduct
             this.form.projectProduct.productMainMaterial = JSON.parse(this.form.projectProduct.productMainMaterial)
             this.form.projectProduct.productSubMaterial = JSON.parse(this.form.projectProduct.productSubMaterial)
+          } else {
+            this.form.projectProduct.productMainMaterial = []
+            this.form.projectProduct.productSubMaterial = []
           }
 
           if (res.data.projectPrice) {

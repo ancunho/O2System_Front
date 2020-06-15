@@ -173,7 +173,7 @@
                       <a-select
                         :disabled="customerDisable"
                         slot="addonBefore"
-                        v-decorator="['targetType']"
+                        v-decorator="['targetType', { initialValue: '全国' }]"
                         placeholder="选项"
                         style="width: 100px"
                       >
@@ -338,7 +338,7 @@ export default {
           channel: values.channel,
           salesMan: values.salesMan,
           developmentSkill: values.developmentSkill,
-          target: values.targetType + ',' + values.targetDetail,
+          target: (values.targetType ? values.targetType : '') + ',' + (values.targetDetail ? values.targetDetail : ''),
           productList: values.productList,
           address: values.address
         }
