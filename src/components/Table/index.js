@@ -6,7 +6,10 @@ export default {
       localLoading: false,
       localDataSource: [],
       SearchDataSource: [],
-      localPagination: Object.assign({}, this.pagination)
+      localPagination: Object.assign({}, this.pagination),
+      localSort: {
+        order: null
+      }
     }
   },
   props: Object.assign({}, T.props, {
@@ -68,14 +71,6 @@ export default {
      * 表格重新加载方法
      */
     refresh (pagination, filters, sorter) {
-      if (sorter.order === 'ascend') {
-        this.localDataSource.sort((a, b) => a[sorter['columnKey']] > b[sorter['columnKey']] ? 1 : -1)
-      } else if (sorter.order === 'descend') {
-        this.localDataSource.sort((a, b) => b[sorter['columnKey']] < a[sorter['columnKey']] ? -1 : 1)
-      } else {
-        this.localDataSource.sort((a, b) => b['createtime'] < a['createtime'] ? -1 : 1)
-      }
-
       if (typeof pagination === 'object') {
         this.localPagination = pagination
       } else if (typeof pagination === 'string') {
@@ -84,6 +79,15 @@ export default {
           current: ['search', 'add'].includes(pagination) ? 1 : this.localPagination.current,
           total: this.localDataSource.length
         })
+      }
+
+      if (sorter) this.localSort = sorter
+      if (this.localSort.order === 'ascend') {
+        this.localDataSource.sort((a, b) => a[this.localSort['columnKey']] > b[this.localSort['columnKey']] ? 1 : -1)
+      } else if (this.localSort.order === 'descend') {
+        this.localDataSource.sort((a, b) => b[this.localSort['columnKey']] < a[this.localSort['columnKey']] ? -1 : 1)
+      } else if (this.localSort) {
+        this.localDataSource.sort((a, b) => b['createtime'] < a['createtime'] ? -1 : 1)
       }
     },
     /**
