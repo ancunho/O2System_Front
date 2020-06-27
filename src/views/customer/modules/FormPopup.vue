@@ -21,7 +21,7 @@
           <a-row :gutter="5">
             <a-col :md="12" :sm="24">
               <a-form-item :label="$t('customer.customerCd')">
-                <a-input v-decorator="['customerCd', {rules: [{required: true, message: $t('message.required')}]}]" />
+                <a-input v-decorator="['customerCd', {rules: [{required: true,validator: this.handleCheckCustomerCd }], validateTrigger: ['blur']}]" />
               </a-form-item>
             </a-col>
             <a-col :md="12" :sm="24">
@@ -138,7 +138,7 @@ import AvatarModal from '@/components/tools/AvatarModal'
 import pca from 'china-division/dist/pca-code.json'
 import { mixinDevice } from '@/utils/mixin'
 import { mapGetters } from 'vuex'
-import { checkCustomerName } from '@/api/customer'
+import { checkCustomerCd, checkCustomerName } from '@/api/customer'
 
 export default {
   name: 'CustomerForm',
@@ -172,6 +172,24 @@ export default {
     }
   },
   methods: {
+    // 校验客户编号唯一性
+    handleCheckCustomerCd (rule, value, callback) {
+      if (this.formData.customerCd === value) {
+        callback()
+        return
+      }
+      if (value) {
+        checkCustomerCd({
+          customerCd: value
+        }).then(() => {
+          callback()
+        }).catch(() => {
+          callback(new Error(i18n.t('message.used') + ''))
+        })
+      } else {
+        callback(new Error(i18n.t('message.required') + ''))
+      }
+    },
     // 校验客户名唯一性
     handleCheckCustomerName (rule, value, callback) {
       if (this.formData.customerName === value) {

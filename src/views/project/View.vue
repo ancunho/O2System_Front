@@ -406,6 +406,12 @@ export default {
       }
     }
   },
+  activated () {
+    if (this.projectId !== Number(this.$route.params.id)) {
+      this.projectId = Number(this.$route.params.id)
+      this.initData()
+    }
+  },
   created () {
     if (!this.$route.params.id) {
       this.$router.push({
@@ -413,84 +419,84 @@ export default {
       })
       return false
     }
-    this.projectId = this.$route.params.id
-    this.$nextTick(() => {
-      new Promise(resolve => {
-        return getMemberNameList().then(res => {
-          this.userList = res.data
-          resolve()
-        })
-      }).then(() => {
-        return getProjectView({
-          projectId: this.projectId
-        }).then(res => {
-          this.permissionList = JSON.parse(res.data.projectBaseinfo.projectSalesMan)
-          this.permissionList.push(Number(res.data.projectBaseinfo.projectCreater))
-
-          this.baseInfo = res.data.projectBaseinfo
-          this.baseInfo.customer = res.data.customer
-
-          if (res.data.projectProduct) {
-            this.form.projectProduct = res.data.projectProduct
-            this.form.projectProduct.productMainMaterial = JSON.parse(this.form.projectProduct.productMainMaterial)
-            this.form.projectProduct.productSubMaterial = JSON.parse(this.form.projectProduct.productSubMaterial)
-          } else {
-            this.form.projectProduct.productMainMaterial = []
-            this.form.projectProduct.productSubMaterial = []
-          }
-
-          if (res.data.projectPrice) {
-            this.form.projectPrice = res.data.projectPrice
-            this.form.projectPrice.priceList = this.form.projectPrice.priceList ? JSON.parse(this.form.projectPrice.priceList) : []
-            this.form.projectPrice.descriptionList = this.form.projectPrice.descriptionList ? JSON.parse(this.form.projectPrice.descriptionList) : []
-          } else {
-            this.form.projectPrice = {
-              priceList: [],
-              descriptionList: []
-            }
-          }
-
-          if (this.form.projectPrice.priceList) {
-            let price = 0
-            let setPrice = 0
-            let percent = 0
-            this.form.projectPrice.priceList.forEach(item => {
-              price += Number(item['price'])
-              setPrice += Number(item['setPrice'])
-              percent += Number(item['percent'])
-            })
-
-            this.total = {
-              price: price,
-              setPrice: setPrice,
-              percent: percent
-            }
-          }
-
-          if (res.data.projectRecordList) {
-            this.form.projectRecordList = res.data.projectRecordList
-            this.form.projectRecordList.forEach((item, index) => {
-              item.recordContent = JSON.parse(item.recordContent)
-            })
-          }
-
-          this.form.projectFileinfoList = res.data.projectFileinfoList
-
-          this.loading = false
-        })
-      })
-    })
+    this.projectId = Number(this.$route.params.id)
+    this.initData()
   },
   methods: {
+    initData () {
+      this.$nextTick(() => {
+        this.loading = true
+        new Promise(resolve => {
+          return getMemberNameList().then(res => {
+            this.userList = res.data
+            resolve()
+          })
+        }).then(() => {
+          return getProjectView({
+            projectId: this.projectId
+          }).then(res => {
+            this.permissionList = JSON.parse(res.data.projectBaseinfo.projectSalesMan)
+            this.permissionList.push(Number(res.data.projectBaseinfo.projectCreater))
+
+            this.baseInfo = res.data.projectBaseinfo
+            this.baseInfo.customer = res.data.customer
+
+            if (res.data.projectProduct) {
+              this.form.projectProduct = res.data.projectProduct
+              this.form.projectProduct.productMainMaterial = JSON.parse(this.form.projectProduct.productMainMaterial)
+              this.form.projectProduct.productSubMaterial = JSON.parse(this.form.projectProduct.productSubMaterial)
+            } else {
+              this.form.projectProduct.productMainMaterial = []
+              this.form.projectProduct.productSubMaterial = []
+            }
+
+            if (res.data.projectPrice) {
+              this.form.projectPrice = res.data.projectPrice
+              this.form.projectPrice.priceList = this.form.projectPrice.priceList ? JSON.parse(this.form.projectPrice.priceList) : []
+              this.form.projectPrice.descriptionList = this.form.projectPrice.descriptionList ? JSON.parse(this.form.projectPrice.descriptionList) : []
+            } else {
+              this.form.projectPrice = {
+                priceList: [],
+                descriptionList: []
+              }
+            }
+
+            if (this.form.projectPrice.priceList) {
+              let price = 0
+              let setPrice = 0
+              let percent = 0
+              this.form.projectPrice.priceList.forEach(item => {
+                price = this.$calc_add(price, Number(item['price']))
+                setPrice = this.$calc_add(setPrice, Number(item['setPrice']))
+                percent = this.$calc_add(percent, Number(item['percent']))
+              })
+
+              this.total = {
+                price: price,
+                setPrice: setPrice,
+                percent: percent
+              }
+            }
+
+            if (res.data.projectRecordList) {
+              this.form.projectRecordList = res.data.projectRecordList
+              this.form.projectRecordList.forEach((item, index) => {
+                item.recordContent = JSON.parse(item.recordContent)
+              })
+            }
+
+            this.form.projectFileinfoList = res.data.projectFileinfoList
+
+            this.loading = false
+          })
+        })
+      })
+    },
     handleEdit () {
       this.$router.push({
         name: 'projectEdit',
         params: {
-          type: 'edit',
-          data: {
-            baseInfo: { ...this.baseInfo },
-            form: { ...this.form }
-          }
+          id: this.projectId
         }
       })
     }

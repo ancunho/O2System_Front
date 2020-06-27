@@ -47,6 +47,14 @@ export function customerDelete (parameter) {
   })
 }
 
+export function checkCustomerCd (parameter) {
+  return axios({
+    url: '/customer/check_customer_cd',
+    method: 'post',
+    data: QS.stringify(parameter)
+  })
+}
+
 export function checkCustomerName (parameter) {
   return axios({
     url: '/customer/check_customer_name',

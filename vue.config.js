@@ -100,8 +100,8 @@ const vueConfig = {
       '/api|/file': {
         ws: true,
         changeOrigin: true,
-        target: 'http://172.44.214.234:9000'
-        // target: 'http://101.133.219.148:9000/'
+        // target: 'http://172.44.214.234:9000'
+        target: 'http://101.133.219.148:9000/'
       }
     }
   },

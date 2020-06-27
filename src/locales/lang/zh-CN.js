@@ -103,7 +103,8 @@ export default {
     'distribution': '流通方案',
     'salesMan': '客户负责人',
     'customerImage': 'LOGO',
-    'status': '启用'
+    'status': '启用',
+    'createtime': '创建日期'
   },
   project: {
     'projectBaseInfo': '项目基本信息',
@@ -144,7 +145,8 @@ export default {
     'actualProduction': '实际产生量',
     'valueNoVat': '估价 (VAT除外)',
     'remark': '*备注',
-    'specialComment': '*特技事项'
+    'specialComment': '*特技事项',
+    'updatetime': '更新日期'
   },
   option: {
     'goHome': '返回首页',

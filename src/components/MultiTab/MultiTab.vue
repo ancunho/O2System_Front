@@ -1,5 +1,6 @@
 <script>
 import events from './events'
+import i18n from '@/locales'
 
 export default {
   name: 'MultiTab',
@@ -114,7 +115,7 @@ export default {
 
       return (
         <a-dropdown overlay={menu} trigger={['contextmenu']}>
-          <span style={{ userSelect: 'none' }}>{ title }</span>
+          <span style={{ userSelect: 'none' }}>{ i18n.t(title) }</span>
         </a-dropdown>
       )
     }

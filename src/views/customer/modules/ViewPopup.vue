@@ -27,6 +27,7 @@
           <a-descriptions-item :label="$t('customer.productList')">{{ customer.productList }}</a-descriptions-item>
           <a-descriptions-item :label="$t('customer.salesMan')">{{ customer.salesMan | filterMemberName(this.$parent.$parent.userList) }}</a-descriptions-item>
           <a-descriptions-item :label="$t('customer.description')">{{ customer.description }}</a-descriptions-item>
+          <a-descriptions-item :label="$t('customer.createtime')">{{ customer.createtime }}</a-descriptions-item>
         </a-descriptions>
       </a-col>
 

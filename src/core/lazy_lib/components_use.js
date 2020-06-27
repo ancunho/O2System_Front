@@ -54,6 +54,7 @@ import {
   message,
   notification,
 } from 'ant-design-vue'
+import { add } from '@shixianqin/calculate/lib/core';
 // import VueCropper from 'vue-cropper'
 
 Vue.use(ConfigProvider)
@@ -109,3 +110,4 @@ Vue.prototype.$info = Modal.info
 Vue.prototype.$success = Modal.success
 Vue.prototype.$error = Modal.error
 Vue.prototype.$warning = Modal.warning
+Vue.prototype.$calc_add = add

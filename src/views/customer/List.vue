@@ -159,6 +159,10 @@ export default {
           ellipsis: true
         },
         {
+          title: i18n.t('customer.createtime'),
+          dataIndex: 'createtime'
+        },
+        {
           title: i18n.t('option.action'),
           dataIndex: 'action',
           width: '200px',

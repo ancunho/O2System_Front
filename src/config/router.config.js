@@ -18,13 +18,13 @@ export const asyncRouterMap = [
         component: RouteView,
         redirect: '/dashboard/workplace',
         hideChildrenInMenu: true,
-        meta: { title: 'menu.dashboard', keepAlive: true, icon: bxAnaalyse },
+        meta: { title: 'menu.dashboard', icon: bxAnaalyse },
         children: [
           {
             path: '/dashboard/workplace',
             name: 'Workplace',
             component: () => import('@/views/dashboard/Workplace'),
-            meta: { title: 'menu.dashboard-workplace', keepAlive: true, hideHeader: true, hiddenHeaderContent: true }
+            meta: { title: 'menu.dashboard-workplace', hideHeader: true, hiddenHeaderContent: true }
           }
         ]
       },
@@ -71,27 +71,27 @@ export const asyncRouterMap = [
         name: 'project',
         component: RouteView,
         redirect: '/project/list',
-        meta: { title: 'menu.project', icon: 'project', permission: [ 'ROLE_ADMIN', 'ROLE_USER' ] },
+        meta: { title: 'menu.project', icon: 'project', permission: [ 'ROLE_ADMIN', 'ROLE_USER' ], keepAlive: true },
         children: [
           {
             path: '/project/list',
             name: 'projectList',
             component: () => import('@/views/project/List'),
-            meta: { title: 'menu.project-list', permission: [ 'ROLE_ADMIN', 'ROLE_USER' ] }
+            meta: { title: 'menu.project-list', permission: [ 'ROLE_ADMIN', 'ROLE_USER' ], keepAlive: true }
           },
           {
-            path: '/project/view',
+            path: '/project/view/:id([1-9]\\d*)?',
             name: 'projectView',
             hidden: true,
             component: () => import('@/views/project/View'),
-            meta: { title: 'menu.project-view', permission: [ 'ROLE_ADMIN', 'ROLE_USER' ] }
+            meta: { title: 'menu.project-view', permission: [ 'ROLE_ADMIN', 'ROLE_USER' ], keepAlive: true }
           },
           {
-            path: '/project/edit',
+            path: '/project/edit/:id([1-9]\\d*)?',
             name: 'projectEdit',
             hidden: true,
             component: () => import('@/views/project/Edit'),
-            meta: { title: 'menu.project-edit', permission: [ 'ROLE_ADMIN', 'ROLE_USER' ] }
+            meta: { title: 'menu.project-edit', permission: [ 'ROLE_ADMIN', 'ROLE_USER' ], keepAlive: true }
           },
           {
             path: '/project/record',

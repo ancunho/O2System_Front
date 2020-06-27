@@ -79,6 +79,10 @@ const customerDelete = () => {
   return builder({}, '删除成功')
 }
 
+const checkCustomerCd = () => {
+  return builder({}, '可以使用')
+}
+
 const checkCustomerName = () => {
   return builder({}, '可以使用')
 }
@@ -110,5 +114,6 @@ Mock.mock('/api/customer/detail', 'post', getCustomerById)
 Mock.mock('/api/customer/create', 'post', customerAdd)
 Mock.mock('/api/customer/update', 'post', customerUpdate)
 Mock.mock('/api/customer/delete', 'post', customerDelete)
+Mock.mock('/api/customer/check_customer_cd', 'post', checkCustomerCd)
 Mock.mock('/api/customer/check_customer_name', 'post', checkCustomerName)
 Mock.mock('/api/customer/project_list_by_customer_name', 'post', getProjectByCustomer)

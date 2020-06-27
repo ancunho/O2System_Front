@@ -68,6 +68,14 @@ export default {
      * 表格重新加载方法
      */
     refresh (pagination, filters, sorter) {
+      if (sorter.order === 'ascend') {
+        this.localDataSource.sort((a, b) => a[sorter['columnKey']] > b[sorter['columnKey']] ? 1 : -1)
+      } else if (sorter.order === 'descend') {
+        this.localDataSource.sort((a, b) => b[sorter['columnKey']] < a[sorter['columnKey']] ? -1 : 1)
+      } else {
+        this.localDataSource.sort((a, b) => b['createtime'] < a['createtime'] ? -1 : 1)
+      }
+
       if (typeof pagination === 'object') {
         this.localPagination = pagination
       } else if (typeof pagination === 'string') {

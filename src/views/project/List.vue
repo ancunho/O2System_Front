@@ -200,6 +200,11 @@ export default {
           dataIndex: 'projectEndtime'
         },
         {
+          title: i18n.t('project.updatetime'),
+          dataIndex: 'updatetime',
+          sorter: true
+        },
+        {
           title: i18n.t('option.action'),
           dataIndex: 'action',
           width: '170px',
@@ -231,10 +236,7 @@ export default {
         this.$refs.formModal.setVisible()
         this.$router.push({
           name: 'projectEdit',
-          params: {
-            type: 'add',
-            data: res.data
-          }
+          params: res.data
         })
       })
     },
