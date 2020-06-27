@@ -653,9 +653,9 @@ export default {
       let setPrice = 0
       let percent = 0
       this.form.projectPrice.priceList.forEach(item => {
-        price += Number(item['price'])
-        setPrice += Number(item['setPrice'])
-        percent += Number(item['percent'])
+        price = this.$calc_add(price, Number(item['price']))
+        setPrice = this.$calc_add(setPrice, Number(item['setPrice']))
+        percent = this.$calc_add(percent, Number(item['percent']))
       })
 
       this.total = {
