@@ -73,6 +73,7 @@
         </a-descriptions>
         <a-descriptions :column="{ md: 1, sm: 1, xs: 1}">
           <a-descriptions-item label="详细说明">{{ form.projectProduct.productDetail }}</a-descriptions-item>
+          <a-descriptions-item label="内容">{{ form.projectProduct.productTargetContent }}</a-descriptions-item>
         </a-descriptions>
       </a-card>
 

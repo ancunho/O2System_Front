@@ -449,7 +449,8 @@ export default {
           valueNoVat: '',
           specialComment: ''
         },
-        projectRecordList: []
+        projectRecordList: [],
+        projectFileinfoList: []
       },
       tabList: [
         {
@@ -582,7 +583,8 @@ export default {
               })
             }
 
-            if (this.form.projectFileinfoList) {
+            if (res.data.projectFileinfoList) {
+              this.form.projectFileinfoList = res.data.projectFileinfoList
               this.fileList = this.form.projectFileinfoList.map(file => {
                 return {
                   id: file.id,

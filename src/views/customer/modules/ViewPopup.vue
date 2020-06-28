@@ -33,7 +33,7 @@
 
       <a-col :md="7" :sm="24">
         <div class="photo">
-          <a-avatar shape="square" :size="150" icon="user" :src="customer.imagePhoto" />
+          <a-avatar shape="square" :size="150" icon="user" :src="customer.customerImage" />
           <b>{{ $t('customer.customerImage') }}</b>
         </div>
       </a-col>
