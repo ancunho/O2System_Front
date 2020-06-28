@@ -88,9 +88,9 @@
             <b class="color01"><a-icon type="folder" /> 附件</b>
           </template>
           <a-upload
-            style="max-width: 500px"
             name="singleImageUpload"
             list-type="picture"
+            class="upload-list-inline"
             :action="uploadAction"
             :file-list="fileList"
             @change="handleChange"
