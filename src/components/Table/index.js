@@ -1,5 +1,13 @@
 import T from 'ant-design-vue/es/table/Table'
 
+// 地区
+import provinces from 'china-division/dist/provinces.json'
+import cities from 'china-division/dist/cities.json'
+import areas from 'china-division/dist/areas.json'
+
+// 导出excel
+const { exportJsonToExcel } = require('@/excel/Export2Excel')
+
 export default {
   data () {
     return {
@@ -98,7 +106,15 @@ export default {
       const obj = this.SearchDataSource.filter(item => {
         let flag = true
         Object.keys(param).forEach(e => {
-          if (!String(item[e]).includes(param[e])) {
+          /**
+           * 1. Json查询
+           * 2. 普通查询
+           */
+          if (['salesMan', 'projectSalesMan'].includes(e) &&
+              param[e] &&
+              !(JSON.parse(item[e])).includes(Number(param[e]))) {
+            flag = false
+          } else if (!String(item[e]).includes(param[e])) {
             flag = false
           }
         })
@@ -127,6 +143,47 @@ export default {
     delete (row) {
       this.SearchDataSource.splice(this.SearchDataSource.findIndex(item => item.id === row.id), 1)
       this.refresh('delete')
+    },
+    /**
+     * Excel导出
+     */
+    excelExport (e, o) {
+      require.ensure([], () => {
+        // 数据集
+        const list = this.localDataSource
+        const data = this.formatJson(e.filterVal, list, o)
+        exportJsonToExcel(e.tHeader, data, e.excelName)
+      })
+    },
+    /**
+     * 格式化json
+     */
+    formatJson (filterVal, jsonData, other) {
+      return jsonData.map(v => filterVal.map(j => {
+        if (j === 'province' && v[j]) {
+          return v[j] === '99' ? '国外' : [...provinces].find((x) => x['code'] === v[j])['name']
+        } else if (j === 'city' && v[j]) {
+          return [...cities].find((x) => x['code'] === v[j])['name']
+        } else if (j === 'area' && v[j]) {
+          return [...areas].find((x) => x['code'] === v[j])['name']
+        } else if (j === 'projectSalesMan' && v[j]) {
+          const list = JSON.parse(v[j])
+          let names = ''
+          list.forEach((item, index) => {
+            other.userList.find((x) => {
+              if (x['id'] === Number(item)) {
+                names += x['realname'] + (list.length === index + 1 ? '' : ', ')
+              }
+            })
+          })
+
+          return names
+        } else if (j === 'projectStatus' && v[j]) {
+          return other.statusMap.find(x => x['k'] === v[j])['v']
+        } else {
+          return v[j]
+        }
+      }))
     }
   },
 

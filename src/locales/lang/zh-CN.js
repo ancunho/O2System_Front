@@ -154,6 +154,7 @@ export default {
     'action': '操作',
     'search': '查询',
     'reset': '重置',
+    'ExcelExport': 'Excel导出',
     'ok': '确认',
     'cancel': '取消',
     'create': '新建',

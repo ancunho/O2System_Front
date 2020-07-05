@@ -26,6 +26,16 @@
                 <a-input v-model="queryParam.phone"/>
               </a-form-item>
             </a-col>
+            <a-col :md="6" :sm="24">
+              <a-form-item :label="$t('customer.salesMan')">
+                <a-select v-model="queryParam.salesMan">
+                  <a-select-option value="">All</a-select-option>
+                  <a-select-option v-for="item in userList" :key="item.id" :value="item.id">
+                    {{ item.realname }}
+                  </a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
           </template>
           <a-col :md="!advanced && 6 || 24" :sm="24" style="text-align: right">
             <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
@@ -42,6 +52,14 @@
     </div>
 
     <div class="table-operator">
+      <a-button
+        type="primary"
+        icon="export"
+        @click="excelExport"
+      >
+        {{ $t('option.ExcelExport') }}
+      </a-button>
+
       <a-button
         type="primary"
         icon="plus"
@@ -107,6 +125,7 @@ import { getMemberNameList } from '@/api/member'
 import { getCustomerList, customerAdd, customerUpdate, customerDelete } from '@/api/customer'
 import i18n from '@/locales'
 import { mapGetters } from 'vuex'
+import moment from 'moment'
 
 export default {
   name: 'CustomerList',
@@ -219,6 +238,14 @@ export default {
     },
     toggleAdvanced () {
       this.advanced = !this.advanced
+    },
+    excelExport () {
+      const data = {
+        'excelName': '客户管理' + moment(new Date()).format('YYYY-MM-DD'),
+        'tHeader': ['客户公司名', '客户类型', '联系人', '销售额', '地址-省级', '地址-地级', '地址-县级', '地址-详细', '公司信息', '创建日期'],
+        'filterVal': ['customerName', 'customerType', 'director', 'salesVolumn', 'province', 'city', 'area', 'address', 'description', 'createtime']
+      }
+      this.$refs.table.excelExport(data)
     }
   }
 }

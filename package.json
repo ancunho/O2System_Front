@@ -13,12 +13,13 @@
   },
   "dependencies": {
     "@antv/data-set": "^0.10.2",
+    "@shixianqin/calculate": "^2.0.1",
     "ant-design-vue": "1.5.0-rc.6",
     "axios": "^0.19.0",
     "china-division": "^2.3.1",
     "core-js": "^3.1.2",
     "enquire.js": "^2.1.6",
-    "@shixianqin/calculate": "^2.0.1",
+    "file-saver": "^2.0.2",
     "md5": "^2.2.1",
     "mockjs2": "1.0.8",
     "moment": "^2.24.0",
@@ -34,7 +35,8 @@
     "vue-router": "^3.1.2",
     "vue-svg-component-runtime": "^1.0.1",
     "vuex": "^3.1.1",
-    "wangeditor": "^3.1.1"
+    "wangeditor": "^3.1.1",
+    "xlsx": "^0.16.3"
   },
   "devDependencies": {
     "@ant-design/colors": "^3.2.1",
@@ -57,6 +59,7 @@
     "less-loader": "^5.0.0",
     "opencollective": "^1.0.3",
     "opencollective-postinstall": "^2.0.2",
+    "script-loader": "^0.7.2",
     "vue-svg-icon-loader": "^2.1.1",
     "vue-template-compiler": "^2.6.10",
     "webpack-theme-color-replacer": "^1.2.17"

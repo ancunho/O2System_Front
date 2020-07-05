@@ -56,7 +56,21 @@
       </div>
 
       <div class="table-operator">
-        <a-button type="primary" icon="plus" @click="$refs.formModal.add()">{{ $t('option.create') }}</a-button>
+        <a-button
+          type="primary"
+          icon="export"
+          @click="excelExport"
+        >
+          {{ $t('option.ExcelExport') }}
+        </a-button>
+
+        <a-button
+          type="primary"
+          icon="plus"
+          @click="$refs.formModal.add()"
+        >
+          {{ $t('option.create') }}
+        </a-button>
       </div>
 
       <s-table
@@ -117,6 +131,7 @@ import ViewTimelinePopup from './modules/ViewTimelinePopup'
 import { getProjectList, projectBaseInfoAdd } from '@/api/project'
 import { getMemberNameList } from '@/api/member'
 import i18n from '@/locales'
+import moment from 'moment'
 
 const statusMap = [
   {
@@ -257,6 +272,14 @@ export default {
     },
     toggleAdvanced () {
       this.advanced = !this.advanced
+    },
+    excelExport () {
+      const data = {
+        'excelName': '项目管理' + moment(new Date()).format('YYYY-MM-DD'),
+        'tHeader': ['项目名', '客户公司名', '项目负责人', '产品名', '项目状态', '项目开始日', '项目结束日', '更新日期'],
+        'filterVal': ['projectName', 'customerName', 'projectSalesMan', 'productName', 'projectStatus', 'projectStarttime', 'projectEndtime', 'updatetime']
+      }
+      this.$refs.table.excelExport(data, { userList: this.userList, statusMap: statusMap })
     }
   }
 }
