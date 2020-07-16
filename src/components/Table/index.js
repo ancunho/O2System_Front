@@ -166,7 +166,7 @@ export default {
           return [...cities].find((x) => x['code'] === v[j])['name']
         } else if (j === 'area' && v[j]) {
           return [...areas].find((x) => x['code'] === v[j])['name']
-        } else if (j === 'projectSalesMan' && v[j]) {
+        } else if (j === 'projectSalesMan' && v[j] || j === 'salesMan' && v[j]) {
           const list = JSON.parse(v[j])
           let names = ''
           list.forEach((item, index) => {

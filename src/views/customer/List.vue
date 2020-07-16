@@ -16,16 +16,11 @@
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
-            <a-form-item :label="$t('customer.director')">
-              <a-input v-model="queryParam.director"/>
+            <a-form-item :label="$t('customer.phone')">
+              <a-input v-model="queryParam.phone"/>
             </a-form-item>
           </a-col>
           <template v-if="advanced">
-            <a-col :md="6" :sm="24">
-              <a-form-item :label="$t('customer.phone')">
-                <a-input v-model="queryParam.phone"/>
-              </a-form-item>
-            </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item :label="$t('customer.salesMan')">
                 <a-select v-model="queryParam.salesMan">
@@ -78,6 +73,11 @@
       :queryParam="queryParam"
       showPagination="auto"
     >
+      <span slot="salesMan" slot-scope="text">
+        <template>
+          {{ text | filterMemberName(userList) }}
+        </template>
+      </span>
       <span slot="action" slot-scope="text, row" class="table-option">
         <template>
           <a @click="$refs.viewProjectModal.view(row.id)">{{ $t('option.project') }}</a>
@@ -161,6 +161,11 @@ export default {
           dataIndex: 'director'
         },
         {
+          title: i18n.t('customer.salesMan'),
+          dataIndex: 'salesMan',
+          scopedSlots: { customRender: 'salesMan' }
+        },
+        {
           title: i18n.t('customer.salesVolumn'),
           dataIndex: 'salesVolumn'
         },
@@ -242,10 +247,10 @@ export default {
     excelExport () {
       const data = {
         'excelName': '客户管理' + moment(new Date()).format('YYYY-MM-DD'),
-        'tHeader': ['客户公司名', '客户类型', '联系人', '销售额', '地址-省级', '地址-地级', '地址-县级', '地址-详细', '公司信息', '创建日期'],
-        'filterVal': ['customerName', 'customerType', 'director', 'salesVolumn', 'province', 'city', 'area', 'address', 'description', 'createtime']
+        'tHeader': ['客户公司名', '客户类型', '联系人', '客户负责人', '销售额', '地址-省级', '地址-地级', '地址-县级', '地址-详细', '公司信息', '创建日期'],
+        'filterVal': ['customerName', 'customerType', 'director', 'salesMan', 'salesVolumn', 'province', 'city', 'area', 'address', 'description', 'createtime']
       }
-      this.$refs.table.excelExport(data)
+      this.$refs.table.excelExport(data, { userList: this.userList })
     }
   }
 }
