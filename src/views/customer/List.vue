@@ -16,23 +16,18 @@
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
-            <a-form-item :label="$t('customer.phone')">
-              <a-input v-model="queryParam.phone"/>
+            <a-form-item :label="$t('customer.salesMan')">
+              <a-select v-model="queryParam.salesMan">
+                <a-select-option value="">All</a-select-option>
+                <a-select-option v-for="item in userList" :key="item.id" :value="item.id">
+                  {{ item.realname }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <template v-if="advanced">
-            <a-col :md="6" :sm="24">
-              <a-form-item :label="$t('customer.salesMan')">
-                <a-select v-model="queryParam.salesMan">
-                  <a-select-option value="">All</a-select-option>
-                  <a-select-option v-for="item in userList" :key="item.id" :value="item.id">
-                    {{ item.realname }}
-                  </a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
           </template>
-          <a-col :md="!advanced && 6 || 24" :sm="24" style="text-align: right">
+          <a-col :md="!advanced && 6 || 6" :sm="24" style="text-align: right">
             <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
               <a-button type="primary" @click="$refs.table.refresh('search')">{{ $t('option.search') }}</a-button>
               <a-button style="margin-left: 8px" @click="() => queryParam = {}">{{ $t('option.reset') }}</a-button>

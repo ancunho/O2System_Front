@@ -4,6 +4,7 @@ import T from 'ant-design-vue/es/table/Table'
 import provinces from 'china-division/dist/provinces.json'
 import cities from 'china-division/dist/cities.json'
 import areas from 'china-division/dist/areas.json'
+import store from '@/store'
 
 // 导出excel
 const { exportJsonToExcel } = require('@/excel/Export2Excel')
@@ -149,10 +150,28 @@ export default {
      */
     excelExport (e, o) {
       require.ensure([], () => {
-        // 数据集
-        const list = this.localDataSource
+        let list = this.localDataSource
+        const userInfo = store.getters.userInfo
+        /**
+         * 除一下人员其他人只能下载自己项目客户信息
+         * 3  admin
+         * 23 朴道永
+         * 22 单珊
+         * 17 정용범
+         */
+        if (![3, 23, 22, 17].includes(userInfo.id)) {
+          list = list.filter((v) => {
+            if (!v['salesMan']) return false
+            return (JSON.parse(v['salesMan'])).includes(userInfo.id)
+          })
+        }
+
         const data = this.formatJson(e.filterVal, list, o)
-        exportJsonToExcel(e.tHeader, data, e.excelName)
+        if (data.length === 0) {
+          this.$message.warning('无客户信息可导出')
+        } else {
+          exportJsonToExcel(e.tHeader, data, e.excelName)
+        }
       })
     },
     /**
